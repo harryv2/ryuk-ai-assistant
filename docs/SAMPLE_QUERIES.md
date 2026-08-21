@@ -28,7 +28,7 @@ is checkable by hand.
 | | |
 |---|---|
 | `users.id` | `usr_V1StGXR8_Z5jdHi6B` |
-| `users.email` | `demo@alphalaw.test` |
+| `users.email` | `demo@example.com` |
 | `users.timezone` | `America/New_York` (EDT, UTC−04:00 in August 2026) |
 | `users.work_week_start` | `1` (Monday) |
 | `now` | `2026-08-20T09:12:04-04:00` = `2026-08-20T13:12:04Z` |
