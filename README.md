@@ -1,6 +1,4 @@
-
-
-# Ryuk — a chat orchestrator over Gmail, Calendar and Drive
+# Ryuk — Agentic Google Workspace Orchestrator
 
 You type "cancel my Turkish Airlines flight". It finds the booking email, reads
 the PNR out of it, finds the matching calendar event, drafts the cancellation
@@ -12,9 +10,7 @@ The point of the design is that it does all of that on **one model call**.
 
 ## Demo
 
-
 https://github.com/user-attachments/assets/b729b51e-c45b-4ed1-a6e6-54c2657e37a1
-
 
 **▶ [Watch the demo](docs/demo/demo.mp4)**
 

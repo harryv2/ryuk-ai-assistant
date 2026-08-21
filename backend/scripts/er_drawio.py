@@ -144,16 +144,16 @@ STYLE_CELL = (
 #: the bulk of the clutter, because draw.io parks them mid-span, on top of
 #: whatever box the line happens to cross.
 STYLE_EDGE = (
-    "edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;endArrow=ERoneToMany;"
-    "startArrow=ERmandOne;strokeColor={colour};strokeWidth=1.3;"
+    "edgeStyle=entityRelationEdgeStyle;rounded=1;html=1;endArrow=ERone;"
+    "startArrow=ERmany;strokeColor={colour};strokeWidth=1.3;"
     "exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;"
     "jumpStyle=arc;jumpSize=8;"
 )
 #: `runs` and `messages` sit in one lane and point at each other; a vertical
 #: hop between them beats a horizontal line that leaves and re-enters.
 STYLE_EDGE_STACKED = (
-    "edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=ERoneToMany;"
-    "startArrow=ERmandOne;strokeColor={colour};strokeWidth=1.3;"
+    "edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=ERone;"
+    "startArrow=ERmany;strokeColor={colour};strokeWidth=1.3;"
     "exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;"
     "jumpStyle=arc;jumpSize=8;"
 )
@@ -289,6 +289,12 @@ def render(
     table_ids: dict[str, str] = {}
 
     row_ids: dict[tuple[str, str], str] = {}
+    #: Absolute geometry, captured while placing, so the edge pass can route
+    #: through corridors it can PROVE are empty instead of hoping the
+    #: renderer's router avoids the boxes.
+    table_geo: dict[str, tuple[int, int, int, int]] = {}  # x, y, w, h
+    row_y: dict[tuple[str, str], int] = {}  # absolute centre of a row
+    band_bottoms: list[int] = []
 
     def measure(name: str) -> int:
         raw = tables.get(name)
@@ -353,6 +359,7 @@ def render(
                 table_ids[name] = tid
                 fill, stroke = palette_for(name)
                 style = STYLE_TABLE.format(h=HEADER_H, fill=fill, stroke=stroke)
+                table_geo[name] = (x, y, WIDTH, height)
                 cells.append(
                     f'<mxCell id="{tid}" value="{html.escape(name)}" style="{style}" '
                     f'vertex="1" parent="1"><mxGeometry x="{x}" y="{y}" '
@@ -361,6 +368,7 @@ def render(
                 for i, (cname, ctype, is_key) in enumerate(columns):
                     rid = nid()
                     row_ids[(name, cname)] = rid
+                    row_y[(name, cname)] = y + HEADER_H + i * ROW_H + ROW_H // 2
                     cells.append(
                         f'<mxCell id="{rid}" value="" style="{STYLE_ROW}" vertex="1" '
                         f'parent="{tid}"><mxGeometry y="{HEADER_H + i * ROW_H}" '
@@ -377,7 +385,8 @@ def render(
                     )
                 y += height + GAP_Y
 
-        band_y += tallest + 130
+        band_bottoms.append(band_y + tallest)
+        band_y += tallest + 190
 
     missing = sorted(set(tables) - placed)
     if missing:  # a table nobody assigned to a column still has to appear
@@ -409,23 +418,58 @@ def render(
     order_in_lane = {
         name: j for names in COLUMNS.values() for j, name in enumerate(names)
     }
+    band_of = {
+        name: bi
+        for bi, (_, lanes) in enumerate(BANDS)
+        for names in lanes.values()
+        for name in names
+    }
+
+    # ── Routing. Every edge is placed in space the layout can PROVE is empty ─
+    #
+    # The lanes leave a 110px corridor between neighbours and each band leaves
+    # a 190px gap below itself; boxes exist nowhere else. Three cases:
+    #
+    #   adjacent lanes   exit WEST from the FK row, enter EAST at the target's
+    #                    `id` row — the single bend lands inside the corridor
+    #                    between the two lanes, which holds no boxes.
+    #   skipping lanes   channel route: down the corridor beside the source,
+    #                    along the band gap underneath everything, up the
+    #                    corridor beside the target. Long, but provably clear
+    #                    — the diagonal it replaces cut straight through every
+    #                    lane in between.
+    #   across bands     the mirror's `user_id` edges leave each box's TOP,
+    #                    meet a shared bus in the inter-band gap, and come up
+    #                    into the south edge of `users`, staggered so six
+    #                    arrowheads do not land on one point.
+    #
+    # Channels are staggered a few pixels per edge so parallel runs read as
+    # separate lines rather than one thick one.
+    skip_i = 0
+    bus_i = 0
+    tenant_bottom = sorted(
+        (
+            src for src, col, tgt in fks
+            if tgt == "users" and col == "user_id" and band_of.get(src) == 1
+        ),
+        key=lambda name: lane_of.get(name, 99),
+    )
+
     for source, column, target in sorted(fks):
-        # Prefer the exact rows; fall back to the boxes when a column was
-        # condensed away (it never is for a key, but the fallback keeps the
-        # diagram honest rather than dropping the relationship silently).
         a = row_ids.get((source, column)) or table_ids.get(source)
         b = row_ids.get((target, "id")) or table_ids.get(target)
-        if not a or not b:
+        if not a or not b or source not in table_geo or target not in table_geo:
             continue
         tenant = target == "users" and column == "user_id"
         colour = "#94A3B8" if tenant else "#6366F1"
-        stacked = lane_of.get(source) == lane_of.get(target)
-        if stacked:
-            # A same-lane pair is anchored BOX to box, not row to row. A row
-            # anchor sits inside the box, so orthogonal routing has to escape
-            # the table first and the line reads as a rectangle drawn around
-            # the pair. Box edges give a short vertical hop instead, and each
-            # direction gets its own channel so the two do not overlap.
+        sx, sy, sw, sh = table_geo[source]
+        tx, ty, tw, th = table_geo[target]
+        srow = row_y.get((source, column), sy + sh // 2)
+        trow = row_y.get((target, "id"), ty + th // 2)
+        points: list[tuple[int, int]] = []
+
+        if lane_of.get(source) == lane_of.get(target) and band_of.get(source) == band_of.get(target):
+            # Stacked pair: a short vertical hop, one channel per direction.
             a, b = table_ids[source], table_ids[target]
             above = order_in_lane.get(target, 0) < order_in_lane.get(source, 0)
             side = 0.32 if above else 0.68
@@ -436,11 +480,71 @@ def render(
                 .replace("exitY=1", "exitY=0" if above else "exitY=1")
                 .replace("entryY=0", "entryY=1" if above else "entryY=0")
             )
+        elif band_of.get(source) != band_of.get(target):
+            # Mirror → users. The corridor ABOVE the mirror holds the band
+            # title, so these run the other way: south out of each box, along
+            # a bus underneath the whole band, then up the left margin — the
+            # one column of the page that is guaranteed to hold nothing — and
+            # east into the side of `users`. Ordered by lane so the four
+            # trunks nest instead of weaving.
+            # Anchor the BOX, not the `user_id` row: exitY=1 on a row is the
+            # row's own bottom, which is inside the table — the line then cuts
+            # down through every row beneath it before it ever leaves the box.
+            a, b = table_ids[source], table_ids[target]
+            order = tenant_bottom.index(source) if source in tenant_bottom else bus_i
+            below_y = band_bottoms[-1] + 22 + order * 12
+            trunk_x = 34 - order * 8
+            entry_frac = 0.30 + 0.15 * order
+            entry_abs = ty + int(th * entry_frac)
+            style = (
+                "edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=ERone;"
+                f"startArrow=ERmany;strokeColor={colour};strokeWidth=1.3;"
+                "exitX=0.5;exitY=1;exitDx=0;exitDy=0;"
+                f"entryX=0;entryY={entry_frac:.2f};entryDx=0;entryDy=0;"
+                "jumpStyle=arc;jumpSize=8;"
+            )
+            points = [
+                (sx + sw // 2, below_y),
+                (trunk_x, below_y),
+                (trunk_x, entry_abs),
+            ]
+            bus_i += 1
+        elif abs(lane_of[source] - lane_of[target]) == 1:
+            # Adjacent lanes: west out of the row, east into the id row. The
+            # bend can only fall in the corridor between the two lanes.
+            style = (
+                "edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=ERone;"
+                f"startArrow=ERmany;strokeColor={colour};strokeWidth=1.3;"
+                "exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;"
+                "jumpStyle=arc;jumpSize=8;"
+            )
         else:
-            style = STYLE_EDGE.format(colour=colour)
+            # Skip route through provably empty corridors.
+            down_x = sx - 55 + (skip_i % 3) * 12 - 12
+            up_x = tx + tw + 43 + (skip_i % 3) * 12
+            gap_y = band_bottoms[0] + 26 + skip_i * 14
+            style = (
+                "edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=ERone;"
+                f"startArrow=ERmany;strokeColor={colour};strokeWidth=1.3;"
+                "exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;"
+                "jumpStyle=arc;jumpSize=8;"
+            )
+            points = [(down_x, srow), (down_x, gap_y), (up_x, gap_y), (up_x, trow)]
+            skip_i += 1
+
+        if points:
+            waypoints = "".join(
+                f'<mxPoint x="{px}" y="{py}"/>' for px, py in points
+            )
+            geometry = (
+                f'<mxGeometry relative="1" as="geometry">'
+                f'<Array as="points">{waypoints}</Array></mxGeometry>'
+            )
+        else:
+            geometry = '<mxGeometry relative="1" as="geometry"/>'
         cells.append(
             f'<mxCell id="{nid()}" value="" style="{style}" edge="1" parent="1" '
-            f'source="{a}" target="{b}"><mxGeometry relative="1" as="geometry"/></mxCell>'
+            f'source="{a}" target="{b}">{geometry}</mxCell>'
         )
 
     body = "\n        ".join(cells)
