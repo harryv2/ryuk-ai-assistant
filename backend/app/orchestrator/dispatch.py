@@ -636,6 +636,7 @@ class DispatchResult:
                 outcome.op.split(".", 1)[0]
                 for outcome in self.outcomes.values()
                 if outcome.status in ("failed", "timeout")
+                and _fault_of(outcome) == "service"
                 and outcome.op.split(".", 1)[0] not in ("ask", "meta")
             }
         )
@@ -1014,6 +1015,10 @@ async def dispatch(
                 outcome={"reason": "unresolved_reference", "class": "INVALID",
                          "message": exc.message},
             )
+            # Same deal as an op rejecting its arguments below: the plan wrote
+            # a reference that does not resolve, and the planner can fix it if
+            # it hears what broke — one repair round beats a degraded answer.
+            replan.append(f"{node_id} ({op_name}) has a broken reference: {exc.message}")
             return
 
         gate = step.get("gate")

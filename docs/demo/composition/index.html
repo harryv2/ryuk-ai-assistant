@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      body { font-family: "Inter", "Helvetica Neue", Arial, sans-serif; }
+
+      .scene { position: absolute; inset: 0; }
+      .fill { position: absolute; inset: 0; background: #0b0d13; }
+      .shot { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+      .shot img, .shot video { width: 100%; height: 100%; object-fit: contain; }
+
+      .cap {
+        position: absolute; left: 0; right: 0; bottom: 0; height: 112px;
+        background: linear-gradient(to top, rgba(8, 9, 14, 0.94), rgba(8, 9, 14, 0.8));
+        display: flex; align-items: center; gap: 24px; padding: 0 54px;
+      }
+      .tag {
+        flex: none; font-size: 20px; font-weight: 700; letter-spacing: 0.14em;
+        color: #b9bcf9; border: 1.5px solid #4a4fd4; border-radius: 999px;
+        padding: 8px 18px; background: rgba(74, 79, 212, 0.16); white-space: nowrap;
+      }
+      .q { font-size: 29px; font-weight: 600; color: #f4f5fb; line-height: 1.25; }
+      .q em { font-style: normal; color: #aab0ff; }
+
+      .card { position: absolute; inset: 0; background: #0b0d13; display: flex; align-items: center; justify-content: center; }
+      .card .inner { width: 1360px; text-align: left; }
+      .kicker { font-size: 26px; font-weight: 700; letter-spacing: 0.22em; color: #7d83f0; margin-bottom: 28px; }
+      .h1 { font-size: 88px; font-weight: 800; color: #f5f6fc; line-height: 1.06; letter-spacing: -0.015em; }
+      .h2 { font-size: 40px; font-weight: 500; color: #b9bdd4; margin-top: 34px; line-height: 1.4; }
+      .rows { margin-top: 44px; }
+      .row { display: flex; align-items: baseline; gap: 18px; font-size: 34px; color: #d7daea; padding: 13px 0; }
+      .row .dot { flex: none; width: 12px; height: 12px; border-radius: 999px; background: #6b71e8; position: relative; top: -4px; }
+      .row b { color: #ffffff; font-weight: 700; }
+      .mono { font-family: "JetBrains Mono", "SF Mono", Menlo, monospace; font-size: 30px; color: #9fa5ff; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="314"
+      data-width="1920"
+      data-height="1080"
+      style="position: relative; width: 1920px; height: 1080px; background: #000"
+    >
+      <!-- music bed, full length -->
+      <audio id="bgm" data-start="0" data-duration="314" data-track-index="9" data-volume="0.6" src="assets/bgm.m4a"></audio>
+
+      <!-- ══ Title · 0-10 ══ -->
+      <div class="clip scene" id="s-title" data-start="0" data-duration="10" data-track-index="0">
+        <div class="fill"></div>
+        <div class="card">
+          <div class="inner">
+            <div class="kicker" id="t-k">AGENTIC GOOGLE WORKSPACE ORCHESTRATOR</div>
+            <div class="h1" id="t-h">Ryuk</div>
+            <div class="h2" id="t-s">Natural language across Gmail, Calendar and Drive.</div>
+            <div class="rows" id="t-r">
+              <div class="row"><span class="dot"></span><span>Intent classifier &rarr; LLM query planner &rarr; execution DAG</span></div>
+              <div class="row"><span class="dot"></span><span>Parallel service agents over a <b>pgvector</b> mirror, live Google fallback</span></div>
+              <div class="row"><span class="dot"></span><span>Two-phase writes &mdash; nothing irreversible without approval</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ Setup card · 10-18 ══ -->
+      <div class="clip scene" id="s-seed" data-start="10" data-duration="8" data-track-index="0">
+        <div class="fill"></div>
+        <div class="card">
+          <div class="inner">
+            <div class="kicker" id="sd-k">THE SETUP</div>
+            <div class="h1" id="sd-h" style="font-size: 66px">A real Google account,<br />seeded through the stored OAuth token</div>
+            <div class="h2" id="sd-s">Demo events, inbox mail, sent mail and Drive files &mdash; created with the same
+              grant the app holds, so every flow below runs against live Google data.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ Login flow recording (2x) · 18-39 ══ -->
+      <div class="clip scene" id="s-login" data-start="18" data-duration="21" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow>
+          <video id="loginv" data-start="18" data-duration="21" src="assets/login-2x.mp4" muted playsinline></video>
+        </div>
+        <div class="cap" id="loginc"><span class="tag">SIGN IN</span><span class="q">Continue with Google &mdash; sign-in and workspace connection in one step; the first sync starts immediately</span></div>
+      </div>
+
+      <!-- ══ GSuite proof · 39-69 ══ -->
+      <div class="clip scene" id="s-g1" data-start="39" data-duration="9" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="g1i" src="assets/g1_gmail.png" alt="" /></div>
+        <div class="cap" id="g1c"><span class="tag">SEEDED · GMAIL</span><span class="q">Turkish Airlines booking, Sarah&rsquo;s budget threads, Acme&rsquo;s agenda and proposal &mdash; in the real inbox</span></div>
+      </div>
+      <div class="clip scene" id="s-g2" data-start="48" data-duration="8" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="g2i" src="assets/g2.png" alt="" /></div>
+        <div class="cap" id="g2c"><span class="tag">SEEDED · CALENDAR</span><span class="q">Next week on the real calendar &mdash; Sarah&rsquo;s budget review, two meetings with John, the team offsite</span></div>
+      </div>
+      <div class="clip scene" id="s-g3" data-start="56" data-duration="6" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="g3i" src="assets/g3.png" alt="" /></div>
+        <div class="cap" id="g3c"><span class="tag">SEEDED · CALENDAR</span><span class="q">Tomorrow: Client meeting &mdash; Acme Corp, 3pm on Google Meet</span></div>
+      </div>
+      <div class="clip scene" id="s-g4" data-start="62" data-duration="7" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="g4i" src="assets/g4.png" alt="" /></div>
+        <div class="cap" id="g4c"><span class="tag">SEEDED · DRIVE</span><span class="q">The Acme proposal and budget summary PDFs, backdated to July for the &ldquo;last month&rdquo; query</span></div>
+      </div>
+
+      <!-- ══ The product · 69-75 ══ -->
+      <div class="clip scene" id="s-01" data-start="69" data-duration="6" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s01i" src="assets/01_home.png" alt="" /></div>
+        <div class="cap" id="s01c"><span class="tag">THE PRODUCT</span><span class="q">One chat box. Every answer shows its plan, its steps, and their timings.</span></div>
+      </div>
+
+      <!-- ══ Flows: shots on track 0, one caption spanning both on track 1 ══ -->
+
+      <!-- 02 calendar next week · 75-89 -->
+      <div class="clip scene" id="s-02a" data-start="75" data-duration="4" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s02ai" src="assets/02a_running.png" alt="" /></div>
+      </div>
+      <div class="clip scene" id="s-02b" data-start="79" data-duration="10" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s02bi" src="assets/02b_answer.png" alt="" /></div>
+      </div>
+      <div class="clip cap" id="c-02" data-start="75" data-duration="14" data-track-index="1"><span class="tag">SINGLE SERVICE</span><span class="q"><em>&ldquo;What&rsquo;s on my calendar next week?&rdquo;</em> &mdash; live steps first, then the week, from the mirror, in the user&rsquo;s timezone</span></div>
+
+      <!-- 03 sarah budget · 89-103 -->
+      <div class="clip scene" id="s-03a" data-start="89" data-duration="4" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s03ai" src="assets/03a_running.png" alt="" /></div>
+      </div>
+      <div class="clip scene" id="s-03b" data-start="93" data-duration="10" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s03bi" src="assets/03b_answer.png" alt="" /></div>
+      </div>
+      <div class="clip cap" id="c-03" data-start="89" data-duration="14" data-track-index="1"><span class="tag">SINGLE SERVICE</span><span class="q"><em>&ldquo;Find emails from sarah@company.com about the budget&rdquo;</em> &mdash; hybrid search: vector similarity + sender filter</span></div>
+
+      <!-- 04 drive pdfs · 103-117 -->
+      <div class="clip scene" id="s-04a" data-start="103" data-duration="4" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s04ai" src="assets/04a_running.png" alt="" /></div>
+      </div>
+      <div class="clip scene" id="s-04b" data-start="107" data-duration="10" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s04bi" src="assets/04b_answer.png" alt="" /></div>
+      </div>
+      <div class="clip cap" id="c-04" data-start="103" data-duration="14" data-track-index="1"><span class="tag">SINGLE SERVICE</span><span class="q"><em>&ldquo;Show me PDFs in Drive from last month&rdquo;</em> &mdash; mime filter + date window, and the answer states the window it searched</span></div>
+
+      <!-- 05 turkish · 117-144 -->
+      <div class="clip scene" id="s-05a" data-start="117" data-duration="5" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s05ai" src="assets/05a_running.png" alt="" /></div>
+      </div>
+      <div class="clip scene" id="s-05b" data-start="122" data-duration="22" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s05bi" src="assets/05b_answer.png" alt="" /></div>
+      </div>
+      <div class="clip cap" id="c-05" data-start="117" data-duration="27" data-track-index="1"><span class="tag">MULTI-SERVICE</span><span class="q"><em>&ldquo;Cancel my Turkish Airlines flight&rdquo;</em> &mdash; booking found, PNR ABC123 extracted, cancellation drafted, send gated behind approval</span></div>
+
+      <!-- 06 acme prep · 144-167 -->
+      <div class="clip scene" id="s-06a" data-start="144" data-duration="5" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s06ai" src="assets/06a_running.png" alt="" /></div>
+      </div>
+      <div class="clip scene" id="s-06b" data-start="149" data-duration="18" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s06bi" src="assets/06b_answer.png" alt="" /></div>
+      </div>
+      <div class="clip cap" id="c-06" data-start="144" data-duration="23" data-track-index="1"><span class="tag">MULTI-SERVICE</span><span class="q"><em>&ldquo;Prepare for tomorrow&rsquo;s meeting with Acme Corp&rdquo;</em> &mdash; event + mail + Drive in parallel, one briefing</span></div>
+
+      <!-- 07 ooo conflicts · 167-185 -->
+      <div class="clip scene" id="s-07a" data-start="167" data-duration="4" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s07ai" src="assets/07a_running.png" alt="" /></div>
+      </div>
+      <div class="clip scene" id="s-07b" data-start="171" data-duration="14" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s07bi" src="assets/07b_answer.png" alt="" /></div>
+      </div>
+      <div class="clip cap" id="c-07" data-start="167" data-duration="18" data-track-index="1"><span class="tag">MULTI-SERVICE</span><span class="q"><em>&ldquo;Find events next week that conflict with my out-of-office doc&rdquo;</em> &mdash; the doc&rsquo;s dates drive the calendar check</span></div>
+
+      <!-- 08 move john · 185-206, then the follow-up 206-216 -->
+      <div class="clip scene" id="s-08a" data-start="185" data-duration="5" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s08ai" src="assets/08a_running.png" alt="" /></div>
+      </div>
+      <div class="clip scene" id="s-08b" data-start="190" data-duration="16" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s08bi" src="assets/08b_choices.png" alt="" /></div>
+      </div>
+      <div class="clip cap" id="c-08" data-start="185" data-duration="21" data-track-index="1"><span class="tag">HARD CASE</span><span class="q"><em>&ldquo;Move the meeting with John&rdquo;</em> &mdash; which John, which meeting? His real meetings become choices, not guesses</span></div>
+
+      <div class="clip scene" id="s-09" data-start="206" data-duration="10" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s09i" src="assets/09_time_form.png" alt="" /></div>
+      </div>
+      <div class="clip cap" id="c-09" data-start="206" data-duration="10" data-track-index="1"><span class="tag">HARD CASE</span><span class="q">One tap picks the meeting; only the genuinely unknowable thing &mdash; the new time &mdash; is asked, as a typed date field</span></div>
+
+      <!-- 10 context · 216-238 -->
+      <div class="clip scene" id="s-10b" data-start="216" data-duration="12" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s10bi" src="assets/10b_answer.png" alt="" /></div>
+      </div>
+      <div class="clip cap" id="c-10b" data-start="216" data-duration="12" data-track-index="1"><span class="tag">HARD CASE</span><span class="q">Turn one: <em>&ldquo;Summarise the Acme Corp proposal email&rdquo;</em></span></div>
+      <div class="clip scene" id="s-10c" data-start="228" data-duration="10" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s10ci" src="assets/10c_followup.png" alt="" /></div>
+      </div>
+      <div class="clip cap" id="c-10c" data-start="228" data-duration="10" data-track-index="1"><span class="tag">HARD CASE</span><span class="q">Turn two: <em>&ldquo;Who sent that email about the proposal?&rdquo;</em> &mdash; &ldquo;that email&rdquo; resolves from conversation context</span></div>
+
+      <!-- 11 next tuesday · 238-252 -->
+      <div class="clip scene" id="s-11a" data-start="238" data-duration="4" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s11ai" src="assets/11a_running.png" alt="" /></div>
+      </div>
+      <div class="clip scene" id="s-11b" data-start="242" data-duration="10" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s11bi" src="assets/11b_answer.png" alt="" /></div>
+      </div>
+      <div class="clip cap" id="c-11" data-start="238" data-duration="14" data-track-index="1"><span class="tag">HARD CASE</span><span class="q"><em>&ldquo;What&rsquo;s on my calendar next Tuesday?&rdquo;</em> &mdash; temporal reasoning, timezone-aware: Tuesday the 25th, one event</span></div>
+
+      <!-- 12 compose · 252-270 -->
+      <div class="clip scene" id="s-12a" data-start="252" data-duration="5" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s12ai" src="assets/12a_running.png" alt="" /></div>
+      </div>
+      <div class="clip scene" id="s-12b" data-start="257" data-duration="13" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s12bi" src="assets/12b_answer.png" alt="" /></div>
+      </div>
+      <div class="clip cap" id="c-12" data-start="252" data-duration="18" data-track-index="1"><span class="tag">WRITE FLOW</span><span class="q"><em>&ldquo;Compose an email&hellip; write a good subject and body yourself&rdquo;</em> &mdash; drafted into Gmail; nothing has been sent</span></div>
+
+      <!-- 13 send it · 270-290 -->
+      <div class="clip scene" id="s-13a" data-start="270" data-duration="4" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s13ai" src="assets/13a_running.png" alt="" /></div>
+      </div>
+      <div class="clip scene" id="s-13b" data-start="274" data-duration="16" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow><img id="s13bi" src="assets/13b_confirm.png" alt="" /></div>
+      </div>
+      <div class="clip cap" id="c-13" data-start="270" data-duration="20" data-track-index="1"><span class="tag">WRITE FLOW</span><span class="q"><em>&ldquo;Send it&rdquo;</em> &mdash; the draft is found in context, the send is staged, and the approval card names the recipient</span></div>
+
+      <!-- ══ Outro · 290-314 ══ -->
+      <div class="clip scene" id="s-out" data-start="290" data-duration="24" data-track-index="0">
+        <div class="fill"></div>
+        <div class="card">
+          <div class="inner">
+            <div class="kicker" id="o-k">UNDER THE HOOD</div>
+            <div class="h1" id="o-h" style="font-size: 62px">Nine for nine on the brief&rsquo;s sample queries</div>
+            <div class="rows" id="o-r">
+              <div class="row"><span class="dot"></span><span><b>Orchestration from scratch</b> &mdash; no LangChain, no agent frameworks</span></div>
+              <div class="row"><span class="dot"></span><span><b>pgvector</b> hybrid search: cosine + keyword prefilter, RRF fusion, &lt;500ms</span></div>
+              <div class="row"><span class="dot"></span><span><b>Celery</b> sync every 15 minutes; Redis caching; per-user rate limits</span></div>
+              <div class="row"><span class="dot"></span><span><b>Ambiguity is a step</b> &mdash; pausing costs zero LLM calls to resume</span></div>
+              <div class="row"><span class="dot"></span><span class="mono">FastAPI · PostgreSQL/pgvector · Redis · Celery · OpenAI + Gemini</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // Title
+      tl.fromTo("#t-k", { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.3);
+      tl.fromTo("#t-h", { autoAlpha: 0, y: 34 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out" }, 0.55);
+      tl.fromTo("#t-s", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.95);
+      tl.fromTo("#t-r", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out" }, 1.35);
+
+      // Setup
+      tl.fromTo("#sd-k", { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" }, 10.3);
+      tl.fromTo("#sd-h", { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.65, ease: "power2.out" }, 10.5);
+      tl.fromTo("#sd-s", { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" }, 10.9);
+
+      // Login caption
+      tl.fromTo("#loginc", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out" }, 18.2);
+
+      // Single-shot scenes: gentle push-in anchored at the top so nothing at
+      // the top of the frame is ever cropped; caption slides up.
+      const singles = [
+        ["g1", 39, 9], ["g2", 48, 8], ["g3", 56, 6], ["g4", 62, 7], ["s01", 69, 6],
+      ];
+      for (const [key, start, dur] of singles) {
+        tl.fromTo("#" + key + "i", { scale: 1.0, transformOrigin: "50% 8%" }, { scale: 1.025, duration: dur, ease: "none" }, start);
+        tl.fromTo("#" + key + "c", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out" }, start + 0.2);
+      }
+
+      // Flow scenes: the running shot is static (it is only on screen for a
+      // few seconds); the answer shot gets the push-in. Captions are their
+      // own clips spanning the pair.
+      const answers = [
+        ["s02bi", 79, 10], ["s03bi", 93, 10], ["s04bi", 107, 10],
+        ["s05bi", 122, 22], ["s06bi", 149, 18], ["s07bi", 171, 14],
+        ["s08bi", 190, 16], ["s09i", 206, 10], ["s10bi", 216, 12],
+        ["s10ci", 228, 10], ["s11bi", 242, 10], ["s12bi", 257, 13],
+        ["s13bi", 274, 16],
+      ];
+      for (const [id, start, dur] of answers) {
+        tl.fromTo("#" + id, { scale: 1.0, transformOrigin: "50% 8%" }, { scale: 1.025, duration: dur, ease: "none" }, start);
+      }
+      const caps = [
+        ["c-02", 75], ["c-03", 89], ["c-04", 103], ["c-05", 117], ["c-06", 144],
+        ["c-07", 167], ["c-08", 185], ["c-09", 206], ["c-10b", 216], ["c-10c", 228],
+        ["c-11", 238], ["c-12", 252], ["c-13", 270],
+      ];
+      for (const [id, start] of caps) {
+        tl.fromTo("#" + id, { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out" }, start + 0.2);
+      }
+
+      // Outro
+      tl.fromTo("#o-k", { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" }, 290.3);
+      tl.fromTo("#o-h", { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.65, ease: "power2.out" }, 290.5);
+      tl.fromTo("#o-r", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out" }, 290.95);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

@@ -180,6 +180,64 @@ every service.
 > A worker holding stale code fails every sync, and the only symptom in the UI
 > is that answers quietly have nothing to find.
 
+### Running the app outside Docker
+
+`make up` containerizes everything, but the everyday dev loop on this repo
+runs only the **infrastructure** in Docker and the app as local processes —
+uvicorn and Vite both hot-reload on save that way. Docker Desktop showing just
+`postgres-1` and `redis-1` under `alpha-law` is this mode working as intended.
+
+```bash
+docker compose up -d postgres redis
+```
+
+The same `.env` from the top of this section is read in this mode too — fill
+it in first.
+
+Backend — Python 3.12, from `backend/`:
+
+```bash
+cd backend
+python3.12 -m venv .venv
+.venv/bin/pip install -e ".[dev]"
+.venv/bin/alembic upgrade head
+.venv/bin/python -m uvicorn app.main:app --port 8000 --reload
+```
+
+The two Celery processes, each in its own terminal (also from `backend/`):
+
+```bash
+.venv/bin/celery -A app.tasks.celery_app worker -Q sync,embed,actions,orchestration,maintenance -l info
+```
+
+```bash
+.venv/bin/celery -A app.tasks.celery_app beat -l info
+```
+
+Frontend — from `frontend/`:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The UI is still <http://localhost:5173> and the Google redirect URI does not
+change: outside compose, Vite's `/api` proxy targets `http://localhost:8000`
+instead of the `api` container (see `frontend/vite.config.ts`), so the browser
+never needs to know which mode is running.
+
+One check answers "is all of it actually up?" — processes, queues, mirror
+freshness and the dead-letter table:
+
+```bash
+make jobs
+```
+
+The worker-restart rule from above applies double here: after a migration or
+any backend code change, restart uvicorn **and** the worker by hand — nothing
+restarts them for you in this mode.
+
 ### Demo data, without a Google account
 
 `make seed` loads a dataset into the mirror directly — no Google needed — built
@@ -216,7 +274,22 @@ Note the driver: migrations run over `psycopg`, the app runs over `asyncpg`.
 
 ## Demo
 
-**Video:** _[link goes here — 5-minute walkthrough of the flows below]_
+<!-- To embed an inline player: edit this README on github.com and drag
+     docs/demo/demo.mp4 into the editor right below this comment. GitHub
+     uploads it and inserts a URL that renders as a playable video. Until
+     then, the poster below links to the committed file, which GitHub's
+     file viewer plays natively. -->
+
+[![Demo video — 5½ minutes, every flow](docs/demo/poster.png)](docs/demo/demo.mp4)
+
+**▶ [Watch the demo](docs/demo/demo.mp4)** — 5½ minutes, rendered with
+[HyperFrames](https://github.com/heygen-com/hyperframes) from live
+screenshots. GitHub plays it directly when the link is opened.
+
+The demo data is honest about itself: the account is a real Google account, and
+the video opens by showing the seed — events, inbox mail and Drive files
+created through the app's own stored OAuth grant, then mirrored and searched
+like anything else.
 
 The walkthrough runs the brief's nine sample queries against a real Google
 account — the three single-service reads, the three multi-service

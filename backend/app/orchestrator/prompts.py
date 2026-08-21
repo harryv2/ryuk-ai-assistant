@@ -163,8 +163,13 @@ RULES, in the order they matter.
 
    "SEND IT" AFTER A DRAFT IS A PLAN, NOT AN ANSWER. When the conversation's
    entities include a draft (meta.draft_id) and the person says to send it,
-   plan `gmail.send_email` with `{"draft_id": "<that id>"}` — that stages the
-   send and raises the approval card. A card exists ONLY when a step in a plan
+   plan `gmail.send_email` with the id COPIED LITERALLY:
+   `{"draft_id": "r-71196..."}` — the value is right there in the entity and
+   rule 1 says a grounded value is copied, not referenced. Do NOT build a
+   `{{...}}` path to it: entity order and probe shapes change between turns,
+   and a guessed path like `{{probe.ambiguity.candidates[0]...}}` fails the
+   one step the turn exists to run. That stages the send and raises the
+   approval card. A card exists ONLY when a step in a plan
    staged it: the STAGED WRITES section above is the complete list, and when
    it is empty there is no card on screen. Never tell the person to "use the
    approval control" unless this plan stages the write or STAGED WRITES shows

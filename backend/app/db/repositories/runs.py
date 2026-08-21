@@ -300,6 +300,12 @@ async def failed_services(
             NodeExecution.run_id == run_id,
             NodeExecution.user_id == user_id,
             NodeExecution.status.in_([NodeStatus.FAILED, NodeStatus.TIMEOUT]),
+            # A step WE built wrong never blames the service it names. The
+            # in-memory twin (DispatchResult.failed_services) applies the
+            # same rule through _fault_of.
+            func.coalesce(NodeExecution.outcome["class"].astext, "").notin_(
+                ["INVALID", "VALIDATION_ERROR", "NOT_FOUND"]
+            ),
         )
     )
     return list(result.scalars().all())
