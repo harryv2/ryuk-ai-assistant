@@ -1,0 +1,90 @@
+# ---------------------------------------------------------------- secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+token.json
+service-account*.json
+
+# ---------------------------------------------------------------- python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# environments
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.hypothesis/
+.tox/
+.nox/
+
+# ---------------------------------------------------------------- celery
+celerybeat-schedule*
+celerybeat.pid
+*.pid
+
+# ---------------------------------------------------------------- node / vite
+node_modules/
+.npm
+.pnpm-store/
+frontend/dist/
+frontend/.vite/
+frontend/stats.html
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---------------------------------------------------------------- docker
+pgdata/
+redisdata/
+docker-compose.override.yml
+
+# ---------------------------------------------------------------- editors / os
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ---------------------------------------------------------------- local scratch
+*.log
+logs/
+tmp/
+scratch/
+.claude/settings.local.json

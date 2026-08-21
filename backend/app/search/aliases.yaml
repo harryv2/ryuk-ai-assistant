@@ -1,0 +1,706 @@
+# Vendor aliases.
+#
+# One entry per brand a person names in a chat box but never spells the way it
+# appears in their mailbox. "Turkish Airlines" is the headline case: the subject
+# line says THY, the sender is thy.com, the ticket says TK1984, and the Turkish
+# original says Türk Hava Yolları. All five are the same thing.
+#
+# Fields
+#   canonical       what a person would recognise; shown back to them
+#   kind            airline | vendor | hotel | rail | logistics
+#   tokens          every surface form, lower case. Matched on word boundaries,
+#                   so a two-letter token like "tk" is safe.
+#   sender_domains  an exact From: domain here is EXACT_SENDER evidence
+#   code_patterns   regexes for the codes this brand puts in subjects
+#
+# Format note: this file is parsed by app/search/aliases.py, which uses PyYAML
+# when it is importable and falls back to a small parser for exactly the subset
+# used here — nested maps and lists of scalars, two-space indentation, no flow
+# syntax, no multi-line strings. Keep new entries in the same shape.
+
+version: 1
+
+groups:
+
+  turkish_airlines:
+    canonical: Turkish Airlines
+    kind: airline
+    tokens:
+      - turkish airlines
+      - turkish airline
+      - turkish air
+      - turk hava yollari
+      - "türk hava yolları"
+      - "türk hava yolları a.o."
+      - thy
+      - tk
+      - turkishairlines
+    sender_domains:
+      - turkishairlines.com
+      - thy.com
+      - mail.turkishairlines.com
+    code_patterns:
+      - '\bTK\s?\d{1,4}\b'
+
+  pegasus_airlines:
+    canonical: Pegasus Airlines
+    kind: airline
+    tokens:
+      - pegasus
+      - pegasus airlines
+      - pegasus hava
+      - flypgs
+      - pc
+    sender_domains:
+      - flypgs.com
+      - pegasusairlines.com
+    code_patterns:
+      - '\bPC\s?\d{1,4}\b'
+
+  emirates:
+    canonical: Emirates
+    kind: airline
+    tokens:
+      - emirates
+      - emirates airline
+      - fly emirates
+      - ek
+    sender_domains:
+      - emirates.com
+      - email.emirates.com
+    code_patterns:
+      - '\bEK\s?\d{1,4}\b'
+
+  qatar_airways:
+    canonical: Qatar Airways
+    kind: airline
+    tokens:
+      - qatar airways
+      - qatar air
+      - qatar
+      - qr
+    sender_domains:
+      - qatarairways.com
+      - qatarairways.com.qa
+    code_patterns:
+      - '\bQR\s?\d{1,4}\b'
+
+  etihad:
+    canonical: Etihad Airways
+    kind: airline
+    tokens:
+      - etihad
+      - etihad airways
+      - ey
+    sender_domains:
+      - etihad.ae
+      - etihad.com
+    code_patterns:
+      - '\bEY\s?\d{1,4}\b'
+
+  lufthansa:
+    canonical: Lufthansa
+    kind: airline
+    tokens:
+      - lufthansa
+      - deutsche lufthansa
+      - lh
+    sender_domains:
+      - lufthansa.com
+      - newsletter.lufthansa.com
+    code_patterns:
+      - '\bLH\s?\d{1,4}\b'
+
+  swiss:
+    canonical: SWISS
+    kind: airline
+    tokens:
+      - swiss
+      - swiss air
+      - swiss international air lines
+      - lx
+    sender_domains:
+      - swiss.com
+    code_patterns:
+      - '\bLX\s?\d{1,4}\b'
+
+  british_airways:
+    canonical: British Airways
+    kind: airline
+    tokens:
+      - british airways
+      - british airway
+      - ba
+    sender_domains:
+      - britishairways.com
+      - email.ba.com
+      - ba.com
+    code_patterns:
+      - '\bBA\s?\d{1,4}\b'
+
+  air_france:
+    canonical: Air France
+    kind: airline
+    tokens:
+      - air france
+      - airfrance
+      - af
+    sender_domains:
+      - airfrance.com
+      - airfrance.fr
+    code_patterns:
+      - '\bAF\s?\d{1,4}\b'
+
+  klm:
+    canonical: KLM
+    kind: airline
+    tokens:
+      - klm
+      - koninklijke luchtvaart maatschappij
+      - royal dutch airlines
+      - kl
+    sender_domains:
+      - klm.com
+      - klm.nl
+    code_patterns:
+      - '\bKL\s?\d{1,4}\b'
+
+  delta:
+    canonical: Delta Air Lines
+    kind: airline
+    tokens:
+      - delta
+      - delta air lines
+      - delta airlines
+      - dl
+    sender_domains:
+      - delta.com
+      - email.delta.com
+    code_patterns:
+      - '\bDL\s?\d{1,4}\b'
+
+  united:
+    canonical: United Airlines
+    kind: airline
+    tokens:
+      - united
+      - united airlines
+      - ua
+    sender_domains:
+      - united.com
+      - news.united.com
+    code_patterns:
+      - '\bUA\s?\d{1,4}\b'
+
+  american_airlines:
+    canonical: American Airlines
+    kind: airline
+    tokens:
+      - american airlines
+      - american air
+      - aa
+    sender_domains:
+      - aa.com
+      - email.aa.com
+    code_patterns:
+      - '\bAA\s?\d{1,4}\b'
+
+  southwest:
+    canonical: Southwest Airlines
+    kind: airline
+    tokens:
+      - southwest
+      - southwest airlines
+      - wn
+    sender_domains:
+      - southwest.com
+      - luv.southwest.com
+    code_patterns:
+      - '\bWN\s?\d{1,4}\b'
+
+  jetblue:
+    canonical: JetBlue
+    kind: airline
+    tokens:
+      - jetblue
+      - jet blue
+      - b6
+    sender_domains:
+      - jetblue.com
+    code_patterns:
+      - '\bB6\s?\d{1,4}\b'
+
+  air_canada:
+    canonical: Air Canada
+    kind: airline
+    tokens:
+      - air canada
+      - aircanada
+      - ac
+    sender_domains:
+      - aircanada.ca
+      - aircanada.com
+    code_patterns:
+      - '\bAC\s?\d{1,4}\b'
+
+  air_india:
+    canonical: Air India
+    kind: airline
+    tokens:
+      - air india
+      - airindia
+      - ai
+    sender_domains:
+      - airindia.com
+      - airindia.in
+    code_patterns:
+      - '\bAI\s?\d{1,4}\b'
+
+  indigo:
+    canonical: IndiGo
+    kind: airline
+    tokens:
+      - indigo
+      - goindigo
+      - 6e
+    sender_domains:
+      - goindigo.in
+    code_patterns:
+      - '\b6E\s?\d{1,4}\b'
+
+  singapore_airlines:
+    canonical: Singapore Airlines
+    kind: airline
+    tokens:
+      - singapore airlines
+      - singapore air
+      - sia
+      - sq
+    sender_domains:
+      - singaporeair.com
+      - singaporeair.com.sg
+    code_patterns:
+      - '\bSQ\s?\d{1,4}\b'
+
+  cathay_pacific:
+    canonical: Cathay Pacific
+    kind: airline
+    tokens:
+      - cathay
+      - cathay pacific
+      - cx
+    sender_domains:
+      - cathaypacific.com
+    code_patterns:
+      - '\bCX\s?\d{1,4}\b'
+
+  japan_airlines:
+    canonical: Japan Airlines
+    kind: airline
+    tokens:
+      - japan airlines
+      - jal
+      - jl
+    sender_domains:
+      - jal.com
+      - jal.co.jp
+    code_patterns:
+      - '\bJL\s?\d{1,4}\b'
+
+  ana:
+    canonical: All Nippon Airways
+    kind: airline
+    tokens:
+      - all nippon airways
+      - ana
+      - nh
+    sender_domains:
+      - ana.co.jp
+      - anaskyweb.com
+    code_patterns:
+      - '\bNH\s?\d{1,4}\b'
+
+  ryanair:
+    canonical: Ryanair
+    kind: airline
+    tokens:
+      - ryanair
+      - fr
+    sender_domains:
+      - ryanair.com
+    code_patterns:
+      - '\bFR\s?\d{1,4}\b'
+
+  easyjet:
+    canonical: easyJet
+    kind: airline
+    tokens:
+      - easyjet
+      - easy jet
+      - u2
+    sender_domains:
+      - easyjet.com
+    code_patterns:
+      - '\bU2\s?\d{1,4}\b'
+
+  wizz_air:
+    canonical: Wizz Air
+    kind: airline
+    tokens:
+      - wizz
+      - wizz air
+      - wizzair
+      - w6
+    sender_domains:
+      - wizzair.com
+    code_patterns:
+      - '\bW6\s?\d{1,4}\b'
+
+  vueling:
+    canonical: Vueling
+    kind: airline
+    tokens:
+      - vueling
+      - vy
+    sender_domains:
+      - vueling.com
+    code_patterns:
+      - '\bVY\s?\d{1,4}\b'
+
+  amazon:
+    canonical: Amazon
+    kind: vendor
+    tokens:
+      - amazon
+      - amazon.com
+      - amzn
+      - aws
+      - amazon web services
+    sender_domains:
+      - amazon.com
+      - amazon.co.uk
+      - amazon.in
+      - amazonses.com
+      - aws.amazon.com
+    code_patterns:
+      - '\b\d{3}-\d{7}-\d{7}\b'
+
+  uber:
+    canonical: Uber
+    kind: vendor
+    tokens:
+      - uber
+      - uber eats
+      - ubereats
+    sender_domains:
+      - uber.com
+      - uber.eats.com
+      - mail.uber.com
+    code_patterns: []
+
+  lyft:
+    canonical: Lyft
+    kind: vendor
+    tokens:
+      - lyft
+    sender_domains:
+      - lyft.com
+      - lyftmail.com
+    code_patterns: []
+
+  airbnb:
+    canonical: Airbnb
+    kind: vendor
+    tokens:
+      - airbnb
+      - air bnb
+    sender_domains:
+      - airbnb.com
+      - airbnb.co.uk
+    code_patterns:
+      - '\bHM[A-Z0-9]{6,10}\b'
+
+  booking_com:
+    canonical: Booking.com
+    kind: hotel
+    tokens:
+      - booking.com
+      - bookingcom
+      - booking dot com
+    sender_domains:
+      - booking.com
+      - mail.booking.com
+    code_patterns:
+      - '\b\d{9,10}\b'
+
+  expedia:
+    canonical: Expedia
+    kind: vendor
+    tokens:
+      - expedia
+    sender_domains:
+      - expedia.com
+      - expediamail.com
+    code_patterns: []
+
+  marriott:
+    canonical: Marriott
+    kind: hotel
+    tokens:
+      - marriott
+      - marriott bonvoy
+      - bonvoy
+    sender_domains:
+      - marriott.com
+      - email-marriott.com
+    code_patterns: []
+
+  hilton:
+    canonical: Hilton
+    kind: hotel
+    tokens:
+      - hilton
+      - hilton honors
+    sender_domains:
+      - hilton.com
+      - mail.hilton.com
+    code_patterns: []
+
+  stripe:
+    canonical: Stripe
+    kind: vendor
+    tokens:
+      - stripe
+    sender_domains:
+      - stripe.com
+      - e.stripe.com
+    code_patterns:
+      - '\b(?:in|ch|pi|sub)_[A-Za-z0-9]{14,}\b'
+
+  paypal:
+    canonical: PayPal
+    kind: vendor
+    tokens:
+      - paypal
+      - pay pal
+    sender_domains:
+      - paypal.com
+      - paypal.co.uk
+    code_patterns: []
+
+  apple:
+    canonical: Apple
+    kind: vendor
+    tokens:
+      - apple
+      - itunes
+      - app store
+      - icloud
+    sender_domains:
+      - apple.com
+      - email.apple.com
+      - icloud.com
+    code_patterns: []
+
+  google:
+    canonical: Google
+    kind: vendor
+    tokens:
+      - google
+      - google workspace
+      - google cloud
+      - gcp
+    sender_domains:
+      - google.com
+      - accounts.google.com
+      - workspace.google.com
+    code_patterns: []
+
+  microsoft:
+    canonical: Microsoft
+    kind: vendor
+    tokens:
+      - microsoft
+      - office 365
+      - microsoft 365
+      - azure
+    sender_domains:
+      - microsoft.com
+      - email.microsoft.com
+      - azure.com
+    code_patterns: []
+
+  slack:
+    canonical: Slack
+    kind: vendor
+    tokens:
+      - slack
+    sender_domains:
+      - slack.com
+      - slack-mail.com
+    code_patterns: []
+
+  zoom:
+    canonical: Zoom
+    kind: vendor
+    tokens:
+      - zoom
+      - zoom meeting
+    sender_domains:
+      - zoom.us
+      - email.zoom.us
+    code_patterns:
+      - '\b\d{3}\s?\d{4}\s?\d{4}\b'
+
+  dropbox:
+    canonical: Dropbox
+    kind: vendor
+    tokens:
+      - dropbox
+    sender_domains:
+      - dropbox.com
+      - dropboxmail.com
+    code_patterns: []
+
+  notion:
+    canonical: Notion
+    kind: vendor
+    tokens:
+      - notion
+      - notion.so
+    sender_domains:
+      - notion.so
+      - mail.notion.so
+    code_patterns: []
+
+  atlassian:
+    canonical: Atlassian
+    kind: vendor
+    tokens:
+      - atlassian
+      - jira
+      - confluence
+    sender_domains:
+      - atlassian.com
+      - atlassian.net
+    code_patterns:
+      - '\b[A-Z][A-Z0-9]+-\d+\b'
+
+  github:
+    canonical: GitHub
+    kind: vendor
+    tokens:
+      - github
+      - git hub
+    sender_domains:
+      - github.com
+      - noreply.github.com
+    code_patterns: []
+
+  salesforce:
+    canonical: Salesforce
+    kind: vendor
+    tokens:
+      - salesforce
+      - sfdc
+    sender_domains:
+      - salesforce.com
+      - mail.salesforce.com
+    code_patterns: []
+
+  linkedin:
+    canonical: LinkedIn
+    kind: vendor
+    tokens:
+      - linkedin
+      - linked in
+    sender_domains:
+      - linkedin.com
+      - e.linkedin.com
+    code_patterns: []
+
+  netflix:
+    canonical: Netflix
+    kind: vendor
+    tokens:
+      - netflix
+    sender_domains:
+      - netflix.com
+      - mailer.netflix.com
+    code_patterns: []
+
+  spotify:
+    canonical: Spotify
+    kind: vendor
+    tokens:
+      - spotify
+    sender_domains:
+      - spotify.com
+      - email.spotify.com
+    code_patterns: []
+
+  doordash:
+    canonical: DoorDash
+    kind: vendor
+    tokens:
+      - doordash
+      - door dash
+    sender_domains:
+      - doordash.com
+    code_patterns: []
+
+  fedex:
+    canonical: FedEx
+    kind: logistics
+    tokens:
+      - fedex
+      - federal express
+    sender_domains:
+      - fedex.com
+      - fedex.email.fedex.com
+    code_patterns:
+      - '\b\d{12}\b'
+
+  dhl:
+    canonical: DHL
+    kind: logistics
+    tokens:
+      - dhl
+    sender_domains:
+      - dhl.com
+      - dhl.de
+    code_patterns:
+      - '\b\d{10}\b'
+
+  ups:
+    canonical: UPS
+    kind: logistics
+    tokens:
+      - ups
+      - united parcel service
+    sender_domains:
+      - ups.com
+    code_patterns:
+      - '\b1Z[A-Z0-9]{16}\b'
+
+  trainline:
+    canonical: Trainline
+    kind: rail
+    tokens:
+      - trainline
+      - the trainline
+    sender_domains:
+      - thetrainline.com
+      - trainline.com
+    code_patterns: []
+
+  amtrak:
+    canonical: Amtrak
+    kind: rail
+    tokens:
+      - amtrak
+    sender_domains:
+      - amtrak.com
+      - email.amtrak.com
+    code_patterns:
+      - '\b[0-9A-Z]{6}\b'

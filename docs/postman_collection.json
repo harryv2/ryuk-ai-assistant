@@ -1,0 +1,2326 @@
+{
+  "info": {
+    "_postman_id": "8f3c1d02-5a47-4b19-9e6d-2c7a41b0e5d3",
+    "name": "Alpha Law orchestrator — API v1",
+    "description": "Natural-language orchestration over Gmail, Calendar and Drive.\n\n## Read this first\n\n**Writes are two-phase.** POST /api/v1/query only ever *prepares* an action plus the prompt that gates it. Nothing reaches Google until a person approves it through POST /api/v1/prompts/{id}/respond. The database enforces this: actions.requires_input_id is NOT NULL and references pending_inputs(id), so a confirm-requiring write cannot exist without a prompt gating it.\n\n## Setup\n\n1. `docker compose up`\n2. Open **1 · Auth → Start Google OAuth** in a browser and complete consent.\n3. Copy the `alpha_session` cookie value into the collection variable `session_token`. The collection pre-request script attaches it to every request.\n4. Run the folders in order. Test scripts chain ids between requests: the query folder captures conversation_id, run_id, input_id and action_id, and the prompts folder consumes them.\n\n## The chained flow\n\n`Write · cancel my Turkish Airlines flight` → captures `input_id` + `action_id` → `Approve the write · Send it` → 202 and a job id → watch `action.done` on `3 · Runs`.\n\n`Ambiguous · move the meeting with John` → captures `blocking_input_id` + `chosen_option_id` → `Answer a blocking prompt · which John` → 200 and the run resumes at 0 LLM calls.\n\nFull prose docs, including the SSE event union and the seq gap-detection contract: `docs/API.md`. Machine-readable spec: `docs/openapi.json`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1 · Auth",
+      "description": "Start here. Open 'Start Google OAuth' in a browser, complete consent, then copy the alpha_session cookie value into the collection variable `session_token`. Every other request sends it via the collection pre-request script.",
+      "item": [
+        {
+          "name": "Start Google OAuth (302)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/google?next=/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "google"
+              ],
+              "query": [
+                {
+                  "key": "next",
+                  "value": "/"
+                }
+              ]
+            },
+            "description": "Redirects to Google's consent screen. Turn OFF 'Automatically follow redirects' in Postman settings to see the 302, or just open the URL in a browser — this is a browser flow, not an API call.\n\n`next` must be a relative same-origin path; an absolute URL is rejected 422 (open-redirect guard)."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('redirects to Google', function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf([302, 307]);",
+                  "  var loc = pm.response.headers.get('Location') || '';",
+                  "  pm.expect(loc).to.include('accounts.google.com');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "OAuth callback (Google calls this)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/google/callback?code=4/0AeanS0b-example-authorization-code&state=signed-state-nonce",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "google",
+                "callback"
+              ],
+              "query": [
+                {
+                  "key": "code",
+                  "value": "4/0AeanS0b-example-authorization-code"
+                },
+                {
+                  "key": "state",
+                  "value": "signed-state-nonce"
+                }
+              ]
+            },
+            "description": "Google's redirect target. You do not call this by hand — it is here so the collection documents every endpoint. Exchanges the code, encrypts the tokens into oauth_tokens, queues the initial backfill, sets the alpha_session cookie, and 302s to `next`."
+          },
+          "response": []
+        },
+        {
+          "name": "Who am I",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "me"
+              ]
+            },
+            "description": "The first call a client makes. Returns the user, the health of the Google grant, and the remaining hourly query budget. No token material, ever.\n\n`google.needs_reauth: true` means the next query would 428 — show the reconnect banner before the user hits it."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.test('no token material in the body', function () {",
+                  "  var s = JSON.stringify(b);",
+                  "  pm.expect(s).to.not.include('access_token');",
+                  "  pm.expect(s).to.not.include('refresh_token');",
+                  "});",
+                  "if (b.user && b.user.id) { pm.collectionVariables.set('user_id', b.user.id); }",
+                  "if (b.user && b.user.timezone) { pm.collectionVariables.set('timezone', b.user.timezone); }",
+                  "pm.test('google grant is live', function () {",
+                  "  pm.expect(b.google.connected).to.be.true;",
+                  "  pm.expect(b.google.needs_reauth).to.be.false;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Disconnect Google",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/google?purge=false",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "google"
+              ],
+              "query": [
+                {
+                  "key": "purge",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "Revokes at Google, wipes the encrypted tokens, cancels every draft/approved action and deletes their Gmail drafts, cancels pending prompts, and (with purge=true) drops the sync_ mirror.\n\nConversations, messages, runs and audit rows survive — this is a disconnect, not an account deletion.\n\n`purge=false` keeps the mirror so reconnecting does not re-backfill 180 days."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.test('disconnected', function () { pm.expect(b.disconnected).to.be.true; });",
+                  "pm.test('conversations were kept', function () {",
+                  "  pm.expect(b).to.have.property('conversations_kept');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2 · Query",
+      "description": "The one entry point. A query only ever PREPARES a write — nothing here sends an email, moves an event or shares a file. Run 'Cancel my Turkish Airlines flight' first: its test script captures conversation_id, run_id, input_id and action_id into collection variables, which the Prompts folder then uses.",
+      "item": [
+        {
+          "name": "Read · what is on my calendar next week",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/query",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "query"
+              ]
+            },
+            "description": "The cheap path. The rule router recognises this, Python resolves the window, and the answer renders from the `event_list` template — 0 LLM calls.\n\n`timezone` and `week_start` override the stored user settings for this query only; they are what make 'next week' mean something specific.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"What's on my calendar next week?\",\n  \"timezone\": \"Europe/Istanbul\",\n  \"week_start\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.collectionVariables.set('conversation_id', b.conversation_id);",
+                  "pm.collectionVariables.set('run_id', b.run_id);",
+                  "pm.collectionVariables.set('message_id', b.message_id);",
+                  "pm.test('it resolved the window and said so', function () {",
+                  "  pm.expect(b.intent.windows).to.be.an('object');",
+                  "});",
+                  "pm.test('a plain read costs no LLM calls', function () {",
+                  "  pm.expect(b.usage.llm_calls).to.eql(0);",
+                  "});",
+                  "pm.test('read latency is inside the P95 target', function () {",
+                  "  pm.expect(b.timings.total_ms).to.be.below(2000);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Read · emails from sarah about the budget",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/query",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "query"
+              ]
+            },
+            "description": "Single service, exact sender. The probe's EXACT_SENDER evidence flag carries this one, so the relevance floor is met on `cn` rather than on the fused RRF score.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Find emails from sarah@company.com about the budget\",\n  \"conversation_id\": \"{{conversation_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.collectionVariables.set('run_id', b.run_id);",
+                  "pm.test('gmail only', function () {",
+                  "  pm.expect(b.intent.services).to.eql(['gmail']);",
+                  "});",
+                  "pm.test('no write was implied', function () {",
+                  "  pm.expect(b.intent.has_write).to.be.false;",
+                  "  pm.expect(b.actions).to.eql([]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Read · PDFs in Drive from last month",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/query",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "query"
+              ]
+            },
+            "description": "Note the documented limit: a file row has no created date, so 'from last month' means MODIFIED last month. The answer says so rather than pretending otherwise.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Show me PDFs in Drive from last month\",\n  \"conversation_id\": \"{{conversation_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.collectionVariables.set('run_id', b.run_id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Write · cancel my Turkish Airlines flight  ← run this one",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Request-ID",
+                "value": "postman-cancel-flight-{{$timestamp}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/query",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "query"
+              ]
+            },
+            "description": "Multi-service (Gmail + Calendar) and it prepares a write.\n\nWhat comes back: a Gmail DRAFT already created in the user's account (actions[0].external_ref), an actions row at status `draft`, and the confirm prompt that gates it. Nothing has been sent.\n\nThe test script captures input_id and action_id for the Prompts folder.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Cancel my Turkish Airlines flight\",\n  \"conversation_id\": \"{{conversation_id}}\",\n  \"freshness\": \"auto\",\n  \"client_request_id\": \"{{client_request_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.collectionVariables.set('conversation_id', b.conversation_id);",
+                  "pm.collectionVariables.set('run_id', b.run_id);",
+                  "pm.collectionVariables.set('message_id', b.message_id);",
+                  "",
+                  "var input = (b.pending_inputs || [])[0];",
+                  "if (input) {",
+                  "  pm.collectionVariables.set('input_id', input.id);",
+                  "  pm.collectionVariables.set('input_kind', input.kind);",
+                  "}",
+                  "var action = (b.actions || [])[0];",
+                  "if (action) { pm.collectionVariables.set('action_id', action.id); }",
+                  "",
+                  "pm.test('it prepared a write', function () {",
+                  "  pm.expect(b.intent.has_write).to.be.true;",
+                  "  pm.expect(b.actions.length).to.be.above(0);",
+                  "});",
+                  "pm.test('NOTHING was sent — every action is still a draft', function () {",
+                  "  b.actions.forEach(function (a) { pm.expect(a.status).to.eql('draft'); });",
+                  "});",
+                  "pm.test('every action is gated by a prompt', function () {",
+                  "  var ids = (b.pending_inputs || []).map(function (p) { return p.id; });",
+                  "  b.actions.forEach(function (a) {",
+                  "    pm.expect(ids).to.include(a.requires_input_id);",
+                  "  });",
+                  "});",
+                  "pm.test('under the hard LLM call cap of 5', function () {",
+                  "  pm.expect(b.usage.llm_calls).to.be.at.most(5);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ambiguous · move the meeting with John",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/query",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "query"
+              ]
+            },
+            "description": "Two plausible Johns, margin under 0.15, so ambiguity becomes an `ask.user` step rather than a guess. The run pauses at status `awaiting_input` with a BLOCKING prompt.\n\nAnswering it in the Prompts folder resumes the run at 0 LLM calls — the plan is already on disk, only the binding was missing.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Move the meeting with John\",\n  \"conversation_id\": \"{{conversation_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.collectionVariables.set('run_id', b.run_id);",
+                  "var blocking = (b.pending_inputs || []).filter(function (p) { return p.blocking; })[0];",
+                  "if (blocking) {",
+                  "  pm.collectionVariables.set('blocking_input_id', blocking.id);",
+                  "  var opts = blocking.options || [];",
+                  "  if (opts.length) { pm.collectionVariables.set('chosen_option_id', opts[0].id); }",
+                  "}",
+                  "pm.test('the run paused on a question', function () {",
+                  "  pm.expect(b.status).to.eql('awaiting_input');",
+                  "  pm.expect(blocking).to.not.be.undefined;",
+                  "});",
+                  "pm.test('it asked instead of guessing', function () {",
+                  "  pm.expect(b.actions).to.eql([]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Context · that email about the proposal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/query",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "query"
+              ]
+            },
+            "description": "Resolves against conversation_entities — roughly 20 rows for the thread — instead of re-parsing previous runs' result blobs. Needs a conversation_id, so run one of the reads above first.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"That email about the proposal — forward it to my co-founder\",\n  \"conversation_id\": \"{{conversation_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.collectionVariables.set('run_id', b.run_id);",
+                  "var input = (b.pending_inputs || [])[0];",
+                  "if (input) { pm.collectionVariables.set('input_id', input.id); }",
+                  "var action = (b.actions || [])[0];",
+                  "if (action) { pm.collectionVariables.set('action_id', action.id); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Streaming · stream=ndjson",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/x-ndjson"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/query?stream=ndjson",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "query"
+              ],
+              "query": [
+                {
+                  "key": "stream",
+                  "value": "ndjson"
+                }
+              ]
+            },
+            "description": "Same run, streamed. Each line is one complete JSON object in exactly the SSE envelope — {v, seq, type, run_id, ts, data}. One event union, two transports.\n\nPostman shows the accumulated body when the stream closes. The last line is always run.complete or error. For a live view use:\n\n  curl -N -X POST '$BASE/api/v1/query?stream=ndjson' -H 'Content-Type: application/json' -b cookies.txt -d '{\"query\":\"What is on my calendar next week?\"}'",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Prepare for tomorrow's client meeting with Acme Corp\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var lines = pm.response.text().split('\\n').filter(function (l) { return l.trim(); });",
+                  "var events = lines.map(function (l) { return JSON.parse(l); });",
+                  "pm.test('every line is a v1 envelope', function () {",
+                  "  events.forEach(function (e) {",
+                  "    pm.expect(e.v).to.eql(1);",
+                  "    pm.expect(e).to.have.property('seq');",
+                  "    pm.expect(e).to.have.property('type');",
+                  "    pm.expect(e).to.have.property('run_id');",
+                  "  });",
+                  "});",
+                  "pm.test('seq starts at 1 and never gaps', function () {",
+                  "  events.forEach(function (e, i) { pm.expect(e.seq).to.eql(i + 1); });",
+                  "});",
+                  "pm.test('the last event is terminal', function () {",
+                  "  pm.expect(events[events.length - 1].type).to.be.oneOf(['run.complete', 'error']);",
+                  "});",
+                  "if (events.length) { pm.collectionVariables.set('run_id', events[0].run_id); }",
+                  "pm.collectionVariables.set('last_seq', String(events.length));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Error · empty query is 422",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/query",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "query"
+              ]
+            },
+            "description": "Proves the error envelope. Every failure in this API has the same body: {error: {code, message, details, request_id}}.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('422 VALIDATION_ERROR', function () {",
+                  "  pm.response.to.have.status(422);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('VALIDATION_ERROR');",
+                  "});",
+                  "pm.test('error envelope is the documented shape', function () {",
+                  "  if (pm.response.code < 400) { pm.expect(true).to.be.true; return; }",
+                  "  var b = pm.response.json();",
+                  "  pm.expect(b).to.have.property('error');",
+                  "  pm.expect(b.error).to.have.all.keys('code', 'message', 'details', 'request_id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3 · Runs (SSE)",
+      "description": "Server-sent events for one run. Read-only — opening it starts nothing.\n\nseq gap-detection: hold last_seq (starts 0). seq == last_seq+1 → apply. seq <= last_seq → a reconnect duplicate, DROP it (content.delta appends, so applying twice corrupts the text). seq > last_seq+1 → you missed events; reconnect with Last-Event-ID and the server replays from a 500-event, 15-minute Redis buffer. Past that window you get a single `error` event with code STREAM_EXPIRED — fall back to GET /api/v1/conversations/{id}, which is the durable record.",
+      "item": [
+        {
+          "name": "Stream a run",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/runs/{{run_id}}/events",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "runs",
+                "{{run_id}}",
+                "events"
+              ]
+            },
+            "description": "Fourteen event types on the run channel: run.started, progress, probe.done, intent, plan.step, step.started, step.retrying, step.finished, content.delta, token, input.raised, action.prepared, run.paused, run.complete, error. Plus action.done and action.failed, which arrive after the run itself has finished.\n\nPostman buffers SSE rather than rendering it live. For a live view:\n\n  curl -N '$BASE/api/v1/runs/<run_id>/events' -H 'Accept: text/event-stream' -b cookies.txt"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 text/event-stream', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.headers.get('Content-Type')).to.include('text/event-stream');",
+                  "});",
+                  "var body = pm.response.text();",
+                  "pm.test('the wire format carries id, event and data', function () {",
+                  "  pm.expect(body).to.include('id: ');",
+                  "  pm.expect(body).to.include('event: ');",
+                  "  pm.expect(body).to.include('data: ');",
+                  "});",
+                  "var seqs = [];",
+                  "body.split('\\n').forEach(function (line) {",
+                  "  if (line.indexOf('data: ') === 0) {",
+                  "    try { seqs.push(JSON.parse(line.slice(6)).seq); } catch (e) {}",
+                  "  }",
+                  "});",
+                  "pm.test('seq is gapless and starts at 1', function () {",
+                  "  seqs.forEach(function (s, i) { pm.expect(s).to.eql(i + 1); });",
+                  "});",
+                  "if (seqs.length) { pm.collectionVariables.set('last_seq', String(seqs[seqs.length - 1])); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reattach from a seq (gap recovery)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Last-Event-ID",
+                "value": "{{last_seq}}"
+              },
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/runs/{{run_id}}/events?from_seq={{last_seq}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "runs",
+                "{{run_id}}",
+                "events"
+              ],
+              "query": [
+                {
+                  "key": "from_seq",
+                  "value": "{{last_seq}}"
+                }
+              ]
+            },
+            "description": "What a client does after a dropped connection. `from_seq` is the non-EventSource equivalent of the Last-Event-ID header, which is also sent here so either mechanism works.\n\nReplay is exact inside the buffer window. Outside it: one `error` event with data.code = STREAM_EXPIRED, then close."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 or a clean STREAM_EXPIRED', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "var body = pm.response.text();",
+                  "var expired = body.indexOf('STREAM_EXPIRED') !== -1;",
+                  "pm.test('replayed, or told us plainly that it could not', function () {",
+                  "  pm.expect(expired || body.indexOf('data: ') !== -1).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Stream, chat events only",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/runs/{{run_id}}/events?types=progress,content.delta,input.raised,action.prepared,run.complete,error",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "runs",
+                "{{run_id}}",
+                "events"
+              ],
+              "query": [
+                {
+                  "key": "types",
+                  "value": "progress,content.delta,input.raised,action.prepared,run.complete,error"
+                }
+              ]
+            },
+            "description": "The `types` filter. This set is what a chat column needs; it drops the `token` and `plan.step` firehose that only the trace panel wants.\n\nNote the seq numbers still come from the unfiltered sequence, so a filtered stream shows gaps BY DESIGN. Only apply gap detection on an unfiltered stream."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "pm.test('no token events came through', function () {",
+                  "  pm.expect(pm.response.text()).to.not.include('event: token');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Error · unknown run is 404",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/runs/aaaaaaaaaaaaaaaaaaaaa/events",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "runs",
+                "aaaaaaaaaaaaaaaaaaaaa",
+                "events"
+              ]
+            },
+            "description": "A run belonging to another user is indistinguishable from one that does not exist. That is deliberate — a 403 would confirm the id is real."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('404 NOT_FOUND', function () {",
+                  "  pm.response.to.have.status(404);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('NOT_FOUND');",
+                  "});",
+                  "pm.test('error envelope is the documented shape', function () {",
+                  "  if (pm.response.code < 400) { pm.expect(true).to.be.true; return; }",
+                  "  var b = pm.response.json();",
+                  "  pm.expect(b).to.have.property('error');",
+                  "  pm.expect(b.error).to.have.all.keys('code', 'message', 'details', 'request_id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4 · Prompts (the write gate)",
+      "description": "One endpoint answers all six prompt kinds, blocking and non-blocking alike, because the validation authority is the row's own value_schema — the server runs jsonschema.validate against it and nothing else. A new prompt kind therefore needs no API change and no client release.\n\nRun the Query folder first so input_id and blocking_input_id are populated.",
+      "item": [
+        {
+          "name": "List pending prompts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/prompts?status=pending",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "prompts"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending"
+                }
+              ]
+            },
+            "description": "Everything the system is waiting on. Each row carries its value_schema — that is the contract your card must satisfy. `options` is display only; a choice prompt's enum lives in the schema, and posting an option id absent from the enum correctly fails validation."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.test('every prompt carries its own schema', function () {",
+                  "  b.items.forEach(function (p) {",
+                  "    pm.expect(p).to.have.property('value_schema');",
+                  "    pm.expect(p.value_schema).to.be.an('object');",
+                  "  });",
+                  "});",
+                  "var confirm = b.items.filter(function (p) { return p.kind === 'confirm'; })[0];",
+                  "if (confirm) {",
+                  "  pm.collectionVariables.set('input_id', confirm.id);",
+                  "  if (confirm.action) { pm.collectionVariables.set('action_id', confirm.action.id); }",
+                  "}",
+                  "var blocking = b.items.filter(function (p) { return p.blocking; })[0];",
+                  "if (blocking) { pm.collectionVariables.set('blocking_input_id', blocking.id); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List prompts for this conversation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/prompts?status=all&conversation_id={{conversation_id}}&limit=50",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "prompts"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "all"
+                },
+                {
+                  "key": "conversation_id",
+                  "value": "{{conversation_id}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Rows are never deleted — the status changes. That is what lets a reopened chat show a card in its answered or cancelled state rather than a frozen snapshot."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.test('statuses come from the enum', function () {",
+                  "  var allowed = ['pending', 'answered', 'cancelled', 'expired', 'superseded'];",
+                  "  b.items.forEach(function (p) { pm.expect(allowed).to.include(p.status); });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Approve the write · Send it",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/prompts/{{input_id}}/respond",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "prompts",
+                "{{input_id}}",
+                "respond"
+              ]
+            },
+            "description": "Stage 3-5 of the two-phase write: approve, revalidate, execute.\n\nSix revalidation checks run in pure Python before anything is queued — prompt still pending and unexpired, value validates, action still draft, dedupe_key still unique among in-flight actions, Google grant live and scoped, target unchanged (If-Match on the calendar etag).\n\nReturns 202: the send is handed to the Celery `actions` queue with an X-Orchestrator-Idem header, so a retry after an ambiguous timeout checks Sent before sending again. Watch for action.done on the run's stream.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": {\n    \"approve\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('202 Accepted', function () { pm.response.to.have.status(202); });",
+                  "var b = pm.response.json();",
+                  "pm.test('the prompt is answered', function () {",
+                  "  pm.expect(b.status).to.eql('answered');",
+                  "});",
+                  "pm.test('approving costs zero LLM calls', function () {",
+                  "  pm.expect(b.llm_calls).to.eql(0);",
+                  "});",
+                  "pm.test('the action was queued, not executed inline', function () {",
+                  "  pm.expect(b.action.status).to.be.oneOf(['approved', 'running']);",
+                  "  pm.expect(b.action).to.have.property('job_id');",
+                  "});",
+                  "if (b.action && b.action.id) { pm.collectionVariables.set('action_id', b.action.id); }",
+                  "if (b.action && b.action.watch) { pm.collectionVariables.set('watch_url', b.action.watch); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Edit before approving",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/prompts/{{input_id}}/respond",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "prompts",
+                "{{input_id}}",
+                "respond"
+              ]
+            },
+            "description": "The Edit button. approve:false plus a patch applies the change to actions.payload, appends the old payload to actions.revisions, recomputes dedupe_key, answers this prompt, and raises a NEW confirm prompt against the revised payload — returned as `next_input`.\n\nStill 0 LLM calls: the edit came from the person, so there is nothing to plan. The Gmail draft is updated in place, so external_ref does not change and the user sees the edit in their own Drafts folder.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": {\n    \"approve\": false,\n    \"patch\": {\n      \"subject\": \"Cancellation request — booking TK1234 (urgent)\",\n      \"body\": \"Hello,\\n\\nPlease cancel booking TK1234 (Istanbul → JFK, TK1988, 5 November). I am travelling and need written confirmation today.\\n\\nThank you.\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.test('a fresh prompt gates the revised payload', function () {",
+                  "  pm.expect(b).to.have.property('next_input');",
+                  "  pm.expect(b.next_input.status).to.eql('pending');",
+                  "});",
+                  "pm.test('still nothing sent', function () {",
+                  "  pm.expect(b.action.status).to.eql('draft');",
+                  "  pm.expect(b.action.revision).to.be.above(0);",
+                  "});",
+                  "pm.test('editing costs zero LLM calls', function () {",
+                  "  pm.expect(b.llm_calls).to.eql(0);",
+                  "});",
+                  "if (b.next_input && b.next_input.id) {",
+                  "  pm.collectionVariables.set('input_id', b.next_input.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Answer a blocking prompt · which John",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/prompts/{{blocking_input_id}}/respond",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "prompts",
+                "{{blocking_input_id}}",
+                "respond"
+              ]
+            },
+            "description": "The other half of the same endpoint. This prompt is blocking, so answering it RESUMES the paused run — 200, not 202 — and the response hands back resumed_run_id and a `watch` URL.\n\nThe seq on that stream continues from where run.paused left it, so reattach at your last_seq rather than from 1.\n\nThe value here is a bare string because this prompt's value_schema is {type: string, enum: [...]}. Nothing in the API layer knows that; jsonschema does.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"{{chosen_option_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.test('the run resumed', function () {",
+                  "  pm.expect(b.status).to.eql('answered');",
+                  "  pm.expect(b.resumed_run_id).to.be.a('string');",
+                  "});",
+                  "pm.test('resuming costs zero LLM calls', function () {",
+                  "  pm.expect(b.llm_calls).to.eql(0);",
+                  "});",
+                  "pm.collectionVariables.set('run_id', b.resumed_run_id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Not now",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/prompts/{{input_id}}/respond",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "prompts",
+                "{{input_id}}",
+                "respond"
+              ]
+            },
+            "description": "approve:false with no patch. The prompt is answered, the action is cancelled, and the Gmail draft it created is deleted.\n\nBecause the unique index on actions.dedupe_key is PARTIAL — covering only draft, approved and running — a cancelled action does not block an identical one later. Resending after cancelling is a legitimate new request.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": {\n    \"approve\": false,\n    \"note\": \"Changed my mind, I will call them.\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.test('the action was cancelled, not sent', function () {",
+                  "  pm.expect(b.action.status).to.eql('cancelled');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cancel a prompt",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/prompts/{{input_id}}/cancel",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "prompts",
+                "{{input_id}}",
+                "cancel"
+              ]
+            },
+            "description": "Dismiss without recording a decision. Cancelling a prompt that gates an action cancels the action too. Cancelling a BLOCKING prompt cancels the run — the steps that already ran keep their rows, so the trace stays intact."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.test('cancelled', function () { pm.expect(b.status).to.eql('cancelled'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Error · answering twice is 409",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/prompts/{{input_id}}/respond",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "prompts",
+                "{{input_id}}",
+                "respond"
+              ]
+            },
+            "description": "Run this straight after 'Approve the write'. The double-tapped send button.\n\ndetails.status tells you which terminal state it is in: answered, cancelled, expired, or superseded (a newer run prepared the same kind of write, and the old prompt was superseded in that same transaction).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": {\n    \"approve\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('409 PROMPT_NOT_PENDING', function () {",
+                  "  pm.response.to.have.status(409);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('PROMPT_NOT_PENDING');",
+                  "});",
+                  "pm.test('it says which terminal state', function () {",
+                  "  var d = pm.response.json().error.details;",
+                  "  pm.expect(['answered', 'cancelled', 'expired', 'superseded'])",
+                  "    .to.include(d.status);",
+                  "});",
+                  "pm.test('error envelope is the documented shape', function () {",
+                  "  if (pm.response.code < 400) { pm.expect(true).to.be.true; return; }",
+                  "  var b = pm.response.json();",
+                  "  pm.expect(b).to.have.property('error');",
+                  "  pm.expect(b.error).to.have.all.keys('code', 'message', 'details', 'request_id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Error · value that fails the schema is 422",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/prompts/{{input_id}}/respond",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "prompts",
+                "{{input_id}}",
+                "respond"
+              ]
+            },
+            "description": "'yes' is not a boolean. The server never hand-checks this — jsonschema does, against the row's stored value_schema, with format assertion on. The failing JSON paths come back in details.errors.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": {\n    \"approve\": \"yes\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('422 PROMPT_VALUE_INVALID', function () {",
+                  "  pm.response.to.have.status(422);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('PROMPT_VALUE_INVALID');",
+                  "});",
+                  "pm.test('it points at the failing path', function () {",
+                  "  var errs = pm.response.json().error.details.errors;",
+                  "  pm.expect(errs).to.be.an('array').that.is.not.empty;",
+                  "  pm.expect(errs[0]).to.have.property('path');",
+                  "});",
+                  "pm.test('error envelope is the documented shape', function () {",
+                  "  if (pm.response.code < 400) { pm.expect(true).to.be.true; return; }",
+                  "  var b = pm.response.json();",
+                  "  pm.expect(b).to.have.property('error');",
+                  "  pm.expect(b.error).to.have.all.keys('code', 'message', 'details', 'request_id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "5 · Conversations",
+      "description": "The durable record. This is what a client falls back to when an SSE stream drops past the replay window — Postgres is the source of truth, SSE is only an accelerator.",
+      "item": [
+        {
+          "name": "List conversations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/conversations?limit=20&archived=false",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "conversations"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "archived",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "Keyset pagination on (last_message_at, id), served by the partial index (user_id, last_message_at DESC) WHERE archived_at IS NULL.\n\ntitle_is_derived:true means conversations.title IS NULL and the label shown is the first user message — nothing is stored for it."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "if (b.items && b.items.length) {",
+                  "  pm.collectionVariables.set('conversation_id', b.items[0].id);",
+                  "  if (b.items[0].last_run) {",
+                  "    pm.collectionVariables.set('run_id', b.items[0].last_run.id);",
+                  "  }",
+                  "}",
+                  "if (b.next_cursor) { pm.collectionVariables.set('cursor', b.next_cursor); }",
+                  "pm.test('sorted newest first', function () {",
+                  "  for (var i = 1; i < (b.items || []).length; i++) {",
+                  "    pm.expect(new Date(b.items[i - 1].last_message_at).getTime())",
+                  "      .to.be.at.least(new Date(b.items[i].last_message_at).getTime());",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List conversations · next page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/conversations?limit=20&cursor={{cursor}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "conversations"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "cursor",
+                  "value": "{{cursor}}"
+                }
+              ]
+            },
+            "description": "Pass the cursor from the previous response. Opaque — do not parse it."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "if (b.next_cursor) { pm.collectionVariables.set('cursor', b.next_cursor); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get one conversation, with trace",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/conversations/{{conversation_id}}?include_trace=true&limit=50",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "conversations",
+                "{{conversation_id}}"
+              ],
+              "query": [
+                {
+                  "key": "include_trace",
+                  "value": "true"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            },
+            "description": "Messages with every ref resolved, plus runs, pending_inputs, actions and entities.\n\nmessages[].content is an ordered block list: prose inline, anything with a lifecycle by ref. Resolve each ref against the pending_inputs and actions arrays in the same response. A ref with no match was dropped on read — never render it as an empty box.\n\ninclude_trace=true attaches each assistant message's node_executions. They are keyed by message_id, which is why a paused run's trace does not appear under both of its messages."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.test('every content ref resolves', function () {",
+                  "  var inputs = (b.pending_inputs || []).map(function (p) { return p.id; });",
+                  "  var actions = (b.actions || []).map(function (a) { return a.id; });",
+                  "  (b.messages || []).forEach(function (m) {",
+                  "    (m.content || []).forEach(function (block) {",
+                  "      if (block.type === 'input')  { pm.expect(inputs).to.include(block.ref); }",
+                  "      if (block.type === 'action') { pm.expect(actions).to.include(block.ref); }",
+                  "    });",
+                  "  });",
+                  "});",
+                  "pm.test('messages are seq ordered', function () {",
+                  "  for (var i = 1; i < (b.messages || []).length; i++) {",
+                  "    pm.expect(b.messages[i].seq).to.be.above(b.messages[i - 1].seq);",
+                  "  }",
+                  "});",
+                  "if (b.messages && b.messages.length) {",
+                  "  pm.collectionVariables.set('message_id', b.messages[b.messages.length - 1].id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Error · unknown conversation is 404",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/conversations/aaaaaaaaaaaaaaaaaaaaa",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "conversations",
+                "aaaaaaaaaaaaaaaaaaaaa"
+              ]
+            },
+            "description": "Another user's conversation returns 404, not 403. A 403 would confirm the id exists."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('404 NOT_FOUND', function () {",
+                  "  pm.response.to.have.status(404);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('NOT_FOUND');",
+                  "});",
+                  "pm.test('error envelope is the documented shape', function () {",
+                  "  if (pm.response.code < 400) { pm.expect(true).to.be.true; return; }",
+                  "  var b = pm.response.json();",
+                  "  pm.expect(b).to.have.property('error');",
+                  "  pm.expect(b.error).to.have.all.keys('code', 'message', 'details', 'request_id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "6 · Sync",
+      "description": "The pgvector mirror of Gmail, Calendar and Drive. Celery beat syncs every 15 minutes, smeared with countdown = hash(user_id) % 900 so a million users do not hit Google on the same second. These endpoints force it and report where it got to.",
+      "item": [
+        {
+          "name": "Trigger an incremental sync",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/sync/trigger",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "sync",
+                "trigger"
+              ]
+            },
+            "description": "Advances from the stored cursor — Gmail historyId, Calendar syncToken, Drive pageToken — which is only moved after the upsert commits, so a crash reprocesses rather than skips.\n\n202 with a task id per service. Nothing here is a 409: a service that is already running or whose circuit breaker is open comes back in `skipped` with a reason.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"services\": [\n    \"gmail\",\n    \"gcal\",\n    \"gdrive\"\n  ],\n  \"mode\": \"incremental\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('202 Accepted', function () { pm.response.to.have.status(202); });",
+                  "var b = pm.response.json();",
+                  "pm.test('queued or plainly skipped, never an error', function () {",
+                  "  pm.expect(b).to.have.property('queued');",
+                  "  pm.expect(b).to.have.property('skipped');",
+                  "  (b.skipped || []).forEach(function (s) { pm.expect(s).to.have.property('reason'); });",
+                  "});",
+                  "if (b.queued && b.queued.length) {",
+                  "  pm.collectionVariables.set('sync_task_id', b.queued[0].task_id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Trigger a backfill",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/sync/trigger",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "sync",
+                "trigger"
+              ]
+            },
+            "description": "Continues the historical walk from backfill_cursor over SYNC_BACKFILL_DAYS (180). Separate from the incremental cursor so the two never fight.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"services\": [\n    \"gmail\"\n  ],\n  \"mode\": \"backfill\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('202 Accepted', function () { pm.response.to.have.status(202); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Trigger a full resync",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/sync/trigger",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "sync",
+                "trigger"
+              ]
+            },
+            "description": "Discards the cursor and re-walks from scratch. Expensive, and rate limited to once an hour per service — a second attempt inside the hour is 429 with Retry-After.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"services\": [\n    \"gdrive\"\n  ],\n  \"mode\": \"full\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('202, or 429 if you already did this within the hour', function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf([202, 429]);",
+                  "});",
+                  "if (pm.response.code === 429) {",
+                  "  pm.test('Retry-After is set', function () {",
+                  "    pm.expect(pm.response.headers.get('Retry-After')).to.be.a('string');",
+                  "  });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sync status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/sync/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "sync",
+                "status"
+              ]
+            },
+            "description": "lag_seconds is now - last_success_at, which is why last_success_at exists separately from last_synced_at: a failing sync updates the attempt but not the success, and the lag figure must reflect the data rather than the effort.\n\nwithin_target:false is the honest report that the mirror is staler than the 15-minute goal. In that window a superlative query ('my next flight') should pass freshness:'live' rather than trust the mirror."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.test('all three services report', function () {",
+                  "  pm.expect(b.services).to.have.all.keys('gmail', 'gcal', 'gdrive');",
+                  "});",
+                  "pm.test('lag is derived from last_success_at, not last_synced_at', function () {",
+                  "  Object.keys(b.services).forEach(function (k) {",
+                  "    pm.expect(b.services[k]).to.have.property('lag_seconds');",
+                  "    pm.expect(b.services[k]).to.have.property('last_success_at');",
+                  "  });",
+                  "});",
+                  "pm.collectionVariables.set('mirror_lag_seconds', String(b.freshness.worst_lag_seconds));",
+                  "pm.test('freshness target is 15 minutes', function () {",
+                  "  pm.expect(b.freshness.target_seconds).to.eql(900);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "7 · Search (debug and eval)",
+      "description": "The retrieval layer with the lid off. Not on the chat path — this is for debugging a bad answer and for the offline Precision@5 run. It returns every score component so you can see why something ranked where it did.",
+      "item": [
+        {
+          "name": "Search all three services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/search?q=turkish%20airlines%20booking&services=gmail,gcal,gdrive&limit=5&explain=true",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "turkish airlines booking"
+                },
+                {
+                  "key": "services",
+                  "value": "gmail,gcal,gdrive"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                },
+                {
+                  "key": "explain",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "One embedding, three parallel hybrid searches: metadata prefilter (always user_id) then vector cosine in parallel with Postgres full-text, fused with RRF k=60 FOR ORDERING ONLY, then temporal decay exp(-age_days/30) for mail and a forward boost for future events.\n\nThe floors are computed on `cn` (cosine normalised per corpus, z-scored, clamped 0..1) plus an evidence flag — NEVER on the fused RRF score, because RRF is rank-derived and cannot tell a perfect match from the best of three bad ones."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.test('under the 500ms retrieval target', function () {",
+                  "  pm.expect(b.took_ms).to.be.below(500);",
+                  "});",
+                  "pm.test('every hit shows its score components', function () {",
+                  "  Object.keys(b.services).forEach(function (svc) {",
+                  "    (b.services[svc].hits || []).forEach(function (h) {",
+                  "      pm.expect(h.scores).to.have.property('cosine');",
+                  "      pm.expect(h.scores).to.have.property('cn');",
+                  "      pm.expect(h.scores).to.have.property('rrf');",
+                  "      pm.expect(h.scores).to.have.property('final');",
+                  "    });",
+                  "  });",
+                  "});",
+                  "pm.test('the decision is made on cn, not on rrf', function () {",
+                  "  pm.expect(b.decision).to.have.property('top_cn');",
+                  "  pm.expect(b.decision).to.have.property('margin');",
+                  "  pm.expect(b.decision.floor_read).to.eql(0.55);",
+                  "  pm.expect(b.decision.floor_write).to.eql(0.8);",
+                  "  pm.expect(b.decision.margin_threshold).to.eql(0.15);",
+                  "});",
+                  "pm.test('the verdict is one of three', function () {",
+                  "  pm.expect(['confident', 'ambiguous', 'absent']).to.include(b.decision.verdict);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Search calendar by attendee",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/search?q=planning&services=gcal&attendee=john@company.com&since=2026-08-24T00:00:00Z&until=2026-08-31T00:00:00Z",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "planning"
+                },
+                {
+                  "key": "services",
+                  "value": "gcal"
+                },
+                {
+                  "key": "attendee",
+                  "value": "john@company.com"
+                },
+                {
+                  "key": "since",
+                  "value": "2026-08-24T00:00:00Z"
+                },
+                {
+                  "key": "until",
+                  "value": "2026-08-31T00:00:00Z"
+                }
+              ]
+            },
+            "description": "The attendee prefilter is a GIN index hit on sync_items.participant_emails — a generated column over the participants JSONB, so participants stays the single source and this stays an index scan."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });",
+                  "var b = pm.response.json();",
+                  "pm.test('gcal only', function () {",
+                  "  pm.expect(Object.keys(b.services)).to.eql(['gcal']);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Search Drive by mime type",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/search?q=out%20of%20office%20policy&services=gdrive&mime=application/pdf&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "out of office policy"
+                },
+                {
+                  "key": "services",
+                  "value": "gdrive"
+                },
+                {
+                  "key": "mime",
+                  "value": "application/pdf"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Metadata prefilter before the vector scan — cheaper than filtering after, and the reason 'PDFs from last month' is fast. Remember a file row has no created date, so the date window is on occurred_at, which holds Drive's modified time."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Search live (read through to Google)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/search?q=latest%20invoice&services=gmail&freshness=live",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "latest invoice"
+                },
+                {
+                  "key": "services",
+                  "value": "gmail"
+                },
+                {
+                  "key": "freshness",
+                  "value": "live"
+                }
+              ]
+            },
+            "description": "freshness=live reads through to Google before searching, for when the mirror's 15-minute lag is not good enough. Slower, and honest about it in took_ms. This is the only mode that can return 428 or 503."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200, or a named Google failure', function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf([200, 428, 503]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Error · missing q is 422",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/search",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "search"
+              ]
+            },
+            "description": "q is required."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('422 VALIDATION_ERROR', function () {",
+                  "  pm.response.to.have.status(422);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('VALIDATION_ERROR');",
+                  "});",
+                  "pm.test('error envelope is the documented shape', function () {",
+                  "  if (pm.response.code < 400) { pm.expect(true).to.be.true; return; }",
+                  "  var b = pm.response.json();",
+                  "  pm.expect(b).to.have.property('error');",
+                  "  pm.expect(b.error).to.have.all.keys('code', 'message', 'details', 'request_id');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "8 · Health",
+      "description": "At the root, not under /api/v1 — a load balancer should not have to know your API version. None of these need a session.",
+      "item": [
+        {
+          "name": "Liveness",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/healthz",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "healthz"
+              ]
+            },
+            "description": "Answers from process memory and touches nothing. It only fails by not answering, which is exactly what a liveness probe should mean."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 ok', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json().status).to.eql('ok');",
+                  "});",
+                  "pm.test('answers fast', function () {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(100);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Readiness",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/readyz",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "readyz"
+              ]
+            },
+            "description": "Checks postgres, the pgvector extension, redis, celery and the migration head in parallel with a 500ms budget each.\n\nA failed celery check reports ok:false but does NOT fail readiness — the API serves reads without a worker, and pulling the whole tier out of the load balancer because a queue is down turns a degradation into an outage."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 ready, or 503 with the reason named', function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf([200, 503]);",
+                  "});",
+                  "var b = pm.response.json();",
+                  "pm.test('every dependency reports', function () {",
+                  "  pm.expect(b.checks).to.have.all.keys(",
+                  "    'postgres', 'pgvector', 'redis', 'celery', 'migrations');",
+                  "});",
+                  "pm.test('a down worker does not take the API out of rotation', function () {",
+                  "  if (b.checks.celery && b.checks.celery.ok === false) {",
+                  "    pm.expect(b.status).to.eql('ready');",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/metrics",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "metrics"
+              ]
+            },
+            "description": "Prometheus text format. In production this is bound to the internal listener only."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 prometheus text', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.headers.get('Content-Type')).to.include('text/plain');",
+                  "});",
+                  "pm.test('the metrics that matter are present', function () {",
+                  "  var body = pm.response.text();",
+                  "  ['orchestrator_run_duration_seconds',",
+                  "   'orchestrator_llm_calls_total',",
+                  "   'orchestrator_mirror_lag_seconds',",
+                  "   'orchestrator_google_errors_total'].forEach(function (name) {",
+                  "    pm.expect(body).to.include(name);",
+                  "  });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Attach the session cookie, unless the request already carries one or",
+          "// Postman's own cookie jar has it from completing OAuth in the browser.",
+          "var token = pm.collectionVariables.get('session_token');",
+          "if (token && !pm.request.headers.has('Cookie')) {",
+          "  pm.request.headers.add({",
+          "    key: 'Cookie',",
+          "    value: pm.collectionVariables.get('session_cookie_name') + '=' + token",
+          "  });",
+          "}",
+          "",
+          "// A stable idempotency handle per run of the collection. Re-posting the same",
+          "// client_request_id within 10 minutes returns the original run instead of",
+          "// starting a second one — the double-tapped send button.",
+          "if (!pm.collectionVariables.get('client_request_id')) {",
+          "  pm.collectionVariables.set('client_request_id', 'postman-' + Date.now());",
+          "}"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Applies to every request in the collection.",
+          "pm.test('the request id came back', function () {",
+          "  pm.expect(pm.response.headers.get('X-Request-ID')).to.be.a('string');",
+          "});",
+          "",
+          "if (pm.response.code === 401) {",
+          "  console.warn('401 — set the session_token collection variable. See folder 1 · Auth.');",
+          "}",
+          "if (pm.response.code === 428) {",
+          "  console.warn('428 GOOGLE_REAUTH_REQUIRED — the session is fine but the Google grant is dead. Reconnect.');",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string",
+      "description": "API origin. No trailing slash."
+    },
+    {
+      "key": "session_token",
+      "value": "",
+      "type": "string",
+      "description": "Value of the alpha_session cookie, from completing OAuth in a browser."
+    },
+    {
+      "key": "session_cookie_name",
+      "value": "alpha_session",
+      "type": "string",
+      "description": "Matches SESSION_COOKIE_NAME in the backend config."
+    },
+    {
+      "key": "conversation_id",
+      "value": "",
+      "type": "string",
+      "description": "Captured by the query requests. Chains the whole collection."
+    },
+    {
+      "key": "run_id",
+      "value": "",
+      "type": "string",
+      "description": "Captured by the query requests. Used by the SSE folder."
+    },
+    {
+      "key": "message_id",
+      "value": "",
+      "type": "string",
+      "description": "The assistant message a run produced."
+    },
+    {
+      "key": "input_id",
+      "value": "",
+      "type": "string",
+      "description": "Non-blocking prompt — the write gate. Captured from actions[0].requires_input_id."
+    },
+    {
+      "key": "blocking_input_id",
+      "value": "",
+      "type": "string",
+      "description": "Blocking prompt — answering it resumes a paused run."
+    },
+    {
+      "key": "chosen_option_id",
+      "value": "",
+      "type": "string",
+      "description": "First option of the blocking prompt, so the choice request has something valid to post."
+    },
+    {
+      "key": "action_id",
+      "value": "",
+      "type": "string",
+      "description": "The prepared write. Nothing has been sent while its status is draft."
+    },
+    {
+      "key": "input_kind",
+      "value": "",
+      "type": "string",
+      "description": "confirm | choice | multi_choice | text | form | date_range."
+    },
+    {
+      "key": "last_seq",
+      "value": "0",
+      "type": "string",
+      "description": "Highest SSE seq applied. Used for gap recovery via from_seq / Last-Event-ID."
+    },
+    {
+      "key": "cursor",
+      "value": "",
+      "type": "string",
+      "description": "Keyset pagination cursor from GET /api/v1/conversations. Opaque."
+    },
+    {
+      "key": "client_request_id",
+      "value": "",
+      "type": "string",
+      "description": "Set by the pre-request script. Idempotency handle for POST /query."
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "timezone",
+      "value": "Europe/Istanbul",
+      "type": "string"
+    },
+    {
+      "key": "sync_task_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "mirror_lag_seconds",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "watch_url",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

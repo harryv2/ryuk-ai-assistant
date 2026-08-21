@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    // A referenced project may not disable emit, so this one emits nothing but
+    // declarations, into a scratch directory nothing reads.
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./node_modules/.tmp/vite-config",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "types": ["node"]
+  },
+  "include": ["vite.config.ts"]
+}

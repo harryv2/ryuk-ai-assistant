@@ -1,0 +1,160 @@
+name: alpha-law
+
+# Everything the system needs to run: `docker compose up`.
+#
+#   postgres  pgvector/pgvector:pg17  the mirror + the app tables
+#   redis     broker, result backend, SSE fan-out, rate limiter, cache
+#   api       FastAPI on uvicorn, reload on
+#   worker    celery consumer for every queue
+#   beat      celery scheduler
+#   ui        vite dev server
+
+x-backend: &backend
+  build:
+    context: ./backend
+    dockerfile: Dockerfile
+  env_file:
+    - .env
+  environment:
+    # Container-network overrides. Whatever .env says about localhost is wrong in here.
+    DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-orchestrator}
+    REDIS_URL: redis://redis:6379/0
+    PYTHONPATH: /app
+  volumes:
+    - ./backend:/app
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+  restart: unless-stopped
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-orchestrator}
+      # Deterministic collation so ordering does not shift between machines.
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-orchestrator}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes", "--save", "60", "1"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+    restart: unless-stopped
+
+  api:
+    <<: *backend
+    command:
+      - uvicorn
+      - app.main:app
+      - --host
+      - "0.0.0.0"
+      - --port
+      - "8000"
+      - --reload
+      - --reload-dir
+      - /app/app
+      - --timeout-graceful-shutdown
+      - "20"
+    # Deliberately NOT published. The browser reaches the API only through the
+    # vite dev server on ${UI_PORT}, which proxies /api to this container by its
+    # service name. One origin means the session cookie needs no SameSite
+    # loosening, there is no CORS surface at all, and a misconfigured client
+    # cannot quietly bypass the proxy.
+    # To poke the API directly while debugging:
+    #   docker compose exec api curl -s localhost:8000/healthz
+    expose:
+      - "8000"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3).status == 200 else 1)"
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  worker:
+    <<: *backend
+    command:
+      - celery
+      - -A
+      - app.tasks.celery_app
+      - worker
+      - --loglevel=INFO
+      - --queues=sync,embed,actions,orchestration,maintenance
+      - --concurrency=${CELERY_CONCURRENCY:-4}
+      - --prefetch-multiplier=1
+      - --max-tasks-per-child=200
+      - --hostname=worker@%h
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A app.tasks.celery_app inspect ping -d worker@$$(hostname) >/dev/null 2>&1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  beat:
+    <<: *backend
+    command:
+      - celery
+      - -A
+      - app.tasks.celery_app
+      - beat
+      - --loglevel=INFO
+      - --schedule=/tmp/celerybeat-schedule
+      - --pidfile=
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      worker:
+        condition: service_started
+
+  ui:
+    image: node:22-alpine
+    working_dir: /app
+    command: ["sh", "-c", "npm install && npm run dev -- --host 0.0.0.0 --port 5173"]
+    environment:
+      # Inside the network the backend is reachable by service name, never by
+      # localhost — localhost in this container is this container.
+      VITE_API_TARGET: http://api:8000
+      CHOKIDAR_USEPOLLING: "1"
+    ports:
+      - "${UI_PORT:-5173}:5173"
+    volumes:
+      - ./frontend:/app
+      - ui_node_modules:/app/node_modules
+    depends_on:
+      api:
+        condition: service_started
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  redisdata:
+  ui_node_modules:

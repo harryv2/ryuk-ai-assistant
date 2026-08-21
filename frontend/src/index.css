@@ -1,0 +1,185 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Two themes, one set of names. tailwind.config.js maps `bg-surface`,
+ * `text-muted` and friends onto these channels, so a component never needs a
+ * `dark:` twin for a colour that has a semantic meaning. Raw channels (no
+ * `rgb()`) are what Tailwind's `<alpha-value>` needs to work.
+ */
+@layer base {
+  :root {
+    --canvas: 248 250 252; /* slate-50  */
+    --surface: 255 255 255;
+    /* Not the same as surface: this is what a row looks like under the
+       cursor, and two identical whites mean hover feedback that never
+       actually appears. */
+    --elevated: 241 245 249; /* slate-100 */
+    --line: 226 232 240; /* slate-200 */
+    --line-strong: 203 213 225; /* slate-300 — a border asking to be clicked */
+    --ink: 15 23 42; /* slate-900 */
+    --muted: 71 85 105; /* slate-600 */
+    --faint: 148 163 184; /* slate-400 */
+    --accent: 79 70 229; /* indigo-600 */
+    --accent-ink: 255 255 255;
+    --accent-soft: 238 242 255; /* indigo-50 */
+    --ok: 16 185 129; /* emerald-500 */
+    --warn: 245 158 11; /* amber-500 */
+    --bad: 239 68 68; /* red-500 */
+    --idle: 148 163 184; /* slate-400 */
+
+    color-scheme: light;
+  }
+
+  .dark {
+    --canvas: 2 6 23; /* slate-950 */
+    --surface: 15 23 42; /* slate-900 */
+    --elevated: 30 41 59; /* slate-800 */
+    --line: 30 41 59; /* slate-800 */
+    --line-strong: 51 65 85; /* slate-700 */
+    --ink: 241 245 249; /* slate-100 */
+    --muted: 148 163 184; /* slate-400 */
+    --faint: 100 116 139; /* slate-500 */
+    --accent: 129 140 248; /* indigo-400 */
+    --accent-ink: 15 23 42;
+    --accent-soft: 30 41 59;
+    --ok: 52 211 153; /* emerald-400 */
+    --warn: 251 191 36; /* amber-400 */
+    --bad: 248 113 113; /* red-400 */
+    --idle: 100 116 139;
+
+    color-scheme: dark;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Focus that is visible on both themes, and only when keyboard-driven. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-indigo-500 ring-offset-1 ring-offset-white dark:ring-indigo-400 dark:ring-offset-slate-950;
+  }
+
+  /*
+   * A composite control shows focus once, on its shell.
+   *
+   * The composer is a rounded shell wrapped around a bare textarea. Without
+   * this the field draws its own square ring inside the shell's rounded one —
+   * two focus indicators for one thing to focus, in two different shapes.
+   */
+  [data-focus-shell] :focus-visible {
+    @apply ring-0 ring-offset-0;
+  }
+
+  button:disabled,
+  [aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
+  /* A long trace or a long thread scrolls a lot. Keep the bars unobtrusive. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(203 213 225) transparent;
+  }
+
+  .dark * {
+    scrollbar-color: rgb(51 65 85) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full border-[3px] border-solid border-transparent bg-slate-300 bg-clip-content dark:bg-slate-700;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-400 dark:bg-slate-600;
+  }
+}
+
+@layer components {
+  /*
+   * The answer is markdown rendered by lib/format.ts — escaped first, then six
+   * patterns allowed back in. It arrives as HTML with no classes of its own, so
+   * the styling lives here.
+   */
+  .answer-prose {
+    @apply text-[14px] leading-[1.6] text-slate-800 dark:text-slate-200;
+  }
+
+  .answer-prose p {
+    @apply my-2 first:mt-0 last:mb-0;
+  }
+
+  .answer-prose strong {
+    @apply font-semibold text-slate-900 dark:text-slate-50;
+  }
+
+  .answer-prose em {
+    @apply italic;
+  }
+
+  .answer-prose a {
+    @apply font-medium text-indigo-600 underline decoration-indigo-300 underline-offset-2 hover:decoration-indigo-500 dark:text-indigo-300 dark:decoration-indigo-500/50;
+  }
+
+  .answer-prose ul {
+    @apply my-2 list-disc space-y-1 pl-5 marker:text-slate-400;
+  }
+
+  .answer-prose ol {
+    @apply my-2 list-decimal space-y-1 pl-5 marker:text-slate-400;
+  }
+
+  .answer-prose li > p {
+    @apply my-0;
+  }
+
+  /* The caret that trails streaming text, so prose looks alive mid-token. */
+  .stream-caret::after {
+    content: '';
+    @apply ml-0.5 inline-block h-[1em] w-[2px] translate-y-[2px] bg-indigo-500 dark:bg-indigo-400;
+    animation: caret-blink 1.05s steps(1, end) infinite;
+  }
+
+  @keyframes caret-blink {
+    0%,
+    45% {
+      opacity: 1;
+    }
+    50%,
+    95% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+/* Someone who asked for less motion gets less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
