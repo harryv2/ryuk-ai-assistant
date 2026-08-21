@@ -16,9 +16,6 @@ The point of the design is that it does all of that on **one model call**.
 https://github.com/user-attachments/assets/b729b51e-c45b-4ed1-a6e6-54c2657e37a1
 
 
-
-[![Demo video — 5½ minutes, every flow](docs/demo/poster.png)](docs/demo/demo.mp4)
-
 **▶ [Watch the demo](docs/demo/demo.mp4)** — 5½ minutes, rendered with
 [HyperFrames](https://github.com/heygen-com/hyperframes) from live
 screenshots. GitHub plays it directly when the link is opened.
