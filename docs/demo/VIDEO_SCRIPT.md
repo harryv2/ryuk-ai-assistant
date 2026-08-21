@@ -1,6 +1,6 @@
 # Demo video — narration script
 
-The rendered cut is [`demo.mp4`](demo.mp4) (5:15, background music, captioned — the caption sits in its own band below the app window).
+The rendered cut is [`demo.mp4`](demo.mp4) (5:39, background music, captioned — four parts: Login flow, Seeded data, The scenarios, Future integrations).
 Each flow appears in two stages — the live run with its steps streaming, then
 the finished answer with the step list expanded. This script matches the cut
 scene for scene; read it over the video or paste it into HeyGen for an

@@ -48,20 +48,21 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="324"
+      data-duration="339"
       data-width="1920"
       data-height="1080"
       style="position: relative; width: 1920px; height: 1080px; background: #000"
     >
-      <audio id="bgm" data-start="0" data-duration="324" data-track-index="9" data-volume="0.6" src="assets/bgm.m4a"></audio>
+      <audio id="bgm" data-start="0" data-duration="339" data-track-index="9" data-volume="0.6" src="assets/bgm.m4a"></audio>
 
       <div class="clip scene" id="s-title" data-start="0" data-duration="10" data-track-index="0">
         <div class="fill"></div>
         <div class="card">
           <div class="inner">
-            <div class="kicker" id="t-k">AGENTIC GOOGLE WORKSPACE ORCHESTRATOR</div>
+            <div class="kicker" id="t-k">AI ASSISTANT FOR YOUR WORK TOOLS</div>
             <div class="h1" id="t-h">Ryuk</div>
-            <div class="h2" id="t-s">Natural language across Gmail, Calendar and Drive.</div>
+            <div class="h2" id="t-s">One assistant, natural language. Gmail, Calendar and Drive today &mdash;
+              built connector-generic, so Slack, Jira, Outlook and OneDrive slot in next.</div>
             <div class="rows" id="t-r">
               <div class="row"><span class="dot"></span><span>Intent classifier &rarr; LLM query planner &rarr; execution DAG</span></div>
               <div class="row"><span class="dot"></span><span>Parallel service agents over a <b>pgvector</b> mirror, live Google fallback</span></div>
@@ -245,7 +246,24 @@
         <div class="shot" data-layout-allow-overflow><img id="s13bi" src="assets/13b_confirm.png" alt="" /></div>
       </div>
       <div class="clip cap" id="c-13" data-start="280" data-duration="20" data-track-index="1"><span class="tag">WRITE FLOW</span><span class="q"><em>&ldquo;Send it&rdquo;</em> &mdash; the draft is found in context, the send is staged, and the approval card names the recipient</span></div>
-      <div class="clip scene" id="s-out" data-start="300" data-duration="24" data-track-index="0">
+      <div class="clip scene" id="s-d4" data-start="300" data-duration="3" data-track-index="0">
+        <div class="fill"></div>
+        <div class="divider">
+          <div>
+            <div class="kicker" id="d4-k" style="text-align:center">PART 4</div>
+            <div class="h1" id="d4-h" style="font-size: 110px; text-align:center">Future integrations</div>
+          </div>
+        </div>
+      </div>
+      <div class="clip scene" id="s-integ" data-start="303" data-duration="12" data-track-index="0">
+        <div class="fill"></div>
+        <div class="shot" data-layout-allow-overflow>
+          <video id="integv" data-start="303" data-duration="12" src="assets/integrations.mp4" muted playsinline></video>
+        </div>
+        <div class="cap" id="integc"><span class="tag">GENERIC BY DESIGN</span><span class="q">The mirror is three shape tables, not per-provider ones &mdash; Slack, Jira, Outlook and OneDrive plug into the same architecture</span></div>
+      </div>
+
+      <div class="clip scene" id="s-out" data-start="315" data-duration="24" data-track-index="0">
         <div class="fill"></div>
         <div class="card">
           <div class="inner">
@@ -256,6 +274,7 @@
               <div class="row"><span class="dot"></span><span><b>pgvector</b> hybrid search: cosine + keyword prefilter, RRF fusion, &lt;500ms</span></div>
               <div class="row"><span class="dot"></span><span><b>Celery</b> sync every 15 minutes; Redis caching; per-user rate limits</span></div>
               <div class="row"><span class="dot"></span><span><b>Ambiguity is a step</b> &mdash; pausing costs zero LLM calls to resume</span></div>
+              <div class="row"><span class="dot"></span><span><b>Connector-generic</b> &mdash; Slack, Jira, Outlook, OneDrive: same tables, same ops</span></div>
               <div class="row"><span class="dot"></span><span class="mono">FastAPI · PostgreSQL/pgvector · Redis · Celery · OpenAI + Gemini</span></div>
             </div>
           </div>
@@ -298,9 +317,12 @@
       tl.fromTo("#c-11", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out" }, 248.2);
       tl.fromTo("#c-12", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out" }, 262.2);
       tl.fromTo("#c-13", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out" }, 280.2);
-      tl.fromTo("#o-k", { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" }, 300.3);
-      tl.fromTo("#o-h", { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.65, ease: "power2.out" }, 300.5);
-      tl.fromTo("#o-r", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out" }, 300.95);
+      tl.fromTo("#o-k", { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out" }, 315.3);
+      tl.fromTo("#o-h", { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.65, ease: "power2.out" }, 315.5);
+      tl.fromTo("#o-r", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out" }, 315.95);
+      tl.fromTo("#d4-k", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: "power2.out" }, 300.15);
+      tl.fromTo("#d4-h", { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out" }, 300.35);
+      tl.fromTo("#integc", { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out" }, 303.2);
       window.__timelines["main"] = tl;
     </script>
   </body>

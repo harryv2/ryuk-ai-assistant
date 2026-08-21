@@ -29,6 +29,7 @@ import asyncio
 import inspect
 import json
 import math
+import datetime as _dt
 import os
 import sys
 import time
@@ -106,7 +107,12 @@ OUT_DIR = EVAL_DIR / "out"
 #: The instant every worked example in docs/SAMPLE_QUERIES.md is evaluated at.
 #: Passing ``--now`` overrides it; the default keeps date arithmetic checkable
 #: by hand against that document.
-FIXED_NOW = "2026-08-20T13:12:04Z"
+# The corpus is seeded with dates relative to the day the seeder ran, so the
+# eval clock must be that same day — `make eval` runs seed and harness
+# together. EVAL_NOW pins it explicitly when re-running against an old corpus.
+FIXED_NOW = os.environ.get("EVAL_NOW") or (
+    _dt.datetime.now(_dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+)
 FIXED_TZ = "America/New_York"
 FIXED_WEEK_START = 1
 EVAL_USER_EMAIL = "demo@example.com"
@@ -464,7 +470,7 @@ def deliver(fn, offered: Mapping[str, Any], *, required: Sequence[str] = ()) -> 
 
 SERVICES = ("gmail", "gcal", "gdrive")
 
-ARMS = ("hybrid", "vector", "keyword")
+ARMS = ("hybrid", "vector", "lexical")
 
 #: Where the harness looks for the code it measures, and under what names. The
 #: candidate lists are the same ones `tests/conftest.load_any` uses, so the eval
@@ -604,7 +610,7 @@ class MirrorBackend(SearchBackend):
 
     This is the backend the ablation runs on, because the repository layer
     takes the two arms as separate inputs: pass an embedding and no ``text``
-    for vector-only, ``text`` and no embedding for keyword-only, both for the
+    for vector-only, ``text`` and no embedding for lexical-only, both for the
     fused search. No flag has to be invented to turn an arm off.
     """
 
@@ -666,7 +672,7 @@ class MirrorBackend(SearchBackend):
             embed_started = time.perf_counter()
             embedding = await self._embed(text)
             stages["embed_ms"] = (time.perf_counter() - embed_started) * 1000
-        if text and arm in ("hybrid", "keyword"):
+        if text and arm in ("hybrid", "lexical"):
             filters["text"] = text
 
         sql_started = time.perf_counter()
@@ -724,6 +730,7 @@ class HybridModuleBackend(SearchBackend):
         self._session = None
         self._fn = None
         self._label = ""
+        self._embeddings: dict[str, Any] = {}
 
     async def setup(self) -> None:
         from app.db.repositories import users as users_repo
@@ -746,11 +753,28 @@ class HybridModuleBackend(SearchBackend):
             await self._session_ctx.__aexit__(None, None, None)
             self._session_ctx = None
 
+    async def _embed(self, query: str):
+        """One embedding per distinct query, exactly as the probe pays for it.
+
+        The scoring layer takes the vector as an argument — the app embeds
+        once per turn and hands it in. A harness that omits it is silently
+        measuring the lexical arm alone and calling it hybrid.
+        """
+        if query in self._embeddings:
+            return self._embeddings[query]
+        from app.llm import router as llm_router
+
+        vector = await llm_router.embed_one(query)
+        self._embeddings[query] = vector
+        return vector
+
     async def search(
         self, query: str, service: str, params: QueryParams, *, limit: int, arm: str = "hybrid"
     ) -> SearchResult:
         filters = params.for_service(service)
+        embedding = await self._embed(query) if query.strip() else None
         offered: dict[str, Any] = {
+            "embedding": embedding,
             "session": self._session,
             "user_id": self._user_id,
             "q": query,

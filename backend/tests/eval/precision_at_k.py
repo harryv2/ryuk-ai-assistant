@@ -389,7 +389,7 @@ def report(result: Mapping[str, Any]) -> str:
         )
     )
 
-    arms = [a for a in ("vector", "keyword", "hybrid") if a in result["arms"]]
+    arms = [a for a in ("vector", "lexical", "hybrid") if a in result["arms"]]
     if len(arms) > 1:
         out.append("")
         out.append("Ablation — does the fusion earn its place?")
@@ -519,7 +519,7 @@ def markdown_section(result: Mapping[str, Any]) -> str:
             ],
         ),
     ]
-    arms = [a for a in ("vector", "keyword", "hybrid") if a in result["arms"]]
+    arms = [a for a in ("vector", "lexical", "hybrid") if a in result["arms"]]
     if len(arms) > 1:
         lines += [
             "",
@@ -643,7 +643,7 @@ Without any of that:
 ```bash
 python -m tests.eval.intent_accuracy --dry-run    # canned responses, labelled as such
 python -m tests.eval.precision_at_k --self-test   # assertions on the metric maths
-python -m tests.eval.precision_at_k --arms keyword  # the text arm alone, no embeddings
+python -m tests.eval.precision_at_k --arms lexical  # the text arm alone, no embeddings
 ```
 
 ---
@@ -841,8 +841,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--dataset", default="relevance.jsonl")
     parser.add_argument("--backend", choices=("mirror", "hybrid", "http"), default="mirror")
-    parser.add_argument("--arms", default="vector,keyword,hybrid",
-                        help="comma list of vector,keyword,hybrid — the ablation")
+    parser.add_argument("--arms", default="vector,lexical,hybrid",
+                        help="comma list of vector,lexical,hybrid — the ablation")
     parser.add_argument("--limit", type=int, default=10, help="per corpus; must be >= 10 for Recall@10")
     parser.add_argument("--match", choices=("auto", "id", "title"), default="auto",
                         help="how a hit is matched to a judgement")

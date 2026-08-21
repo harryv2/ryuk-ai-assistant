@@ -6,8 +6,8 @@
   "classifier": "live (app.orchestrator.front_door.decide -> app.orchestrator.route.plan)",
   "now": "2026-08-20T13:12:04Z",
   "env": {
-    "generated_at": "2026-08-21T18:23:03Z",
-    "git": "82bfb19",
+    "generated_at": "2026-08-21T18:25:26Z",
+    "git": "c17a61f",
     "python": "3.12.8",
     "thresholds": {
       "FLOOR_READ": 0.55,
@@ -19,12 +19,12 @@
       "embed": "text-embedding-3-small"
     }
   },
-  "markdown": "| metric | value | what it means |\n|---|---|---|\n| Accuracy | 0.889 | 56/63 exact intent-name matches |\n| Macro F1 | 0.859 | unweighted across intents, so rare intents count |\n| Service-set F1 | 0.922 | micro over service labels |\n| Service-set exact | 0.825 | the whole set right |\n| Entity-key F1 | 0.062 | keys the planner produced vs labelled |\n| Prior-turn detection | 0.841 | did it know the query leans on the conversation |\n| Ambiguities missed | 2 | of 4 \u2014 the dangerous direction |\n| False alarms | 4 | asked when it did not need to \u2014 the cheap direction |\n\nPer intent:\n\n| intent | n | precision | recall | F1 |\n|---|---|---|---|---|\n| availability | 2 | 1.000 | 1.000 | 1.000 |\n| calendar_list | 9 | 1.000 | 0.889 | 0.941 |\n| cancel_flight | 4 | 0.800 | 1.000 | 0.889 |\n| chit_chat | 2 | 1.000 | 1.000 | 1.000 |\n| conflict_check | 3 | 1.000 | 1.000 | 1.000 |\n| digest | 4 | 1.000 | 1.000 | 1.000 |\n| drive_filter | 4 | 1.000 | 0.500 | 0.667 |\n| drive_search | 3 | 0.600 | 1.000 | 0.750 |\n| email_compose | 3 | 1.000 | 1.000 | 1.000 |\n| email_detail | 3 | 1.000 | 1.000 | 1.000 |\n| email_search | 6 | 1.000 | 1.000 | 1.000 |\n| event_create | 2 | 1.000 | 1.000 | 1.000 |\n| file_share | 2 | 1.000 | 1.000 | 1.000 |\n| meeting_prep | 4 | 1.000 | 1.000 | 1.000 |\n| move_event | 4 | 0.800 | 1.000 | 0.889 |\n| reschedule_and_notify | 2 | 1.000 | 0.500 | 0.667 |\n| ui_verb | 3 | 0.000 | 0.000 | 0.000 |\n| unsupported | 3 | 0.500 | 1.000 | 0.667 |\n\nWorst confusions:\n\n| expected | got | n |\n|---|---|---|\n| drive_filter | drive_search | 2 |\n| ui_verb | unsupported | 2 |\n| calendar_list | unsupported | 1 |\n| reschedule_and_notify | move_event | 1 |\n| ui_verb | cancel_flight | 1 |",
+  "markdown": "| metric | value | what it means |\n|---|---|---|\n| Accuracy | 0.968 | 61/63 exact intent-name matches |\n| Macro F1 | 0.972 | unweighted across intents, so rare intents count |\n| Service-set F1 | 0.935 | micro over service labels |\n| Service-set exact | 0.857 | the whole set right |\n| Entity-key F1 | 0.062 | keys the planner produced vs labelled |\n| Prior-turn detection | 0.841 | did it know the query leans on the conversation |\n| Ambiguities missed | 3 | of 4 \u2014 the dangerous direction |\n| False alarms | 4 | asked when it did not need to \u2014 the cheap direction |\n\nPer intent:\n\n| intent | n | precision | recall | F1 |\n|---|---|---|---|---|\n| availability | 2 | 1.000 | 1.000 | 1.000 |\n| calendar_list | 9 | 1.000 | 0.889 | 0.941 |\n| cancel_flight | 4 | 1.000 | 1.000 | 1.000 |\n| chit_chat | 2 | 1.000 | 1.000 | 1.000 |\n| conflict_check | 3 | 1.000 | 1.000 | 1.000 |\n| digest | 4 | 1.000 | 1.000 | 1.000 |\n| drive_filter | 4 | 1.000 | 1.000 | 1.000 |\n| drive_search | 3 | 1.000 | 1.000 | 1.000 |\n| email_compose | 3 | 1.000 | 1.000 | 1.000 |\n| email_detail | 3 | 1.000 | 1.000 | 1.000 |\n| email_search | 6 | 1.000 | 1.000 | 1.000 |\n| event_create | 2 | 1.000 | 1.000 | 1.000 |\n| file_share | 2 | 1.000 | 1.000 | 1.000 |\n| meeting_prep | 4 | 1.000 | 1.000 | 1.000 |\n| move_event | 4 | 1.000 | 1.000 | 1.000 |\n| reschedule_and_notify | 2 | 1.000 | 1.000 | 1.000 |\n| ui_verb | 3 | 1.000 | 0.667 | 0.800 |\n| unsupported | 3 | 0.600 | 1.000 | 0.750 |\n\nWorst confusions:\n\n| expected | got | n |\n|---|---|---|\n| calendar_list | unsupported | 1 |\n| ui_verb | unsupported | 1 |",
   "result": {
     "n": 63,
-    "accuracy": 0.8888888888888888,
-    "correct": 56,
-    "macro_f1": 0.8593863471314451,
+    "accuracy": 0.9682539682539683,
+    "correct": 61,
+    "macro_f1": 0.971732026143791,
     "per_intent": [
       {
         "intent": "availability",
@@ -45,10 +45,10 @@
       {
         "intent": "cancel_flight",
         "support": 4,
-        "predicted": 5,
-        "precision": 0.8,
+        "predicted": 4,
+        "precision": 1.0,
         "recall": 1.0,
-        "f1": 0.888888888888889
+        "f1": 1.0
       },
       {
         "intent": "chit_chat",
@@ -77,18 +77,18 @@
       {
         "intent": "drive_filter",
         "support": 4,
-        "predicted": 2,
+        "predicted": 4,
         "precision": 1.0,
-        "recall": 0.5,
-        "f1": 0.6666666666666666
+        "recall": 1.0,
+        "f1": 1.0
       },
       {
         "intent": "drive_search",
         "support": 3,
-        "predicted": 5,
-        "precision": 0.6,
+        "predicted": 3,
+        "precision": 1.0,
         "recall": 1.0,
-        "f1": 0.7499999999999999
+        "f1": 1.0
       },
       {
         "intent": "email_compose",
@@ -141,68 +141,53 @@
       {
         "intent": "move_event",
         "support": 4,
-        "predicted": 5,
-        "precision": 0.8,
+        "predicted": 4,
+        "precision": 1.0,
         "recall": 1.0,
-        "f1": 0.888888888888889
+        "f1": 1.0
       },
       {
         "intent": "reschedule_and_notify",
         "support": 2,
-        "predicted": 1,
+        "predicted": 2,
         "precision": 1.0,
-        "recall": 0.5,
-        "f1": 0.6666666666666666
+        "recall": 1.0,
+        "f1": 1.0
       },
       {
         "intent": "ui_verb",
         "support": 3,
-        "predicted": 0,
-        "precision": 0.0,
-        "recall": 0.0,
-        "f1": 0.0
+        "predicted": 2,
+        "precision": 1.0,
+        "recall": 0.6666666666666666,
+        "f1": 0.8
       },
       {
         "intent": "unsupported",
         "support": 3,
-        "predicted": 6,
-        "precision": 0.5,
+        "predicted": 5,
+        "precision": 0.6,
         "recall": 1.0,
-        "f1": 0.6666666666666666
+        "f1": 0.7499999999999999
       }
     ],
     "confusions": [
-      {
-        "expected": "drive_filter",
-        "got": "drive_search",
-        "count": 2
-      },
-      {
-        "expected": "ui_verb",
-        "got": "unsupported",
-        "count": 2
-      },
       {
         "expected": "calendar_list",
         "got": "unsupported",
         "count": 1
       },
       {
-        "expected": "reschedule_and_notify",
-        "got": "move_event",
-        "count": 1
-      },
-      {
         "expected": "ui_verb",
-        "got": "cancel_flight",
+        "got": "unsupported",
         "count": 1
       }
     ],
     "services": {
-      "micro_precision": 0.9558823529411765,
+      "micro_precision": 0.9848484848484849,
       "micro_recall": 0.8904109589041096,
-      "micro_f1": 0.9219858156028369,
-      "exact_set": 0.8253968253968254
+      "micro_f1": 0.935251798561151,
+      "exact_set": 0.8571428571428571
     },
     "entities": {
       "key_precision": 0.75,
@@ -214,14 +199,14 @@
     },
     "ambiguity": {
       "should_flag": 4,
-      "flagged": 6,
-      "caught": 2,
-      "missed": 2,
+      "flagged": 5,
+      "caught": 1,
+      "missed": 3,
       "false_alarms": 4,
       "correctly_silent": 55,
-      "precision": 0.3333333333333333,
-      "recall": 0.5,
-      "f1": 0.4,
+      "precision": 0.2,
+      "recall": 0.25,
+      "f1": 0.22222222222222224,
       "missed_rows": [
         {
           "id": "i038",
@@ -232,6 +217,11 @@
           "id": "i048",
           "query": "send john the MSA",
           "got": "email_compose"
+        },
+        {
+          "id": "i053",
+          "query": "give john access to the MSA",
+          "got": "file_share"
         }
       ],
       "false_alarm_rows": [
@@ -258,7 +248,7 @@
       ]
     },
     "prior_turn_accuracy": 0.8412698412698413,
-    "has_write_accuracy": 0.9841269841269841,
+    "has_write_accuracy": 1.0,
     "route_agreement": 0.5,
     "route_n": 4,
     "slices": {
@@ -269,8 +259,8 @@
       },
       "awkward": {
         "n": 5,
-        "correct": 4,
-        "accuracy": 0.8
+        "correct": 5,
+        "accuracy": 1.0
       },
       "brief_sample": {
         "n": 7,
@@ -279,13 +269,13 @@
       },
       "context": {
         "n": 10,
-        "correct": 7,
-        "accuracy": 0.7
+        "correct": 9,
+        "accuracy": 0.9
       },
       "front_door": {
         "n": 7,
-        "correct": 4,
-        "accuracy": 0.5714285714285714
+        "correct": 6,
+        "accuracy": 0.8571428571428571
       },
       "multilingual": {
         "n": 6,
@@ -300,12 +290,12 @@
     },
     "latency_ms": {
       "n": 63,
-      "mean": 5245.19,
-      "p50": 4726.14,
-      "p95": 11688.53,
-      "p99": 17545.72,
+      "mean": 5685.66,
+      "p50": 4943.07,
+      "p95": 14795.18,
+      "p99": 17734.98,
       "min": 0.04,
-      "max": 17545.72
+      "max": 17734.98
     },
     "llm_calls": {
       "mean": null,
@@ -322,45 +312,10 @@
         "note": "Same string, empty conversation. The router declines and the planner defaults to calendar_list, because a naked date serves no other intent. Paired with i007 on purpose: the label depends on the conversation, not the string."
       },
       {
-        "id": "i019",
-        "query": "spreadsheets in drive",
-        "expected": "drive_filter",
-        "got": "drive_search",
-        "note": "A file-type word with no window. Pure metadata filter, no window to resolve."
-      },
-      {
-        "id": "i020",
-        "query": "pdfs last month",
-        "expected": "drive_filter",
-        "got": "drive_search",
-        "note": "Two nouns. 'Drive' is not named and must be inferred from the file type."
-      },
-      {
-        "id": "i045",
-        "query": "Push my Acme review next Thursday to Friday 3pm and tell the attendees",
-        "expected": "reschedule_and_notify",
-        "got": "move_event",
-        "note": "Two writes with an enforced order: if the calendar update fails, the email announcing it must not go. One card, two confirms."
-      },
-      {
-        "id": "i058",
-        "query": "send it",
-        "expected": "ui_verb",
-        "got": "unsupported",
-        "note": "Approval of an open card. has_write is false because the run does not plan a write \u2014 it approves one that already exists as an actions row. 0 LLM calls."
-      },
-      {
-        "id": "i059",
-        "query": "not now",
-        "expected": "ui_verb",
-        "got": "unsupported",
-        "note": "Declining a card. The action goes to cancelled, which the partial unique index permits to be re-created later."
-      },
-      {
         "id": "i060",
         "query": "the first one",
         "expected": "ui_verb",
-        "got": "cancel_flight",
+        "got": "unsupported",
         "note": "An answer to an open choice card, which is matcher #1 and resumes the paused run at 0 LLM calls. Contrast with i017, where the same shape of phrase with no open card is a fresh email_detail query."
       }
     ]

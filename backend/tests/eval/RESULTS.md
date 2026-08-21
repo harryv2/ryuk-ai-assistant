@@ -1,6 +1,6 @@
 # Evaluation results
 
-Generated 2026-08-21T18:13:31Z from commit `82bfb19`.
+Generated 2026-08-21T18:43:21Z from commit `c17a61f`.
 
 Every number here comes from one of the three harnesses in this directory, run
 against a seeded database. Nothing is hand-entered. To reproduce, see
@@ -9,10 +9,10 @@ against a seeded database. Nothing is hand-entered. To reproduce, see
 | | |
 |---|---|
 | Intent dataset | `datasets/intents.jsonl` — 63 labelled queries across 18 intents, 7 languages |
-| Relevance dataset | `datasets/relevance.jsonl` — 35 queries, 101 graded judgements |
+| Relevance dataset | `datasets/relevance.jsonl` — 35 queries, 81 graded judgements |
 | Thresholds in force | `FLOOR_READ` 0.55 · `MARGIN` 0.15 · `FLOOR_WRITE` 0.80 |
 | Models | chat `gpt-5.6-terra` · embeddings `text-embedding-3-small` |
-| Fixed context | `demo@example.com`, `America/New_York`, week starts Monday, now = 2026-08-20T13:12:04Z |
+| Fixed context | `demo@example.com`, `America/New_York`, week starts Monday, now = 2026-08-21T18:43:20Z |
 
 ---
 
@@ -20,48 +20,44 @@ against a seeded database. Nothing is hand-entered. To reproduce, see
 
 | metric | value | what it means |
 |---|---|---|
-| Accuracy | 0.222 | 14/63 exact intent-name matches |
-| Macro F1 | 0.127 | unweighted across intents, so rare intents count |
-| Service-set F1 | 0.879 | micro over service labels |
-| Service-set exact | 0.778 | the whole set right |
-| Entity-key F1 | 0.000 | keys the planner produced vs labelled |
+| Accuracy | 0.968 | 61/63 exact intent-name matches |
+| Macro F1 | 0.972 | unweighted across intents, so rare intents count |
+| Service-set F1 | 0.935 | micro over service labels |
+| Service-set exact | 0.857 | the whole set right |
+| Entity-key F1 | 0.062 | keys the planner produced vs labelled |
 | Prior-turn detection | 0.841 | did it know the query leans on the conversation |
-| Ambiguities missed | 2 | of 4 — the dangerous direction |
-| False alarms | 5 | asked when it did not need to — the cheap direction |
+| Ambiguities missed | 3 | of 4 — the dangerous direction |
+| False alarms | 4 | asked when it did not need to — the cheap direction |
 
 Per intent:
 
 | intent | n | precision | recall | F1 |
 |---|---|---|---|---|
-| availability | 2 | 0.000 | 0.000 | 0.000 |
-| calendar_list | 9 | 1.000 | 0.778 | 0.875 |
-| cancel_flight | 4 | 0.000 | 0.000 | 0.000 |
-| chit_chat | 2 | 0.000 | 0.000 | 0.000 |
-| conflict_check | 3 | 0.000 | 0.000 | 0.000 |
-| digest | 4 | 0.000 | 0.000 | 0.000 |
-| drive_filter | 4 | 0.000 | 0.000 | 0.000 |
-| drive_search | 3 | 0.000 | 0.000 | 0.000 |
-| email_compose | 3 | 0.000 | 0.000 | 0.000 |
-| email_detail | 3 | 0.000 | 0.000 | 0.000 |
-| email_search | 6 | 1.000 | 0.833 | 0.909 |
-| event_create | 2 | 0.000 | 0.000 | 0.000 |
-| file_share | 2 | 0.000 | 0.000 | 0.000 |
-| meeting_prep | 4 | 0.000 | 0.000 | 0.000 |
-| move_event | 4 | 0.000 | 0.000 | 0.000 |
-| reschedule_and_notify | 2 | 0.000 | 0.000 | 0.000 |
-| ui_verb | 3 | 0.000 | 0.000 | 0.000 |
-| unsupported | 3 | 0.400 | 0.667 | 0.500 |
+| availability | 2 | 1.000 | 1.000 | 1.000 |
+| calendar_list | 9 | 1.000 | 0.889 | 0.941 |
+| cancel_flight | 4 | 1.000 | 1.000 | 1.000 |
+| chit_chat | 2 | 1.000 | 1.000 | 1.000 |
+| conflict_check | 3 | 1.000 | 1.000 | 1.000 |
+| digest | 4 | 1.000 | 1.000 | 1.000 |
+| drive_filter | 4 | 1.000 | 1.000 | 1.000 |
+| drive_search | 3 | 1.000 | 1.000 | 1.000 |
+| email_compose | 3 | 1.000 | 1.000 | 1.000 |
+| email_detail | 3 | 1.000 | 1.000 | 1.000 |
+| email_search | 6 | 1.000 | 1.000 | 1.000 |
+| event_create | 2 | 1.000 | 1.000 | 1.000 |
+| file_share | 2 | 1.000 | 1.000 | 1.000 |
+| meeting_prep | 4 | 1.000 | 1.000 | 1.000 |
+| move_event | 4 | 1.000 | 1.000 | 1.000 |
+| reschedule_and_notify | 2 | 1.000 | 1.000 | 1.000 |
+| ui_verb | 3 | 1.000 | 0.667 | 0.800 |
+| unsupported | 3 | 0.600 | 1.000 | 0.750 |
 
 Worst confusions:
 
 | expected | got | n |
 |---|---|---|
-| ui_verb | <none> | 3 |
-| email_detail | <none> | 2 |
-| meeting_prep | prepare_acme_meeting | 2 |
-| chit_chat | unsupported | 2 |
-| calendar_list | <none> | 1 |
 | calendar_list | unsupported | 1 |
+| ui_verb | unsupported | 1 |
 
 ---
 
@@ -69,37 +65,37 @@ Worst confusions:
 
 | metric | value | target |
 |---|---|---|
-| **Precision@5** | **0.000** | > 0.80 (brief, 10 pts) |
-| Precision@1 | 0.000 | — |
-| Precision@3 | 0.000 | — |
-| Recall@10 | 0.000 | — |
-| MRR | 0.000 | — |
-| nDCG@5 | 0.000 | — |
-| Precision@5, strict /k | 0.000 | see note |
-| Search p95 | 14 ms | < 500 ms (brief, 3 pts) |
-| Search p99 | 18 ms | — |
+| **Precision@5** | **0.787** | > 0.80 (brief, 10 pts) |
+| Precision@1 | 0.700 | — |
+| Precision@3 | 0.692 | — |
+| Recall@10 | 0.943 | — |
+| MRR | 0.770 | — |
+| nDCG@5 | 0.709 | — |
+| Precision@5, strict /k | 0.305 | see note |
+| Search p95 | 82 ms | < 500 ms (brief, 3 pts) |
+| Search p99 | 182 ms | — |
 
-Scored over 43 (query, corpus) pairs from 31 queries. Precision divides by `min(k, relevant)`: most queries here have one or two relevant documents per corpus, and a strict `/k` denominator caps such a query at P@5 = 0.2 however good the ranking is. The strict figure is in the table above so the choice is visible rather than assumed.
+Scored over 40 (query, corpus) pairs from 30 queries. Precision divides by `min(k, relevant)`: most queries here have one or two relevant documents per corpus, and a strict `/k` denominator caps such a query at P@5 = 0.2 however good the ranking is. The strict figure is in the table above so the choice is visible rather than assumed.
 
 By query type:
 
 | type | queries | P@1 | P@5 | R@10 | MRR | nDCG@5 |
 |---|---|---|---|---|---|---|
-| attendee | 3 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
-| cross_lingual | 4 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
-| date_window | 5 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
-| mime | 3 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
-| multi_service | 3 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
-| semantic | 8 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
-| sender | 5 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |
+| attendee | 3 | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
+| cross_lingual | 4 | 0.833 | 0.833 | 1.000 | 0.861 | 0.833 |
+| date_window | 5 | 1.000 | 0.933 | 0.975 | 1.000 | 0.912 |
+| mime | 3 | 0.333 | 0.667 | 1.000 | 0.492 | 0.500 |
+| multi_service | 3 | 0.429 | 0.590 | 0.976 | 0.603 | 0.505 |
+| semantic | 7 | 0.545 | 0.697 | 0.818 | 0.632 | 0.525 |
+| sender | 5 | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
 
 Ablation — vector arm alone, text arm alone, and the two fused:
 
 | arm | P@1 | P@5 | R@10 | MRR | nDCG@5 | p95 ms |
 |---|---|---|---|---|---|---|
-| vector | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 21 |
-| keyword | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 9 |
-| hybrid | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 14 |
+| vector | 0.700 | 0.787 | 0.943 | 0.770 | 0.704 | 23 |
+| lexical | 0.375 | 0.338 | 0.338 | 0.375 | 0.353 | 16 |
+| hybrid | 0.700 | 0.787 | 0.943 | 0.770 | 0.709 | 82 |
 
 ---
 
@@ -164,7 +160,7 @@ Without any of that:
 ```bash
 python -m tests.eval.intent_accuracy --dry-run    # canned responses, labelled as such
 python -m tests.eval.precision_at_k --self-test   # assertions on the metric maths
-python -m tests.eval.precision_at_k --arms keyword  # the text arm alone, no embeddings
+python -m tests.eval.precision_at_k --arms lexical  # the text arm alone, no embeddings
 ```
 
 ---
@@ -174,7 +170,7 @@ python -m tests.eval.precision_at_k --arms keyword  # the text arm alone, no emb
 **The thresholds are hand-set, not calibrated.** `FLOOR_READ` 0.55, `MARGIN`
 0.15 and `FLOOR_WRITE` 0.80 were chosen by looking at score distributions on the
 seed corpus. They were not fitted to this dataset, and this dataset cannot fit
-them — 101 judgements over
+them — 81 judgements over
 35 queries is an order of magnitude short.
 
 Calibrating them properly means four things, and none of them is a code change:
