@@ -84,6 +84,31 @@ backend/app/
 the module layout, the interfaces and the event names. Read those before
 changing anything structural.
 
+## Built to take more than Google
+
+Nothing above the transport layer names a vendor. The mirror is keyed by
+**shape**, not by product — a message is a message whether Gmail or Outlook
+delivered it — so the three tables already carry a `connector` column and an
+open `attributes` JSONB for whatever the long tail of a provider adds:
+
+| Mirror table | Holds | Google today | Slots in next |
+|---|---|---|---|
+| `sync_messages` | anything with a sender, recipients and a body | Gmail | Outlook mail, Slack, Teams |
+| `sync_events` | anything with a start, an end and attendees | Calendar | Outlook Calendar |
+| `sync_files` | anything with a name, a folder and extractable text | Drive | OneDrive, SharePoint, Notion |
+
+Jira is the interesting case, and it is the one that proves the rule: an issue
+is a thread of comments with participants and a status, so it lands in
+`sync_messages` with `connector = 'jira'` and its issue key, status and sprint
+in `attributes` — no fourth table, no migration.
+
+Adding a provider is therefore three things, none of which touch the
+orchestrator: a client in `app/google/`-style transport, a sync task that maps
+its payload onto one of the three shapes, and its scopes in the OAuth flow.
+Search, ranking, the planner, the ops and every template keep working, because
+they read shapes. `docs/ER_DIAGRAM.md` walks through why the mirror was
+collapsed to three tables rather than one per service.
+
 ## Prerequisites
 
 - Docker and Docker Compose — everything runs through `docker compose up`
