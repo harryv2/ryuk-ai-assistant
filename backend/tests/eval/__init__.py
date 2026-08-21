@@ -109,7 +109,7 @@ OUT_DIR = EVAL_DIR / "out"
 FIXED_NOW = "2026-08-20T13:12:04Z"
 FIXED_TZ = "America/New_York"
 FIXED_WEEK_START = 1
-EVAL_USER_EMAIL = "demo@alphalaw.test"
+EVAL_USER_EMAIL = "demo@example.com"
 
 DEFAULT_API_BASE = os.environ.get("EVAL_API_BASE", "http://localhost:8000")
 
@@ -472,7 +472,7 @@ ARMS = ("hybrid", "vector", "keyword")
 SEARCH_MODULES = ("app.search.hybrid", "app.search.probe")
 FRONT_DOOR_MODULE = "app.orchestrator.front_door"
 FRONT_DOOR_NAMES = (
-    "run", "front_door", "handle", "try_front_door", "match", "classify", "try_match", "resolve",
+    "decide", "run", "front_door", "handle", "try_front_door", "match", "classify", "try_match", "resolve",
 )
 ROUTE_MODULE = "app.orchestrator.route"
 ROUTE_NAMES = ("plan", "route", "classify", "build_plan", "make_plan", "run")
@@ -1009,6 +1009,8 @@ def normalise_intent(payload: Any, *, elapsed_ms: float = 0.0) -> Prediction:
     """Read a plan, a front-door decision or a bare intent object into a Prediction."""
     if payload is None:
         return Prediction(error="classifier returned None", latency_ms=elapsed_ms)
+    if hasattr(payload, "to_dict") and not isinstance(payload, Mapping):
+        payload = payload.to_dict()  # front_door.Decision spells itself
     if not isinstance(payload, Mapping):
         payload = getattr(payload, "__dict__", None) or {
             k: getattr(payload, k) for k in dir(payload) if not k.startswith("_")
@@ -1027,6 +1029,15 @@ def normalise_intent(payload: Any, *, elapsed_ms: float = 0.0) -> Prediction:
         entities = {}
 
     name = intent_obj.get("name") or payload.get("intent_name")
+    if name is None:
+        # Terminal front-door routes ARE the classification.
+        route_name = str(payload.get("route") or "")
+        if route_name in ("chit_chat", "ui_verb"):
+            name = route_name
+        elif route_name == "open_card":
+            name = "ui_verb"  # answering the card on screen is a UI verb
+        elif route_name == "capability":
+            name = "unsupported"
     if name is None and verb == "answer":
         # An `answer` verb with no intent is the front door refusing to plan:
         # chit-chat when nothing was retrieved for, unsupported otherwise.
@@ -1128,6 +1139,14 @@ class LiveClassifier(Classifier):
             "history": context.get("prior_turns") or [],
             "context": context,
             "prior_intent": context.get("prior_intent"),
+            # what `front_door.decide` calls it — shaped like the runner's
+            # `_last_intent()`, which hands the previous turn's intent dict.
+            "last_intent": (
+                {"name": context.get("prior_intent")} if context.get("prior_intent") else None
+            ),
+            # A dataset row that says a card is on screen gets that card
+            # offered the way the runner offers pending prompts.
+            "open_prompts": [context["open_card"]] if context.get("open_card") else [],
         }
 
     async def classify(self, row: Mapping[str, Any], *, now: datetime) -> Prediction:
@@ -1157,6 +1176,11 @@ def _is_miss(payload: Any) -> bool:
     """A front-door result that means 'not mine, keep going'."""
     if payload is None or payload is False:
         return True
+    if isinstance(payload, str):
+        return True  # a bare string is prose, not a classification
+    handled = getattr(payload, "handled", None)
+    if handled is False:
+        return True  # front_door.Decision with route == miss
     if isinstance(payload, Mapping):
         if payload.get("type") in ("miss", "pass", "decline"):
             return True

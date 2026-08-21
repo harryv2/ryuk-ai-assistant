@@ -312,7 +312,7 @@ def sweep_dlq(self: AppTask, limit: int = 200) -> dict[str, int]:
 # 4. Pruning
 # --------------------------------------------------------------------------- #
 
-#: Node results are a snapshot for the trace panel. After this long nobody is
+#: Node results are a snapshot for the step trace in the chat. After this long nobody is
 #: reading them and they are the largest JSONB in the database.
 RESULT_RETENTION_DAYS = 90
 

@@ -1,0 +1,675 @@
+{
+  "kind": "latency",
+  "now": "2026-08-20T13:12:04Z",
+  "search": {
+    "backend": "mirror (app.db.repositories.mirror.hybrid_search, user_id=WWd9-iZZuiyw68xybhuZT)",
+    "queries": 35,
+    "repeats": 3,
+    "limit": 10,
+    "total_ms": {
+      "n": 105,
+      "mean": 7.26,
+      "p50": 5.63,
+      "p95": 18.71,
+      "p99": 20.42,
+      "min": 0.07,
+      "max": 23.56
+    },
+    "cold_ms": {
+      "n": 35,
+      "mean": 15.01,
+      "p50": 10.73,
+      "p95": 35.04,
+      "p99": 146.34,
+      "min": 0.08,
+      "max": 146.34
+    },
+    "by_service": {
+      "gcal": {
+        "n": 36,
+        "mean": 6.78,
+        "p50": 5.4,
+        "p95": 17.84,
+        "p99": 22.59,
+        "min": 0.0,
+        "max": 22.59
+      },
+      "gdrive": {
+        "n": 48,
+        "mean": 6.64,
+        "p50": 4.73,
+        "p95": 16.04,
+        "p99": 18.35,
+        "min": 0.0,
+        "max": 18.35
+      },
+      "gmail": {
+        "n": 66,
+        "mean": 6.68,
+        "p50": 5.75,
+        "p95": 14.86,
+        "p99": 19.47,
+        "min": 1.24,
+        "max": 19.47
+      }
+    },
+    "by_stage": {
+      "embed_ms": {
+        "n": 144,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.01,
+        "min": 0.0,
+        "max": 0.14
+      },
+      "sql_ms": {
+        "n": 150,
+        "mean": 6.67,
+        "p50": 5.05,
+        "p95": 15.88,
+        "p99": 19.36,
+        "min": 0.0,
+        "max": 22.58
+      }
+    },
+    "by_corpus_count": {
+      "1": {
+        "n": 66,
+        "mean": 4.41,
+        "p50": 3.25,
+        "p95": 13.16,
+        "p99": 14.97,
+        "min": 0.07,
+        "max": 14.97
+      },
+      "2": {
+        "n": 33,
+        "mean": 11.39,
+        "p50": 11.7,
+        "p95": 20.11,
+        "p99": 20.42,
+        "min": 4.83,
+        "max": 20.42
+      },
+      "3": {
+        "n": 6,
+        "mean": 15.78,
+        "p50": 15.38,
+        "p95": 23.56,
+        "p99": 23.56,
+        "min": 7.84,
+        "max": 23.56
+      }
+    },
+    "target_ms": 500.0,
+    "meets_target_p95": true
+  },
+  "query_path": {
+    "base_url": "http://localhost:8000",
+    "queries": 43,
+    "repeats": 3,
+    "runs": 0,
+    "overall_ms": {
+      "n": 0,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "by_class": {},
+    "read_class_ms": {
+      "n": 0,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "target_read_ms": 2000.0,
+    "meets_read_target_p95": false,
+    "llm_calls": {
+      "mean": null,
+      "median": null,
+      "max": null,
+      "n": 0
+    },
+    "rows": [],
+    "failures": [
+      {
+        "id": "i001",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"_wIUI-IiRM5eYe-YSa7B7\"}}"
+      },
+      {
+        "id": "i002",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"bjUf3UUi3y6ToP22BEnRI\"}}"
+      },
+      {
+        "id": "i003",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"1y0M0n7Zt_tZk74PWzgjx\"}}"
+      },
+      {
+        "id": "i004",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"THFnsnLkeJ2v6oJzx_KH4\"}}"
+      },
+      {
+        "id": "i005",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"kWo2YrctCW31NGbg3e6-W\"}}"
+      },
+      {
+        "id": "i006",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"tjKV0RReIZDsXdM-hjZHK\"}}"
+      },
+      {
+        "id": "i007",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"DDMVnj-ZUn2jQWJmYORpl\"}}"
+      },
+      {
+        "id": "i008",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"tkwISTXJlsh8SrBDb9ajY\"}}"
+      },
+      {
+        "id": "i009",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"l4Vlz6U8TI0IGKvZAUVse\"}}"
+      },
+      {
+        "id": "i010",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"36JSEiJ7fov4eSBhmk7a7\"}}"
+      },
+      {
+        "id": "i011",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"EC88XboudpidS_4wwSvRK\"}}"
+      },
+      {
+        "id": "i012",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"o1AVnk3Gk4tjSNhT-MSGx\"}}"
+      },
+      {
+        "id": "i013",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"vbWL3Pvh7IUGjO8vZEacq\"}}"
+      },
+      {
+        "id": "i014",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"BEjTP1wTZLMpzYurCgPWh\"}}"
+      },
+      {
+        "id": "i015",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"1EokdyMvSfGkdjgZ46qaB\"}}"
+      },
+      {
+        "id": "i016",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"Rm-gis-HDtvftwPun7QP5\"}}"
+      },
+      {
+        "id": "i017",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"nIYZZNUVp8JlOM3s6LhTC\"}}"
+      },
+      {
+        "id": "i018",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"m7RDMBsaTgvdv__CtdI9u\"}}"
+      },
+      {
+        "id": "i019",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"dqWueziabni7BzhIeqNt7\"}}"
+      },
+      {
+        "id": "i020",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"5m_5u7979FjOugJl5yXNf\"}}"
+      },
+      {
+        "id": "i021",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"9q9lB2RpVTmbKGxYuTTts\"}}"
+      },
+      {
+        "id": "i022",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"h50tl1eWYAQcs_rLxazEu\"}}"
+      },
+      {
+        "id": "i023",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"Q14CpYLZraCyDGAinmtCn\"}}"
+      },
+      {
+        "id": "i024",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"UKLS8TisbDpT-ReGwNkXQ\"}}"
+      },
+      {
+        "id": "i025",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"G6vlwaZ6VjtspE6uGTDil\"}}"
+      },
+      {
+        "id": "i026",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"IU19kXH0pr6EETrwLBzjj\"}}"
+      },
+      {
+        "id": "i027",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"23wEcnuLqPlnuJy9OS3dE\"}}"
+      },
+      {
+        "id": "i028",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"zk-0XXZMxCVcOPt2O8OwA\"}}"
+      },
+      {
+        "id": "i029",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"qS23A7lYB12UKtx_9HGRj\"}}"
+      },
+      {
+        "id": "i030",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"vUjDc5PgZlIGAUeZ_Uxi-\"}}"
+      },
+      {
+        "id": "i031",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"0kguIbeECNUuPNMx2yX8Y\"}}"
+      },
+      {
+        "id": "i032",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"tDwubWWpw3MXqp1YGg1C6\"}}"
+      },
+      {
+        "id": "i033",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"ToRMb1jzAex2a-8ruWejE\"}}"
+      },
+      {
+        "id": "i034",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"UYHTH9wTsTWvoayvkn8eO\"}}"
+      },
+      {
+        "id": "i035",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"z-yLoVrIZUv6XALeXu8wr\"}}"
+      },
+      {
+        "id": "i036",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"u1QiElYqN_D31tz4wA12e\"}}"
+      },
+      {
+        "id": "i054",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"cN5n3UslnJGe1mkcyWcl0\"}}"
+      },
+      {
+        "id": "i055",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"txJYDTNDQ5RrYwoNqBPmQ\"}}"
+      },
+      {
+        "id": "i056",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"GUVRxLQFe8DCjxnLBIbnQ\"}}"
+      },
+      {
+        "id": "i057",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"pFOqh_-efCFd8z2cHE8WQ\"}}"
+      },
+      {
+        "id": "i061",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"sLcprKiP0bYCgSnVDXq_Y\"}}"
+      },
+      {
+        "id": "i062",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"gYuWgAJv32qaUQP6FzUGc\"}}"
+      },
+      {
+        "id": "i063",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"yziGl_UU0dkdsz1PvzHdN\"}}"
+      },
+      {
+        "id": "i001",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"8B98qbMzKSQL78-npi5aQ\"}}"
+      },
+      {
+        "id": "i002",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"LDFL4heYULuxUloLylKDO\"}}"
+      },
+      {
+        "id": "i003",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"vdQCNpKtRcG0Cb_p7w7d7\"}}"
+      },
+      {
+        "id": "i004",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"RywnmgJtwSZWwu2pAhmVq\"}}"
+      },
+      {
+        "id": "i005",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"MGzEqyvuUBoAm1DAjYjI8\"}}"
+      },
+      {
+        "id": "i006",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"HbZpDtJV0TrFUIufHviKM\"}}"
+      },
+      {
+        "id": "i007",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"daEaOgSnXUNSRM1TcxF1g\"}}"
+      },
+      {
+        "id": "i008",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"3xGI-w-ahEYceIXsnpdCb\"}}"
+      },
+      {
+        "id": "i009",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"kX9XoBBkjdNy1uoLgKgJx\"}}"
+      },
+      {
+        "id": "i010",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"qyEIWXmXTD6MiTgCCGZGS\"}}"
+      },
+      {
+        "id": "i011",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"QCBw9gEJsv0I4p8_AQnZy\"}}"
+      },
+      {
+        "id": "i012",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"2f08QAp_Kn8YNg1IPoD19\"}}"
+      },
+      {
+        "id": "i013",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"3idBB46bVua-wi6W-V0gP\"}}"
+      },
+      {
+        "id": "i014",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"fJdxfhOiaJGuVnDXBCMkQ\"}}"
+      },
+      {
+        "id": "i015",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"ENCTBRjn46v657ouXpB4m\"}}"
+      },
+      {
+        "id": "i016",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"-GDDfjtPipWk8j4mJGBsa\"}}"
+      },
+      {
+        "id": "i017",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"4iHyfDlLVbpMzky_9F5qy\"}}"
+      },
+      {
+        "id": "i018",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"Mo9K8cXcll_wfqI5NyAUG\"}}"
+      },
+      {
+        "id": "i019",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"VXK1cA8vI_jr8cPjkErhQ\"}}"
+      },
+      {
+        "id": "i020",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"zyVnwFQ3TqzoAGCMhIh-9\"}}"
+      },
+      {
+        "id": "i021",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"iu3rfIrnk8s8oP7ZSTx4x\"}}"
+      },
+      {
+        "id": "i022",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"MYCMGrPOVaj-AQDbtt5Eb\"}}"
+      },
+      {
+        "id": "i023",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"yW0pnkVW2kKcEJjiw8bF4\"}}"
+      },
+      {
+        "id": "i024",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"mB6c3WHFuwlMZWKmgm16E\"}}"
+      },
+      {
+        "id": "i025",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"bykUb8MYp2sgManxUe1ra\"}}"
+      },
+      {
+        "id": "i026",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"WFnT5nhMeo6rZIuKmuNez\"}}"
+      },
+      {
+        "id": "i027",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"NKesIRTO5iYtiV42tC51X\"}}"
+      },
+      {
+        "id": "i028",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"NS5Gp2AO-0YDOmCcrYXJV\"}}"
+      },
+      {
+        "id": "i029",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"sjVC_aO6lzaEHB85z9Nym\"}}"
+      },
+      {
+        "id": "i030",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"36T-XvhSnxWSH5EZoJDJh\"}}"
+      },
+      {
+        "id": "i031",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"rgIJkA4JXWzYJU292Bxfx\"}}"
+      },
+      {
+        "id": "i032",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"0Lpuw4ELDuSoLwoWhwHGd\"}}"
+      },
+      {
+        "id": "i033",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"HoGGWBQXKyXQNT8VLQM8B\"}}"
+      },
+      {
+        "id": "i034",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"10jh9lHwBYRTkJFRq-ZCz\"}}"
+      },
+      {
+        "id": "i035",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"j9GpFBjWcADuds7R7wMJs\"}}"
+      },
+      {
+        "id": "i036",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"Gr_3jL5yS1URjdWsDRssM\"}}"
+      },
+      {
+        "id": "i054",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"fMqtnx262Njk-0FGPjXrV\"}}"
+      },
+      {
+        "id": "i055",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"VGQn1dkhXHcCVNxSJ2JyA\"}}"
+      },
+      {
+        "id": "i056",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"YyzrcDKBZPYV6N2KvhVmY\"}}"
+      },
+      {
+        "id": "i057",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"T6vavSJfjvGwQIXnD4jn-\"}}"
+      },
+      {
+        "id": "i061",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"5tGD8l3L7vam3ntcZymhA\"}}"
+      },
+      {
+        "id": "i062",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"cKg8qe3umiDQFw9Z44-Vn\"}}"
+      },
+      {
+        "id": "i063",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"9pHbFOS7ns6EsVeDLEKVh\"}}"
+      },
+      {
+        "id": "i001",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"JROWLmDGIqXFswOYVPY4G\"}}"
+      },
+      {
+        "id": "i002",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"IJb8YqjCLvIkWIoQI7qVo\"}}"
+      },
+      {
+        "id": "i003",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"RG7zW0N6qh61as0PGnRYl\"}}"
+      },
+      {
+        "id": "i004",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"KZEWqRtofT0iBa6UWGIbv\"}}"
+      },
+      {
+        "id": "i005",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"oKGoPTnb3StDD7A75tnoq\"}}"
+      },
+      {
+        "id": "i006",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"NyAb8fsPnHQ9WrVBd6PaR\"}}"
+      },
+      {
+        "id": "i007",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"bdRwUlnAaE8dyfYRWw5LP\"}}"
+      },
+      {
+        "id": "i008",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"iNBFfJzHxpPEKqLM7TEKj\"}}"
+      },
+      {
+        "id": "i009",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"whEX4WZb-v0_jLmVqBJ0x\"}}"
+      },
+      {
+        "id": "i010",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"YXFf1Ipwz4cFdkXF3-6Ps\"}}"
+      },
+      {
+        "id": "i011",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"9ANtMMEneVIdE0dWwoBRN\"}}"
+      },
+      {
+        "id": "i012",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"Jp7EU2J1hp5icFvsM2l4d\"}}"
+      },
+      {
+        "id": "i013",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"F4fHWZ7v21M3rQSByzSPW\"}}"
+      },
+      {
+        "id": "i014",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"7cPxH_wWeam72S7Bn8KJF\"}}"
+      },
+      {
+        "id": "i015",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"-OZ5O3OJqyvgAI2vMp57q\"}}"
+      },
+      {
+        "id": "i016",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"xymb2uKeDwCztC2ZYi54j\"}}"
+      },
+      {
+        "id": "i017",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"_EBBo896AEsmdUW1UdKRr\"}}"
+      },
+      {
+        "id": "i018",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"KxtYOks1WsQxMCQY9mxtN\"}}"
+      },
+      {
+        "id": "i019",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"UUzzULIfQDLnHkPgkAft6\"}}"
+      },
+      {
+        "id": "i020",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"b927MR2n0Wt2eRTBAEUid\"}}"
+      },
+      {
+        "id": "i021",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"X4QywynVvLMdAtPrkzPEa\"}}"
+      },
+      {
+        "id": "i022",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"mzmfxH4jIJtKm4w1DOOg5\"}}"
+      },
+      {
+        "id": "i023",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"LKA9b98DiX6Ash_ybCPhU\"}}"
+      },
+      {
+        "id": "i024",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"P-_g96JvAUnYYEDCaSLqz\"}}"
+      },
+      {
+        "id": "i025",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"BkLSCXwx7fY57WxeERAns\"}}"
+      },
+      {
+        "id": "i026",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"XncdaJ4X0Hv6IRsqEGJvh\"}}"
+      },
+      {
+        "id": "i027",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"3Sqzr_FYzkcF8eShM6fOD\"}}"
+      },
+      {
+        "id": "i028",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"vp9XEfdb91yxEimINA2t5\"}}"
+      },
+      {
+        "id": "i029",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"HzeZz2q1yOeKvqXvaKjMI\"}}"
+      },
+      {
+        "id": "i030",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"7Vr8rYIG6qciVt0JvVn-S\"}}"
+      },
+      {
+        "id": "i031",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"_l3PRttrCYI5BDoz_pyHT\"}}"
+      },
+      {
+        "id": "i032",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"u8l36dGJomXFVP87QMQjU\"}}"
+      },
+      {
+        "id": "i033",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"kf8SgZHMYNQUDvlaVQvac\"}}"
+      },
+      {
+        "id": "i034",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"6ktT4wuwTeoOgHN5BfdHA\"}}"
+      },
+      {
+        "id": "i035",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"s0b7gF0EoDqfl6WmiaR9-\"}}"
+      },
+      {
+        "id": "i036",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"waLtxXRqANDGEFR2OnMUZ\"}}"
+      },
+      {
+        "id": "i054",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"R-XekZ8vyF7vkZ1o1jBdv\"}}"
+      },
+      {
+        "id": "i055",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"JKS8M4Cr_nZuGMWD4MKth\"}}"
+      },
+      {
+        "id": "i056",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"zxxeKVYbt6XdDpbfPcXu8\"}}"
+      },
+      {
+        "id": "i057",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"ZnNQsKLlx2pO1ths0bYEk\"}}"
+      },
+      {
+        "id": "i061",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"YP31Qznffo_iA2T0JEg2d\"}}"
+      },
+      {
+        "id": "i062",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"07-68shQC6ohLgfx3Iy3I\"}}"
+      },
+      {
+        "id": "i063",
+        "error": "POST /api/v1/query -> 401: {\"error\":{\"code\":\"NOT_AUTHENTICATED\",\"message\":\"Sign in to continue.\",\"details\":{},\"request_id\":\"fT7t-PeP_xGwh5Dv0-YI1\"}}"
+      }
+    ]
+  },
+  "env": {
+    "generated_at": "2026-08-21T18:13:29Z",
+    "git": "82bfb19",
+    "python": "3.12.8",
+    "thresholds": {
+      "FLOOR_READ": 0.55,
+      "MARGIN": 0.15,
+      "FLOOR_WRITE": 0.8
+    },
+    "models": {
+      "chat": "gpt-5.6-terra",
+      "embed": "text-embedding-3-small"
+    }
+  },
+  "markdown": "**Search path** \u2014 one embedding plus the hybrid searches, no model in the loop.\n\n| measure | p50 | p95 | p99 | target |\n|---|---|---|---|---|\n| per query, all corpora in parallel | 6 ms | 19 ms | 20 ms | < 500 ms |\n\nWhere the time goes:\n\n| stage | p50 | p95 |\n|---|---|---|\n| embed_ms | 0.0 ms | 0.0 ms |\n| sql_ms | 5.0 ms | 15.9 ms |\n\n**Full query path** \u2014 POST to the answer, by class. Averaging these classes together would describe nothing, so they are not averaged.\n\n| class | runs | p50 | p95 | p99 |\n|---|---|---|---|---|\n\nRead class (router + template) p95 **0 ms** against a 2 s target. Two-call prose reads do not fit in 2 s and are not claimed to."
+}

@@ -184,7 +184,7 @@ class Ledger:
         }
 
     def breakdown(self) -> list[dict[str, Any]]:
-        """Every call in order. For the trace panel and for working out why a
+        """Every call in order. For the step trace and for working out why a
         run cost what it cost."""
         return [e.to_dict() for e in self.entries]
 

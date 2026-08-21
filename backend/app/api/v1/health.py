@@ -42,7 +42,7 @@ _STARTED = time.monotonic()
 CHECK_BUDGET_S = 0.5
 
 #: Latency quantiles reported per op, straight out of ``node_executions`` — the
-#: same rows the trace panel reads, so the dashboard and the UI cannot disagree.
+#: same rows the step trace reads, so the dashboard and the UI cannot disagree.
 QUANTILES = (0.5, 0.95, 0.99)
 
 PROMETHEUS_TYPE = "text/plain; version=0.0.4; charset=utf-8"

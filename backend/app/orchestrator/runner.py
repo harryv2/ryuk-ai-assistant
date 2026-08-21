@@ -12,7 +12,7 @@ without calling anything" is a true fact about the system and worth counting.
 
 **One planning call.** The intent and the DAG stream back together. The intent is
 written to `runs.intent` as its object closes; every step becomes a
-`node_executions` row the moment it closes, so the trace panel draws the graph
+`node_executions` row the moment it closes, so the step trace draws the graph
 while the rest of the plan is still arriving. A step that cannot be wrong to have
 run starts right there — a few hundred milliseconds before the last step exists.
 A rejected plan gets exactly one repair round; a second rejection answers from
@@ -29,7 +29,7 @@ blocking question rebuilds it from those rows, drops the answer into the scope
 where the paused node's result belongs, and re-enters dispatch with zero model
 calls. That is the whole reason ambiguity is a step and not a special exit.
 
-Everything is written as it happens rather than at the end. The trace panel reads
+Everything is written as it happens rather than at the end. The step trace reads
 `node_executions` live, and a worker that dies mid-run has to be resumable from
 the database alone.
 """
@@ -548,7 +548,7 @@ class Run:
         # hooks below into this one session. An AsyncSession is a single
         # connection: two steps finishing together would interleave on it and
         # raise. The writes are short, so serialising them costs nothing and is
-        # the difference between a trace panel that updates live and one that
+        # the difference between a step trace that updates live and one that
         # loses rows.
         self._db_lock = asyncio.Lock()
         self._google_lock = asyncio.Lock()
@@ -1827,7 +1827,7 @@ class Run:
     ) -> None:
         """Write the step row now, not at the end of the run.
 
-        The trace panel reads this table live, and a worker that dies has to
+        The step trace reads this table live, and a worker that dies has to
         leave behind enough for another one to pick the run up.
         """
         node_row = self.node_rows.get(node_id)

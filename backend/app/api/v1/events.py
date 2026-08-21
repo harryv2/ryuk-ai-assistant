@@ -1,4 +1,4 @@
-"""Server-Sent Events. The trace panel is only convincing if these land as they
+"""Server-Sent Events. The step trace is only convincing if these land as they
 happen.
 
 Two channels.

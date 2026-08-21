@@ -44,6 +44,7 @@ in.
 from __future__ import annotations
 
 import argparse
+import os
 import asyncio
 import statistics
 import sys
@@ -431,7 +432,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--backend", choices=("mirror", "hybrid", "http"), default="mirror",
                         help="which layer the search path measures")
     parser.add_argument("--base-url", default=DEFAULT_API_BASE)
-    parser.add_argument("--cookie", default=None, help="session cookie for the API (or EVAL_SESSION_COOKIE)")
+    parser.add_argument(
+        "--cookie",
+        default=os.environ.get("EVAL_SESSION_COOKIE"),
+        help="session cookie for the API (or EVAL_SESSION_COOKIE)",
+    )
     parser.add_argument("--repeat", type=int, default=3)
     parser.add_argument("--limit", type=int, default=10)
     parser.add_argument("--timeout", type=float, default=60.0)

@@ -85,6 +85,11 @@ class Decision:
             "verb": self.verb,
             "target": self.target,
             "answer": self.answer.to_dict() if self.answer else None,
+            # What the rule router concluded. Dropping these made every
+            # serialized rule-router decision look like it had no intent,
+            # which any consumer — the eval harness included — misread.
+            "intent": self.intent,
+            "steps": (self.plan or {}).get("steps"),
             "reason": self.reason,
         }
 

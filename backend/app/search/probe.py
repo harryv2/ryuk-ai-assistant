@@ -28,7 +28,7 @@ What it does, in order:
   **degraded**, so an answer built on a stale corpus can say so.
 
 The whole pass is recorded as step ``seq=0``, ``node_id="search"``, which is
-what makes it visible in the trace panel beside the steps the planner asked
+what makes it visible in the step trace beside the steps the planner asked
 for.
 """
 
@@ -508,7 +508,7 @@ class ProbeResult:
     def to_step(self, *, seq: int = SEQ, status: str = "succeeded") -> dict[str, Any]:
         """The ``node_executions`` row for this pass.
 
-        Written as step ``seq=0`` named ``search``, so the trace panel shows
+        Written as step ``seq=0`` named ``search``, so the step trace shows
         the grounding pass above the steps the planner asked for, with the same
         shape as every other step.
         """

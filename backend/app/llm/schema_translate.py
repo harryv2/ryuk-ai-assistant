@@ -63,7 +63,7 @@ Field order is not cosmetic
 declares its properties. Gemini decides field order for itself otherwise, and
 for a streamed plan that decides whether the UI can render anything early: our
 plan grammar puts `intent` before `steps` so the intent object closes while the
-steps are still being written, and the trace panel can show what the model
+steps are still being written, and the step trace can show what the model
 thinks the question is before the plan is finished. Shuffle those two and the
 first thing the user sees arrives at the end.
 

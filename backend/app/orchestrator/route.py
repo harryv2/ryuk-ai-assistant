@@ -9,7 +9,7 @@ What that buys, in order of arrival:
 
 * the **intent** goes on the wire at about 590 ms, so the UI can say what it
   understood while the rest is still being written;
-* each **step** is emitted as its object closes, so the trace panel draws the
+* each **step** is emitted as its object closes, so the step trace draws the
   DAG progressively — and so the runner can start a local read-only step that
   has no dependencies before the last step exists;
 * an **ask.user** first step means the card can be rendered before the plan has
@@ -312,6 +312,38 @@ async def route(
             yield event
 
     yield RouteEvent("done", scanner.finish())
+
+
+async def plan(
+    query: str,
+    *,
+    now: datetime | None = None,
+    tz: str = "UTC",
+    week_start: int = 1,
+    history: Sequence[dict[str, Any]] | None = None,
+    model: str | None = None,
+) -> dict[str, Any]:
+    """Classify and plan one query standalone — no run, no probe, no database.
+
+    The full pipeline grounds the planner with the probe's candidates; this
+    entry point deliberately runs without them, which is exactly what an
+    intent-accuracy measurement wants to measure: what the classifier does
+    with the words alone. `tests/eval/intent_accuracy.py` binds here.
+    """
+    from app.ops import registry as ops_registry
+
+    ctx = RouteContext(
+        query=query or "",
+        catalogue=ops_registry.catalogue(),
+        now=now or datetime.now(UTC),
+        tz=tz,
+        week_start=week_start,
+        history=[
+            h if isinstance(h, dict) else {"role": "user", "text": str(h)}
+            for h in (history or [])
+        ],
+    )
+    return await route_once(ctx, model=model)
 
 
 async def route_once(

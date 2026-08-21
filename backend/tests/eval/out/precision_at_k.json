@@ -1,0 +1,4842 @@
+{
+  "kind": "precision_at_k",
+  "dataset": "relevance.jsonl",
+  "queries": 35,
+  "judgements": 101,
+  "backend": "mirror (app.db.repositories.mirror.hybrid_search, user_id=WWd9-iZZuiyw68xybhuZT)",
+  "match": "auto",
+  "limit": 10,
+  "now": "2026-08-20T13:12:04Z",
+  "primary_arm": "hybrid",
+  "arms": {
+    "vector": {
+      "scored": [
+        {
+          "id": "r001",
+          "type": "semantic",
+          "query": "turkish airlines booking",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 4,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "T\u00fcrk Hava Yollar\u0131 \u2014 Rezervasyon Onay\u0131 TK1234",
+                "Contract renewal reminder",
+                "Invoice #4471"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r002",
+          "type": "semantic",
+          "query": "acme q3 renewal proposal",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Onboarding handbook.pdf",
+                "Q3 performance report.pdf",
+                "Vendor MSA 2026.pdf"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Standup notes",
+                "Security alert: new sign-in",
+                "Re: Acme Q3 proposal \u2014 revised pricing"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r003",
+          "type": "semantic",
+          "query": "out of office coverage plan",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q3 performance report.pdf",
+                "Acme Q3 Proposal v2.pdf",
+                "Onboarding handbook.pdf"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Expense report approved",
+                "Security alert: new sign-in",
+                "Quarterly all-hands deck"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r004",
+          "type": "semantic",
+          "query": "countersigned MSA",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q3 performance report.pdf",
+                "Onboarding handbook.pdf",
+                "Acme Contract 2026.gdoc"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Invoice #4471",
+                "Budget freeze until Q4",
+                "Security alert: new sign-in"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r005",
+          "type": "semantic",
+          "query": "budget model spreadsheet",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 10,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q3 Budget.xlsx",
+                "Q3 performance report.pdf",
+                "Acme Q3 Proposal v2.pdf"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r006",
+          "type": "semantic",
+          "query": "flight to Istanbul",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Acme Corp \u2014 quarterly review",
+                "Daily standup",
+                "Partner sync"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Contract renewal reminder",
+                "Security alert: new sign-in",
+                "Invoice #4471"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r007",
+          "type": "semantic",
+          "query": "NDA with Northwind",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q3 performance report.pdf",
+                "Acme Q3 Proposal v3.pdf",
+                "Acme Q3 Proposal v2.pdf"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Invoice #4471",
+                "Security alert: new sign-in",
+                "Re: onboarding checklist"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r008",
+          "type": "semantic",
+          "query": "agenda for the renewal review",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 10,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Design critique",
+                "Acme Corp \u2014 quarterly review",
+                "Vendor QBR"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Re: Acme Q3 proposal \u2014 revised pricing",
+                "Standup notes",
+                "Re: onboarding checklist"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r009",
+          "type": "sender",
+          "query": "budget",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 2,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0
+              ],
+              "top": [
+                "Re: Q4 budget \u2014 headcount and tooling",
+                "Q4 budget \u2014 headcount and tooling"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r010",
+          "type": "sender",
+          "query": "renewal",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r011",
+          "type": "sender",
+          "query": "booking confirmation",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r012",
+          "type": "sender",
+          "query": "contract",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r013",
+          "type": "sender",
+          "query": "move our sync",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r014",
+          "type": "date_window",
+          "query": "pdf",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 5,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q3 performance report.pdf",
+                "Security review 2026.pdf",
+                "Vendor invoice 4471.pdf"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r015",
+          "type": "date_window",
+          "query": "acme",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 5,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Re: Acme Q3 proposal \u2014 revised pricing",
+                "Budget freeze until Q4",
+                "Re: Acme Q3 proposal \u2014 revised pricing"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r016",
+          "type": "date_window",
+          "query": "meetings",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 7,
+              "relevant_total": 11,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "1:1 with Priya",
+                "Partner sync",
+                "Design critique"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r017",
+          "type": "date_window",
+          "query": "files",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 5,
+              "relevant_total": 4,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q3 performance report.pdf",
+                "Vendor invoice 4471.pdf",
+                "Security review 2026.pdf"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r018",
+          "type": "date_window",
+          "query": "acme",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 8,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Re: Acme Q3 proposal \u2014 revised pricing",
+                "Re: Acme Q3 proposal \u2014 revised pricing",
+                "Q4 budget \u2014 headcount and tooling"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r019",
+          "type": "attendee",
+          "query": "",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null,
+          "filter_only": true
+        },
+        {
+          "id": "r020",
+          "type": "attendee",
+          "query": "renewal",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r021",
+          "type": "attendee",
+          "query": "sync",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r022",
+          "type": "attendee",
+          "query": "acme",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r023",
+          "type": "mime",
+          "query": "invoice",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 7,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Acme Q3 Proposal v2.pdf",
+                "Security review 2026.pdf",
+                "Vendor invoice 4471.pdf"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r024",
+          "type": "mime",
+          "query": "",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null,
+          "filter_only": true
+        },
+        {
+          "id": "r025",
+          "type": "mime",
+          "query": "proposal",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 3,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Acme Contract 2026.gdoc",
+                "Out of office \u2014 August.gdoc",
+                "Meeting notes.gdoc"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r026",
+          "type": "mime",
+          "query": "security review",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 7,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Onboarding handbook.pdf",
+                "Q3 performance report.pdf",
+                "Vendor invoice 4471.pdf"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r027",
+          "type": "cross_lingual",
+          "query": "THY rezervasyon",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Budget freeze until Q4",
+                "Expense report approved",
+                "Contract renewal reminder"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r028",
+          "type": "cross_lingual",
+          "query": "T\u00fcrk Hava Yollar\u0131 u\u00e7u\u015f rezervasyonu",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Contract renewal reminder",
+                "T\u00fcrk Hava Yollar\u0131 \u2014 Rezervasyon Onay\u0131 TK1234",
+                "Q3 budget review \u2014 numbers attached"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r029",
+          "type": "cross_lingual",
+          "query": "vuelo a Estambul",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Acme Corp \u2014 quarterly review",
+                "Vendor intro call",
+                "Design review \u2014 mobile onboarding"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Invoice #4471",
+                "T\u00fcrk Hava Yollar\u0131 \u2014 Rezervasyon Onay\u0131 TK1234",
+                "Contract renewal reminder"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r030",
+          "type": "cross_lingual",
+          "query": "TK 1984 fatura",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Acme Q3 Proposal v2.pdf",
+                "Q3 performance report.pdf",
+                "Out of office \u2014 August.gdoc"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q4 budget \u2014 headcount and tooling",
+                "T\u00fcrk Hava Yollar\u0131 \u2014 Rezervasyon Onay\u0131 TK1234",
+                "Re: Acme Q3 proposal \u2014 revised pricing"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r031",
+          "type": "multi_service",
+          "query": "prepare for tomorrow's meeting with Acme Corp",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Vendor QBR",
+                "BOM \u2192 DXB EK507",
+                "Acme Corp \u2014 quarterly review"
+              ]
+            },
+            {
+              "service": "gdrive",
+              "returned": 10,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q3 performance report.pdf",
+                "Acme Q3 Proposal v3.pdf",
+                "Acme Q3 Proposal v2.pdf"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Re: Acme Q3 proposal \u2014 revised pricing",
+                "Q4 budget \u2014 headcount and tooling",
+                "Quarterly all-hands deck"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r032",
+          "type": "multi_service",
+          "query": "events next week that conflict with my out of office",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 7,
+              "relevant_total": 10,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Vendor intro call",
+                "Design critique",
+                "1:1 with Priya"
+              ]
+            },
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r033",
+          "type": "multi_service",
+          "query": "cancel my flight to Istanbul",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Acme Corp \u2014 quarterly review",
+                "Daily standup",
+                "Partner sync"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Contract renewal reminder",
+                "Expense report approved",
+                "Invoice #4471"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r034",
+          "type": "absence",
+          "query": "invoice from Globex",
+          "corpora": [],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r035",
+          "type": "absence",
+          "query": "quarterly results from Initech",
+          "corpora": [],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        }
+      ],
+      "overall": {
+        "pairs": 43,
+        "queries": 31,
+        "p@1": 0.0,
+        "p@3": 0.0,
+        "p@5": 0.0,
+        "p@1_strict": 0.0,
+        "p@3_strict": 0.0,
+        "p@5_strict": 0.0,
+        "r@10": 0.0,
+        "mrr": 0.0,
+        "ndcg@5": 0.0
+      },
+      "by_type": {
+        "attendee": {
+          "pairs": 3,
+          "queries": 3,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "cross_lingual": {
+          "pairs": 6,
+          "queries": 4,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "date_window": {
+          "pairs": 5,
+          "queries": 5,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "mime": {
+          "pairs": 3,
+          "queries": 3,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "multi_service": {
+          "pairs": 7,
+          "queries": 3,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "semantic": {
+          "pairs": 14,
+          "queries": 8,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "sender": {
+          "pairs": 5,
+          "queries": 5,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        }
+      },
+      "latency_ms": {
+        "n": 35,
+        "mean": 13.23,
+        "p50": 9.09,
+        "p95": 21.26,
+        "p99": 125.43,
+        "min": 0.07,
+        "max": 125.43
+      },
+      "latency_by_service": {
+        "gcal": {
+          "n": 12,
+          "mean": 7.44,
+          "p50": 6.8,
+          "p95": 15.77,
+          "p99": 15.77,
+          "min": 0.0,
+          "max": 15.77
+        },
+        "gdrive": {
+          "n": 16,
+          "mean": 11.0,
+          "p50": 9.51,
+          "p95": 21.11,
+          "p99": 21.11,
+          "min": 0.0,
+          "max": 21.11
+        },
+        "gmail": {
+          "n": 22,
+          "mean": 15.03,
+          "p50": 8.94,
+          "p95": 20.73,
+          "p99": 125.31,
+          "min": 3.64,
+          "max": 125.31
+        }
+      },
+      "filter_only": [
+        {
+          "id": "r019",
+          "returned": 0,
+          "p@5": 0.0,
+          "note": "no query text: prefilter only \u2014 the backend returned nothing for it"
+        },
+        {
+          "id": "r024",
+          "returned": 0,
+          "p@5": 0.0,
+          "note": "no query text: prefilter only \u2014 the backend returned nothing for it"
+        }
+      ]
+    },
+    "keyword": {
+      "scored": [
+        {
+          "id": "r001",
+          "type": "semantic",
+          "query": "turkish airlines booking",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 4,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r002",
+          "type": "semantic",
+          "query": "acme q3 renewal proposal",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            },
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r003",
+          "type": "semantic",
+          "query": "out of office coverage plan",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            },
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r004",
+          "type": "semantic",
+          "query": "countersigned MSA",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            },
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r005",
+          "type": "semantic",
+          "query": "budget model spreadsheet",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r006",
+          "type": "semantic",
+          "query": "flight to Istanbul",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            },
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r007",
+          "type": "semantic",
+          "query": "NDA with Northwind",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            },
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r008",
+          "type": "semantic",
+          "query": "agenda for the renewal review",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            },
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r009",
+          "type": "sender",
+          "query": "budget",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 2,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0
+              ],
+              "top": [
+                "Q4 budget \u2014 headcount and tooling",
+                "Re: Q4 budget \u2014 headcount and tooling"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r010",
+          "type": "sender",
+          "query": "renewal",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r011",
+          "type": "sender",
+          "query": "booking confirmation",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r012",
+          "type": "sender",
+          "query": "contract",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r013",
+          "type": "sender",
+          "query": "move our sync",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r014",
+          "type": "date_window",
+          "query": "pdf",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r015",
+          "type": "date_window",
+          "query": "acme",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 3,
+              "relevant_total": 5,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Acme Q3 proposal \u2014 revised pricing",
+                "Re: Acme Q3 proposal \u2014 revised pricing",
+                "Re: Acme Q3 proposal \u2014 revised pricing"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r016",
+          "type": "date_window",
+          "query": "meetings",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 11,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r017",
+          "type": "date_window",
+          "query": "files",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 4,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r018",
+          "type": "date_window",
+          "query": "acme",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 3,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Acme Q3 proposal \u2014 revised pricing",
+                "Re: Acme Q3 proposal \u2014 revised pricing",
+                "Re: Acme Q3 proposal \u2014 revised pricing"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r019",
+          "type": "attendee",
+          "query": "",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null,
+          "filter_only": true
+        },
+        {
+          "id": "r020",
+          "type": "attendee",
+          "query": "renewal",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r021",
+          "type": "attendee",
+          "query": "sync",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r022",
+          "type": "attendee",
+          "query": "acme",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r023",
+          "type": "mime",
+          "query": "invoice",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 1,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0
+              ],
+              "top": [
+                "Vendor invoice 4471.pdf"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r024",
+          "type": "mime",
+          "query": "",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null,
+          "filter_only": true
+        },
+        {
+          "id": "r025",
+          "type": "mime",
+          "query": "proposal",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r026",
+          "type": "mime",
+          "query": "security review",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 1,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0
+              ],
+              "top": [
+                "Security review 2026.pdf"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r027",
+          "type": "cross_lingual",
+          "query": "THY rezervasyon",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r028",
+          "type": "cross_lingual",
+          "query": "T\u00fcrk Hava Yollar\u0131 u\u00e7u\u015f rezervasyonu",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r029",
+          "type": "cross_lingual",
+          "query": "vuelo a Estambul",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            },
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r030",
+          "type": "cross_lingual",
+          "query": "TK 1984 fatura",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            },
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r031",
+          "type": "multi_service",
+          "query": "prepare for tomorrow's meeting with Acme Corp",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            },
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            },
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r032",
+          "type": "multi_service",
+          "query": "events next week that conflict with my out of office",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 10,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            },
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r033",
+          "type": "multi_service",
+          "query": "cancel my flight to Istanbul",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            },
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r034",
+          "type": "absence",
+          "query": "invoice from Globex",
+          "corpora": [],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r035",
+          "type": "absence",
+          "query": "quarterly results from Initech",
+          "corpora": [],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        }
+      ],
+      "overall": {
+        "pairs": 43,
+        "queries": 31,
+        "p@1": 0.0,
+        "p@3": 0.0,
+        "p@5": 0.0,
+        "p@1_strict": 0.0,
+        "p@3_strict": 0.0,
+        "p@5_strict": 0.0,
+        "r@10": 0.0,
+        "mrr": 0.0,
+        "ndcg@5": 0.0
+      },
+      "by_type": {
+        "attendee": {
+          "pairs": 3,
+          "queries": 3,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "cross_lingual": {
+          "pairs": 6,
+          "queries": 4,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "date_window": {
+          "pairs": 5,
+          "queries": 5,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "mime": {
+          "pairs": 3,
+          "queries": 3,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "multi_service": {
+          "pairs": 7,
+          "queries": 3,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "semantic": {
+          "pairs": 14,
+          "queries": 8,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "sender": {
+          "pairs": 5,
+          "queries": 5,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        }
+      },
+      "latency_ms": {
+        "n": 35,
+        "mean": 2.33,
+        "p50": 1.87,
+        "p95": 8.57,
+        "p99": 9.62,
+        "min": 0.07,
+        "max": 9.62
+      },
+      "latency_by_service": {
+        "gcal": {
+          "n": 12,
+          "mean": 1.97,
+          "p50": 1.31,
+          "p95": 8.38,
+          "p99": 8.38,
+          "min": 0.0,
+          "max": 8.38
+        },
+        "gdrive": {
+          "n": 16,
+          "mean": 1.56,
+          "p50": 1.29,
+          "p95": 4.01,
+          "p99": 4.01,
+          "min": 0.0,
+          "max": 4.01
+        },
+        "gmail": {
+          "n": 22,
+          "mean": 2.04,
+          "p50": 1.49,
+          "p95": 4.09,
+          "p99": 9.56,
+          "min": 0.74,
+          "max": 9.56
+        }
+      },
+      "filter_only": [
+        {
+          "id": "r019",
+          "returned": 0,
+          "p@5": 0.0,
+          "note": "no query text: prefilter only \u2014 the backend returned nothing for it"
+        },
+        {
+          "id": "r024",
+          "returned": 0,
+          "p@5": 0.0,
+          "note": "no query text: prefilter only \u2014 the backend returned nothing for it"
+        }
+      ]
+    },
+    "hybrid": {
+      "scored": [
+        {
+          "id": "r001",
+          "type": "semantic",
+          "query": "turkish airlines booking",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 4,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "T\u00fcrk Hava Yollar\u0131 \u2014 Rezervasyon Onay\u0131 TK1234",
+                "Contract renewal reminder",
+                "Invoice #4471"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r002",
+          "type": "semantic",
+          "query": "acme q3 renewal proposal",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Onboarding handbook.pdf",
+                "Q3 performance report.pdf",
+                "Vendor MSA 2026.pdf"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Standup notes",
+                "Security alert: new sign-in",
+                "Re: Acme Q3 proposal \u2014 revised pricing"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r003",
+          "type": "semantic",
+          "query": "out of office coverage plan",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q3 performance report.pdf",
+                "Acme Q3 Proposal v2.pdf",
+                "Onboarding handbook.pdf"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Expense report approved",
+                "Security alert: new sign-in",
+                "Quarterly all-hands deck"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r004",
+          "type": "semantic",
+          "query": "countersigned MSA",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q3 performance report.pdf",
+                "Onboarding handbook.pdf",
+                "Acme Contract 2026.gdoc"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Invoice #4471",
+                "Budget freeze until Q4",
+                "Security alert: new sign-in"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r005",
+          "type": "semantic",
+          "query": "budget model spreadsheet",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 10,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q3 Budget.xlsx",
+                "Q3 performance report.pdf",
+                "Acme Q3 Proposal v2.pdf"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r006",
+          "type": "semantic",
+          "query": "flight to Istanbul",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Acme Corp \u2014 quarterly review",
+                "Daily standup",
+                "Partner sync"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Contract renewal reminder",
+                "Security alert: new sign-in",
+                "Invoice #4471"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r007",
+          "type": "semantic",
+          "query": "NDA with Northwind",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q3 performance report.pdf",
+                "Acme Q3 Proposal v3.pdf",
+                "Acme Q3 Proposal v2.pdf"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Invoice #4471",
+                "Security alert: new sign-in",
+                "Re: onboarding checklist"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r008",
+          "type": "semantic",
+          "query": "agenda for the renewal review",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 10,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Design critique",
+                "Acme Corp \u2014 quarterly review",
+                "Vendor QBR"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Re: Acme Q3 proposal \u2014 revised pricing",
+                "Standup notes",
+                "Re: onboarding checklist"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r009",
+          "type": "sender",
+          "query": "budget",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 2,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0
+              ],
+              "top": [
+                "Re: Q4 budget \u2014 headcount and tooling",
+                "Q4 budget \u2014 headcount and tooling"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r010",
+          "type": "sender",
+          "query": "renewal",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r011",
+          "type": "sender",
+          "query": "booking confirmation",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r012",
+          "type": "sender",
+          "query": "contract",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r013",
+          "type": "sender",
+          "query": "move our sync",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r014",
+          "type": "date_window",
+          "query": "pdf",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 5,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q3 performance report.pdf",
+                "Security review 2026.pdf",
+                "Vendor invoice 4471.pdf"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r015",
+          "type": "date_window",
+          "query": "acme",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 5,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Re: Acme Q3 proposal \u2014 revised pricing",
+                "Re: Acme Q3 proposal \u2014 revised pricing",
+                "Acme Q3 proposal \u2014 revised pricing"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r016",
+          "type": "date_window",
+          "query": "meetings",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 7,
+              "relevant_total": 11,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "1:1 with Priya",
+                "Partner sync",
+                "Design critique"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r017",
+          "type": "date_window",
+          "query": "files",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 5,
+              "relevant_total": 4,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q3 performance report.pdf",
+                "Vendor invoice 4471.pdf",
+                "Security review 2026.pdf"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r018",
+          "type": "date_window",
+          "query": "acme",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 8,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Re: Acme Q3 proposal \u2014 revised pricing",
+                "Re: Acme Q3 proposal \u2014 revised pricing",
+                "Acme Q3 proposal \u2014 revised pricing"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r019",
+          "type": "attendee",
+          "query": "",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null,
+          "filter_only": true
+        },
+        {
+          "id": "r020",
+          "type": "attendee",
+          "query": "renewal",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r021",
+          "type": "attendee",
+          "query": "sync",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r022",
+          "type": "attendee",
+          "query": "acme",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r023",
+          "type": "mime",
+          "query": "invoice",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 7,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Vendor invoice 4471.pdf",
+                "Acme Q3 Proposal v2.pdf",
+                "Security review 2026.pdf"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r024",
+          "type": "mime",
+          "query": "",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null,
+          "filter_only": true
+        },
+        {
+          "id": "r025",
+          "type": "mime",
+          "query": "proposal",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 3,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Acme Contract 2026.gdoc",
+                "Out of office \u2014 August.gdoc",
+                "Meeting notes.gdoc"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r026",
+          "type": "mime",
+          "query": "security review",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 7,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Security review 2026.pdf",
+                "Onboarding handbook.pdf",
+                "Q3 performance report.pdf"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r027",
+          "type": "cross_lingual",
+          "query": "THY rezervasyon",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Budget freeze until Q4",
+                "Expense report approved",
+                "Contract renewal reminder"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r028",
+          "type": "cross_lingual",
+          "query": "T\u00fcrk Hava Yollar\u0131 u\u00e7u\u015f rezervasyonu",
+          "corpora": [
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Contract renewal reminder",
+                "T\u00fcrk Hava Yollar\u0131 \u2014 Rezervasyon Onay\u0131 TK1234",
+                "Q3 budget review \u2014 numbers attached"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r029",
+          "type": "cross_lingual",
+          "query": "vuelo a Estambul",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Acme Corp \u2014 quarterly review",
+                "Vendor intro call",
+                "Design review \u2014 mobile onboarding"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Invoice #4471",
+                "T\u00fcrk Hava Yollar\u0131 \u2014 Rezervasyon Onay\u0131 TK1234",
+                "Contract renewal reminder"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r030",
+          "type": "cross_lingual",
+          "query": "TK 1984 fatura",
+          "corpora": [
+            {
+              "service": "gdrive",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Acme Q3 Proposal v2.pdf",
+                "Q3 performance report.pdf",
+                "Out of office \u2014 August.gdoc"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q4 budget \u2014 headcount and tooling",
+                "T\u00fcrk Hava Yollar\u0131 \u2014 Rezervasyon Onay\u0131 TK1234",
+                "Re: Acme Q3 proposal \u2014 revised pricing"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r031",
+          "type": "multi_service",
+          "query": "prepare for tomorrow's meeting with Acme Corp",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Vendor QBR",
+                "BOM \u2192 DXB EK507",
+                "Acme Corp \u2014 quarterly review"
+              ]
+            },
+            {
+              "service": "gdrive",
+              "returned": 10,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Q3 performance report.pdf",
+                "Acme Q3 Proposal v3.pdf",
+                "Acme Q3 Proposal v2.pdf"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 3,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Re: Acme Q3 proposal \u2014 revised pricing",
+                "Q4 budget \u2014 headcount and tooling",
+                "Quarterly all-hands deck"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r032",
+          "type": "multi_service",
+          "query": "events next week that conflict with my out of office",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 7,
+              "relevant_total": 10,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Vendor intro call",
+                "Design critique",
+                "1:1 with Priya"
+              ]
+            },
+            {
+              "service": "gdrive",
+              "returned": 0,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [],
+              "top": []
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r033",
+          "type": "multi_service",
+          "query": "cancel my flight to Istanbul",
+          "corpora": [
+            {
+              "service": "gcal",
+              "returned": 10,
+              "relevant_total": 1,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Acme Corp \u2014 quarterly review",
+                "Daily standup",
+                "Partner sync"
+              ]
+            },
+            {
+              "service": "gmail",
+              "returned": 10,
+              "relevant_total": 2,
+              "p@1": 0.0,
+              "p@3": 0.0,
+              "p@5": 0.0,
+              "p@1_strict": 0.0,
+              "p@3_strict": 0.0,
+              "p@5_strict": 0.0,
+              "r@10": 0.0,
+              "mrr": 0.0,
+              "ndcg@5": 0.0,
+              "grades": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "top": [
+                "Contract renewal reminder",
+                "Expense report approved",
+                "Invoice #4471"
+              ]
+            }
+          ],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r034",
+          "type": "absence",
+          "query": "invoice from Globex",
+          "corpora": [],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        },
+        {
+          "id": "r035",
+          "type": "absence",
+          "query": "quarterly results from Initech",
+          "corpora": [],
+          "top_cn": null,
+          "runner_up_cn": null,
+          "margin": null
+        }
+      ],
+      "overall": {
+        "pairs": 43,
+        "queries": 31,
+        "p@1": 0.0,
+        "p@3": 0.0,
+        "p@5": 0.0,
+        "p@1_strict": 0.0,
+        "p@3_strict": 0.0,
+        "p@5_strict": 0.0,
+        "r@10": 0.0,
+        "mrr": 0.0,
+        "ndcg@5": 0.0
+      },
+      "by_type": {
+        "attendee": {
+          "pairs": 3,
+          "queries": 3,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "cross_lingual": {
+          "pairs": 6,
+          "queries": 4,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "date_window": {
+          "pairs": 5,
+          "queries": 5,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "mime": {
+          "pairs": 3,
+          "queries": 3,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "multi_service": {
+          "pairs": 7,
+          "queries": 3,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "semantic": {
+          "pairs": 14,
+          "queries": 8,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        },
+        "sender": {
+          "pairs": 5,
+          "queries": 5,
+          "p@1": 0.0,
+          "p@3": 0.0,
+          "p@5": 0.0,
+          "p@1_strict": 0.0,
+          "p@3_strict": 0.0,
+          "p@5_strict": 0.0,
+          "r@10": 0.0,
+          "mrr": 0.0,
+          "ndcg@5": 0.0
+        }
+      },
+      "latency_ms": {
+        "n": 35,
+        "mean": 6.15,
+        "p50": 5.13,
+        "p95": 14.1,
+        "p99": 18.48,
+        "min": 0.07,
+        "max": 18.48
+      },
+      "latency_by_service": {
+        "gcal": {
+          "n": 12,
+          "mean": 4.01,
+          "p50": 3.74,
+          "p95": 9.51,
+          "p99": 9.51,
+          "min": 0.0,
+          "max": 9.51
+        },
+        "gdrive": {
+          "n": 16,
+          "mean": 5.78,
+          "p50": 4.42,
+          "p95": 13.15,
+          "p99": 13.15,
+          "min": 0.0,
+          "max": 13.15
+        },
+        "gmail": {
+          "n": 22,
+          "mean": 5.82,
+          "p50": 4.4,
+          "p95": 12.37,
+          "p99": 17.17,
+          "min": 1.47,
+          "max": 17.17
+        }
+      },
+      "filter_only": [
+        {
+          "id": "r019",
+          "returned": 0,
+          "p@5": 0.0,
+          "note": "no query text: prefilter only \u2014 the backend returned nothing for it"
+        },
+        {
+          "id": "r024",
+          "returned": 0,
+          "p@5": 0.0,
+          "note": "no query text: prefilter only \u2014 the backend returned nothing for it"
+        }
+      ]
+    }
+  },
+  "decisions": {
+    "available": false,
+    "reason": "the backend does not expose cn; run --backend hybrid or http",
+    "absence_n": 2,
+    "ambiguous_n": 1
+  },
+  "filter_only": [
+    {
+      "id": "r019",
+      "returned": 0,
+      "p@5": 0.0,
+      "note": "no query text: prefilter only \u2014 the backend returned nothing for it"
+    },
+    {
+      "id": "r024",
+      "returned": 0,
+      "p@5": 0.0,
+      "note": "no query text: prefilter only \u2014 the backend returned nothing for it"
+    }
+  ],
+  "worst": [
+    {
+      "id": "r001",
+      "type": "semantic",
+      "query": "turkish airlines booking",
+      "service": "gmail",
+      "p@5": 0.0,
+      "top": [
+        "T\u00fcrk Hava Yollar\u0131 \u2014 Rezervasyon Onay\u0131 TK1234",
+        "Contract renewal reminder",
+        "Invoice #4471"
+      ]
+    },
+    {
+      "id": "r002",
+      "type": "semantic",
+      "query": "acme q3 renewal proposal",
+      "service": "gdrive",
+      "p@5": 0.0,
+      "top": [
+        "Onboarding handbook.pdf",
+        "Q3 performance report.pdf",
+        "Vendor MSA 2026.pdf"
+      ]
+    },
+    {
+      "id": "r002",
+      "type": "semantic",
+      "query": "acme q3 renewal proposal",
+      "service": "gmail",
+      "p@5": 0.0,
+      "top": [
+        "Standup notes",
+        "Security alert: new sign-in",
+        "Re: Acme Q3 proposal \u2014 revised pricing"
+      ]
+    },
+    {
+      "id": "r003",
+      "type": "semantic",
+      "query": "out of office coverage plan",
+      "service": "gdrive",
+      "p@5": 0.0,
+      "top": [
+        "Q3 performance report.pdf",
+        "Acme Q3 Proposal v2.pdf",
+        "Onboarding handbook.pdf"
+      ]
+    },
+    {
+      "id": "r003",
+      "type": "semantic",
+      "query": "out of office coverage plan",
+      "service": "gmail",
+      "p@5": 0.0,
+      "top": [
+        "Expense report approved",
+        "Security alert: new sign-in",
+        "Quarterly all-hands deck"
+      ]
+    },
+    {
+      "id": "r004",
+      "type": "semantic",
+      "query": "countersigned MSA",
+      "service": "gdrive",
+      "p@5": 0.0,
+      "top": [
+        "Q3 performance report.pdf",
+        "Onboarding handbook.pdf",
+        "Acme Contract 2026.gdoc"
+      ]
+    },
+    {
+      "id": "r004",
+      "type": "semantic",
+      "query": "countersigned MSA",
+      "service": "gmail",
+      "p@5": 0.0,
+      "top": [
+        "Invoice #4471",
+        "Budget freeze until Q4",
+        "Security alert: new sign-in"
+      ]
+    },
+    {
+      "id": "r005",
+      "type": "semantic",
+      "query": "budget model spreadsheet",
+      "service": "gdrive",
+      "p@5": 0.0,
+      "top": [
+        "Q3 Budget.xlsx",
+        "Q3 performance report.pdf",
+        "Acme Q3 Proposal v2.pdf"
+      ]
+    }
+  ],
+  "env": {
+    "generated_at": "2026-08-21T18:13:31Z",
+    "git": "82bfb19",
+    "python": "3.12.8",
+    "thresholds": {
+      "FLOOR_READ": 0.55,
+      "MARGIN": 0.15,
+      "FLOOR_WRITE": 0.8
+    },
+    "models": {
+      "chat": "gpt-5.6-terra",
+      "embed": "text-embedding-3-small"
+    }
+  },
+  "markdown": "| metric | value | target |\n|---|---|---|\n| **Precision@5** | **0.000** | > 0.80 (brief, 10 pts) |\n| Precision@1 | 0.000 | \u2014 |\n| Precision@3 | 0.000 | \u2014 |\n| Recall@10 | 0.000 | \u2014 |\n| MRR | 0.000 | \u2014 |\n| nDCG@5 | 0.000 | \u2014 |\n| Precision@5, strict /k | 0.000 | see note |\n| Search p95 | 14 ms | < 500 ms (brief, 3 pts) |\n| Search p99 | 18 ms | \u2014 |\n\nScored over 43 (query, corpus) pairs from 31 queries. Precision divides by `min(k, relevant)`: most queries here have one or two relevant documents per corpus, and a strict `/k` denominator caps such a query at P@5 = 0.2 however good the ranking is. The strict figure is in the table above so the choice is visible rather than assumed.\n\nBy query type:\n\n| type | queries | P@1 | P@5 | R@10 | MRR | nDCG@5 |\n|---|---|---|---|---|---|---|\n| attendee | 3 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |\n| cross_lingual | 4 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |\n| date_window | 5 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |\n| mime | 3 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |\n| multi_service | 3 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |\n| semantic | 8 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |\n| sender | 5 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 |\n\nAblation \u2014 vector arm alone, text arm alone, and the two fused:\n\n| arm | P@1 | P@5 | R@10 | MRR | nDCG@5 | p95 ms |\n|---|---|---|---|---|---|---|\n| vector | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 21 |\n| keyword | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 9 |\n| hybrid | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 14 |"
+}

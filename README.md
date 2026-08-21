@@ -8,6 +8,40 @@ yes.
 
 The point of the design is that it does all of that on **one model call**.
 
+## Demo
+
+<!-- To embed an inline player: edit this README on github.com and drag
+     docs/demo/demo.mp4 into the editor right below this comment. GitHub
+     uploads it and inserts a URL that renders as a playable video. Until
+     then, the poster below links to the committed file, which GitHub's
+     file viewer plays natively. -->
+
+[![Demo video — 5½ minutes, every flow](docs/demo/poster.png)](docs/demo/demo.mp4)
+
+**▶ [Watch the demo](docs/demo/demo.mp4)** — 5½ minutes, rendered with
+[HyperFrames](https://github.com/heygen-com/hyperframes) from live
+screenshots. GitHub plays it directly when the link is opened.
+
+The demo data is honest about itself: the account is a real Google account, and
+the video opens by showing the seed — events, inbox mail and Drive files
+created through the app's own stored OAuth grant, then mirrored and searched
+like anything else.
+
+The walkthrough runs the brief's nine sample queries against a real Google
+account — the three single-service reads, the three multi-service
+orchestrations (Turkish Airlines cancellation with PNR extraction, Acme
+meeting prep across all three services, out-of-office conflict detection), and
+the three hard cases (the ambiguous "meeting with John" resolved as choice
+chips, "that email" resolved from conversation context, "next Tuesday"
+resolved in the user's timezone). It ends with the two-phase write flow:
+compose → draft in Gmail → "Send it" → approval card → send.
+
+[`docs/demo/`](docs/demo/) holds a full-resolution screenshot of every scene
+and [`docs/demo/VIDEO_SCRIPT.md`](docs/demo/VIDEO_SCRIPT.md) the scene-by-scene
+narration. The screenshots are reproducible: with the stack running,
+`scripts/` seeding done and a connected account, the capture script drives
+every flow headless through the real UI.
+
 ## Architecture
 
 A turn goes through six stages, and most of them cost nothing. The **front
@@ -271,40 +305,6 @@ DATABASE_URL=postgresql+psycopg://postgres:postgres@localhost:5432/other alembic
 ```
 
 Note the driver: migrations run over `psycopg`, the app runs over `asyncpg`.
-
-## Demo
-
-<!-- To embed an inline player: edit this README on github.com and drag
-     docs/demo/demo.mp4 into the editor right below this comment. GitHub
-     uploads it and inserts a URL that renders as a playable video. Until
-     then, the poster below links to the committed file, which GitHub's
-     file viewer plays natively. -->
-
-[![Demo video — 5½ minutes, every flow](docs/demo/poster.png)](docs/demo/demo.mp4)
-
-**▶ [Watch the demo](docs/demo/demo.mp4)** — 5½ minutes, rendered with
-[HyperFrames](https://github.com/heygen-com/hyperframes) from live
-screenshots. GitHub plays it directly when the link is opened.
-
-The demo data is honest about itself: the account is a real Google account, and
-the video opens by showing the seed — events, inbox mail and Drive files
-created through the app's own stored OAuth grant, then mirrored and searched
-like anything else.
-
-The walkthrough runs the brief's nine sample queries against a real Google
-account — the three single-service reads, the three multi-service
-orchestrations (Turkish Airlines cancellation with PNR extraction, Acme
-meeting prep across all three services, out-of-office conflict detection), and
-the three hard cases (the ambiguous "meeting with John" resolved as choice
-chips, "that email" resolved from conversation context, "next Tuesday"
-resolved in the user's timezone). It ends with the two-phase write flow:
-compose → draft in Gmail → "Send it" → approval card → send.
-
-[`docs/demo/`](docs/demo/) holds a full-resolution screenshot of every scene
-and [`docs/demo/VIDEO_SCRIPT.md`](docs/demo/VIDEO_SCRIPT.md) the scene-by-scene
-narration. The screenshots are reproducible: with the stack running,
-`scripts/` seeding done and a connected account, the capture script drives
-every flow headless through the real UI.
 
 ## Running the tests
 

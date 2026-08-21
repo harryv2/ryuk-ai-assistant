@@ -2,7 +2,7 @@
 
 An op is one step of a plan. The planner names it, `validate.py` checks the
 arguments against `args_model` before anything runs, `dispatch.py` gives it an
-:class:`OpContext` and awaits `run`, and the trace panel renders it through
+:class:`OpContext` and awaits `run`, and the step trace renders it through
 `progress_label` and `to_llm`.
 
 The five interfaces at the top — :class:`InputRequest`, :class:`OpResult`,
@@ -133,7 +133,7 @@ class Op:
     # -- presentation ------------------------------------------------------ #
 
     def progress_label(self, args: dict) -> str:
-        """The line the trace panel shows while this step is running."""
+        """The line the step trace shows while this step is running."""
         return self.summary or self.name
 
     def to_llm(self, data: dict, budget: int = 900) -> dict:

@@ -314,7 +314,7 @@ class Run(Base):
 
 
 class NodeExecution(Base):
-    """One row per step. Progress feed, trace panel, and the record afterwards."""
+    """One row per step. Progress feed, step trace, and the record afterwards."""
 
     __tablename__ = "node_executions"
 

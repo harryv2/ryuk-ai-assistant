@@ -611,7 +611,7 @@ against a seeded database. Nothing is hand-entered. To reproduce, see
 ```bash
 docker compose up -d                 # postgres, redis, api, worker, beat
 make migrate                         # schema
-python -m scripts.seed --user demo@alphalaw.test   # the fixture corpus
+python -m scripts.seed --user demo@example.com   # the fixture corpus
 make eval                            # the three harnesses, in order
 ```
 
@@ -631,7 +631,7 @@ numbers from a previous run.
 Preconditions, each of which the harness complains about specifically when it
 is not met:
 
-* a user row for `demo@alphalaw.test` with the fixture corpus embedded — no
+* a user row for `demo@example.com` with the fixture corpus embedded — no
   `sync_*` row for that user may have `embedding IS NULL`. `tests/eval/README.md`
   lists exactly what the seeder must plant;
 * `OPENAI_API_KEY` set, for the query embeddings;

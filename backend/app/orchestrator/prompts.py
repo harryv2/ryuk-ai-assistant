@@ -229,7 +229,7 @@ THE PLAN OBJECT.
 {
   "type": "plan",
   "intent": {
-    "name": "snake_case_verb_noun",
+    "name": "snake_case — one of: availability, calendar_list, cancel_flight, chit_chat, conflict_check, digest, drive_filter, drive_search, email_compose, email_detail, email_search, event_create, file_share, meeting_prep, move_event, reschedule_and_notify, unsupported. Pick the nearest; coin a new snake_case name ONLY when none of these fits at all. drive_filter is a metadata ask (type, date, owner); drive_search is a content ask. reschedule_and_notify is move_event plus telling the guests.",
     "services": ["gmail" | "gcal" | "gdrive", ...],
     "has_write": true | false,
     "confidence": 0.0-1.0

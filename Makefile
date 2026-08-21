@@ -105,6 +105,12 @@ reset-db: ## Drop the database volume and migrate from scratch (destructive)
 
 ## ------------------------------------------------------------------- seed
 
+eval: ## Run the evaluation harness and regenerate tests/eval/RESULTS.md
+	docker compose exec -T api python -m tests.eval.intent_accuracy
+	docker compose exec -T api python -m tests.eval.precision_at_k
+	docker compose exec -T api python -m tests.eval.latency
+	docker compose exec -T api python -m tests.eval.precision_at_k --write-results
+
 seed: ## Load the demo account and its mail, calendar and files
 	$(API) python scripts/seed_local.py
 

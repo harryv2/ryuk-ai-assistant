@@ -222,7 +222,7 @@ class Extraction:
         return found[0].span if found else None
 
     def provenance(self) -> dict[str, dict[str, Any]]:
-        """``field -> {value, span, context}``, for the trace panel."""
+        """``field -> {value, span, context}``, for the step trace."""
         return {
             name: found[0].as_dict()
             for name, found in self.matches.items()
