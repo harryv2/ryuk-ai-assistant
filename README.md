@@ -1,4 +1,4 @@
-# Alpha Law — a chat orchestrator over Gmail, Calendar and Drive
+# Ryuk — a chat orchestrator over Gmail, Calendar and Drive
 
 You type "cancel my Turkish Airlines flight". It finds the booking email, reads
 the PNR out of it, finds the matching calendar event, drafts the cancellation
