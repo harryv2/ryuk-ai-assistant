@@ -16,9 +16,7 @@ The point of the design is that it does all of that on **one model call**.
 https://github.com/user-attachments/assets/b729b51e-c45b-4ed1-a6e6-54c2657e37a1
 
 
-**▶ [Watch the demo](docs/demo/demo.mp4)** — 5½ minutes, rendered with
-[HyperFrames](https://github.com/heygen-com/hyperframes) from live
-screenshots. GitHub plays it directly when the link is opened.
+**▶ [Watch the demo](docs/demo/demo.mp4)**
 
 The demo data is honest about itself: the account is a real Google account, and
 the video opens by showing the seed — events, inbox mail and Drive files
