@@ -214,6 +214,25 @@ DATABASE_URL=postgresql+psycopg://postgres:postgres@localhost:5432/other alembic
 
 Note the driver: migrations run over `psycopg`, the app runs over `asyncpg`.
 
+## Demo
+
+**Video:** _[link goes here — 5-minute walkthrough of the flows below]_
+
+The walkthrough runs the brief's nine sample queries against a real Google
+account — the three single-service reads, the three multi-service
+orchestrations (Turkish Airlines cancellation with PNR extraction, Acme
+meeting prep across all three services, out-of-office conflict detection), and
+the three hard cases (the ambiguous "meeting with John" resolved as choice
+chips, "that email" resolved from conversation context, "next Tuesday"
+resolved in the user's timezone). It ends with the two-phase write flow:
+compose → draft in Gmail → "Send it" → approval card → send.
+
+[`docs/demo/`](docs/demo/) holds a full-resolution screenshot of every scene
+and [`docs/demo/VIDEO_SCRIPT.md`](docs/demo/VIDEO_SCRIPT.md) the scene-by-scene
+narration. The screenshots are reproducible: with the stack running,
+`scripts/` seeding done and a connected account, the capture script drives
+every flow headless through the real UI.
+
 ## Running the tests
 
 ```bash
