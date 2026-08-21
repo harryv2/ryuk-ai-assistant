@@ -1,6 +1,6 @@
 # Evaluation results
 
-Generated 2026-08-21T18:43:21Z from commit `c17a61f`.
+Generated 2026-08-21T18:51:26Z from commit `08f7c95`.
 
 Every number here comes from one of the three harnesses in this directory, run
 against a seeded database. Nothing is hand-entered. To reproduce, see
@@ -12,7 +12,7 @@ against a seeded database. Nothing is hand-entered. To reproduce, see
 | Relevance dataset | `datasets/relevance.jsonl` — 35 queries, 81 graded judgements |
 | Thresholds in force | `FLOOR_READ` 0.55 · `MARGIN` 0.15 · `FLOOR_WRITE` 0.80 |
 | Models | chat `gpt-5.6-terra` · embeddings `text-embedding-3-small` |
-| Fixed context | `demo@example.com`, `America/New_York`, week starts Monday, now = 2026-08-21T18:43:20Z |
+| Fixed context | `demo@example.com`, `America/New_York`, week starts Monday, now = 2026-08-21T18:51:25Z |
 
 ---
 
@@ -65,15 +65,15 @@ Worst confusions:
 
 | metric | value | target |
 |---|---|---|
-| **Precision@5** | **0.787** | > 0.80 (brief, 10 pts) |
-| Precision@1 | 0.700 | — |
-| Precision@3 | 0.692 | — |
+| **Precision@5** | **0.828** | > 0.80 (brief, 10 pts) |
+| Precision@1 | 0.750 | — |
+| Precision@3 | 0.762 | — |
 | Recall@10 | 0.943 | — |
-| MRR | 0.770 | — |
-| nDCG@5 | 0.709 | — |
-| Precision@5, strict /k | 0.305 | see note |
-| Search p95 | 82 ms | < 500 ms (brief, 3 pts) |
-| Search p99 | 182 ms | — |
+| MRR | 0.808 | — |
+| nDCG@5 | 0.767 | — |
+| Precision@5, strict /k | 0.320 | see note |
+| Search p95 | 68 ms | < 500 ms (brief, 3 pts) |
+| Search p99 | 72 ms | — |
 
 Scored over 40 (query, corpus) pairs from 30 queries. Precision divides by `min(k, relevant)`: most queries here have one or two relevant documents per corpus, and a strict `/k` denominator caps such a query at P@5 = 0.2 however good the ranking is. The strict figure is in the table above so the choice is visible rather than assumed.
 
@@ -83,19 +83,19 @@ By query type:
 |---|---|---|---|---|---|---|
 | attendee | 3 | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
 | cross_lingual | 4 | 0.833 | 0.833 | 1.000 | 0.861 | 0.833 |
-| date_window | 5 | 1.000 | 0.933 | 0.975 | 1.000 | 0.912 |
-| mime | 3 | 0.333 | 0.667 | 1.000 | 0.492 | 0.500 |
+| date_window | 5 | 1.000 | 1.000 | 0.975 | 1.000 | 0.981 |
+| mime | 3 | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
 | multi_service | 3 | 0.429 | 0.590 | 0.976 | 0.603 | 0.505 |
-| semantic | 7 | 0.545 | 0.697 | 0.818 | 0.632 | 0.525 |
+| semantic | 7 | 0.545 | 0.727 | 0.818 | 0.632 | 0.568 |
 | sender | 5 | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
 
 Ablation — vector arm alone, text arm alone, and the two fused:
 
 | arm | P@1 | P@5 | R@10 | MRR | nDCG@5 | p95 ms |
 |---|---|---|---|---|---|---|
-| vector | 0.700 | 0.787 | 0.943 | 0.770 | 0.704 | 23 |
-| lexical | 0.375 | 0.338 | 0.338 | 0.375 | 0.353 | 16 |
-| hybrid | 0.700 | 0.787 | 0.943 | 0.770 | 0.709 | 82 |
+| vector | 0.700 | 0.787 | 0.943 | 0.770 | 0.704 | 13 |
+| lexical | 0.375 | 0.338 | 0.338 | 0.375 | 0.353 | 9 |
+| hybrid | 0.750 | 0.828 | 0.943 | 0.808 | 0.767 | 68 |
 
 ---
 
@@ -105,21 +105,34 @@ Ablation — vector arm alone, text arm alone, and the two fused:
 
 | measure | p50 | p95 | p99 | target |
 |---|---|---|---|---|
-| per query, all corpora in parallel | 6 ms | 19 ms | 20 ms | < 500 ms |
+| per query, all corpora in parallel | 2 ms | 14 ms | 25 ms | < 500 ms |
 
 Where the time goes:
 
 | stage | p50 | p95 |
 |---|---|---|
 | embed_ms | 0.0 ms | 0.0 ms |
-| sql_ms | 5.0 ms | 15.9 ms |
+| sql_ms | 2.4 ms | 16.0 ms |
 
 **Full query path** — POST to the answer, by class. Averaging these classes together would describe nothing, so they are not averaged.
 
 | class | runs | p50 | p95 | p99 |
 |---|---|---|---|---|
+| paused | 3 | 5099 ms | 5459 ms | 5459 ms |
+| prose | 1 | 4748 ms | 4748 ms | 4748 ms |
+| router | 4 | 86 ms | 181 ms | 181 ms |
+| template | 14 | 3503 ms | 6121 ms | 6121 ms |
 
-Read class (router + template) p95 **0 ms** against a 2 s target. Two-call prose reads do not fit in 2 s and are not claimed to.
+Read class (router + template) p95 **6121 ms** against a 2 s target. Two-call prose reads do not fit in 2 s and are not claimed to.
+
+Time to first meaningful pixel (p50, ms):
+
+| class | accepted | run.started | probe.done | intent | input.raised | step.finished | content.delta | run.complete | run.paused |
+|---|---|---|---|---|---|---|---|---|---|
+| paused | 5093 | 5098 | 5098 | 5098 | 5099 | 5099 | — | — | 5099 |
+| prose | 4733 | 4743 | 4744 | 4744 | — | 4744 | 4744 | 4748 | — |
+| router | 78 | 86 | — | 86 | — | 86 | — | 86 | — |
+| template | 3490 | 3502 | 3502 | 3502 | — | 3502 | — | 3503 | — |
 
 ---
 

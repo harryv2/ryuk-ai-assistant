@@ -1,0 +1,120 @@
+# Local development. Gitignored. Do not commit.
+# Generated from .env.example — secrets below are real, treat accordingly.
+
+# Copy to .env and fill in. `make env` does the copy for you.
+# docker compose overrides DATABASE_URL and REDIS_URL with container hostnames,
+# so the values here are the ones you get when running the backend on the host.
+
+# ---------------------------------------------------------------- database
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=orchestrator
+POSTGRES_PORT=5432
+
+# Async driver for the app. Alembic swaps it to psycopg on its own.
+DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/orchestrator
+
+# ---------------------------------------------------------------- redis
+REDIS_PORT=6379
+REDIS_URL=redis://localhost:6379/0
+
+# ---------------------------------------------------------------- openai
+OPENAI_API_KEY=sk-proj-hahahha
+OPENAI_MODEL=gpt-5.6-terra
+OPENAI_EMBED_MODEL=text-embedding-3-small
+OPENAI_REASONING_EFFORT=low
+
+# ---------------------------------------------------------------- models
+# "<provider>:<name>". The prefix is the only thing that picks a provider, so
+# moving the whole app to Gemini is these two lines and a restart:
+#   LLM_MODEL=gemini:gemini-2.5-pro
+#   LLM_FALLBACK_MODELS=openai:gpt-4.1-mini
+# Choices: openai:gpt-4.1-mini · openai:gpt-4.1
+#          gemini:gemini-2.5-flash · gemini:gemini-2.5-pro
+LLM_MODEL=openai:gpt-5.6-terra
+# Comma separated, tried in order when the primary fails.
+LLM_FALLBACK_MODELS=gemini:gemini-3.5-flash
+# Optional: a different model for writing the answer than for planning it.
+LLM_PROSE_MODEL=
+# Which provider a model string with no prefix belongs to.
+LLM_DEFAULT_PROVIDER=openai
+# Per attempt, in seconds. Running past it counts as TIMEOUT.
+LLM_TIMEOUT_S=30
+# Failure classes worth trying another provider for. INVALID, CONTENT_FILTERED
+# and AUTH_* are deliberately absent: those fail the same way everywhere.
+LLM_FALLBACK_ON=RATE_LIMITED,TRANSIENT,QUOTA_EXHAUSTED,TIMEOUT
+
+# The Gemini API key, from aistudio.google.com. Nothing to do with the OAuth
+# client below — that one is for the user's Gmail, this one is for the model.
+GOOGLE_AI_API_KEY=hahahha-hahaaha
+# Same key under the name Google's own docs use. The provider accepts
+# either; config.py only declares GOOGLE_AI_API_KEY, so this one reaches
+# the provider through os.environ rather than through settings.
+GEMINI_API_KEY=hahaha-hahaha
+
+# ---------------------------------------------------------------- embeddings
+# Chat models are swappable. Embedding models are NOT. Every VECTOR column was
+# filled by one specific model and vectors from two models are not comparable,
+# so changing EMBED_MODEL means re-embedding the whole mirror:
+#   make reembed          (batched, resumable, reports progress)
+# gemini:gemini-embedding-001 also does 1536 dimensions, so the column type does
+# not change when you switch — but every row still has to be rebuilt.
+EMBED_MODEL=openai:text-embedding-3-small
+EMBED_DIMENSIONS=1536
+
+# ---------------------------------------------------------------- google oauth
+# console.cloud.google.com -> APIs & Services -> Credentials -> OAuth client (Web).
+# The redirect URI must match this string exactly, character for character.
+GOOGLE_CLIENT_ID=156227906984-hahahahhahahaahah.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=GOCSPX-0-hahahahaahh
+# Google sends the browser here, so it must be a URL the BROWSER can reach.
+# That is the vite origin, not the API — vite proxies /api through to the
+# backend. Keeping it on one origin also means the session cookie is set and
+# read on the same origin, with no SameSite loosening anywhere.
+GOOGLE_REDIRECT_URI=http://localhost:5173/api/v1/auth/google/callback
+
+# ---------------------------------------------------------------- secrets
+# TOKEN_ENCRYPTION_KEY: 32 random bytes, urlsafe-base64. AES-256-GCM key for
+# oauth_tokens.access_token_enc / refresh_token_enc.
+#   python -c "import os,base64; print(base64.urlsafe_b64encode(os.urandom(32)).decode())"
+TOKEN_ENCRYPTION_KEY=BwGZPOzo-CVlu9OKDdGVA4mRH1nilyRqMeKWNb9GP6g=
+# SESSION_SECRET: signs the session cookie.
+#   python -c "import secrets; print(secrets.token_urlsafe(48))"
+SESSION_SECRET=FTYBcIfgN2cn0l4_fZ9v4p44Jqnihx292Y3uSoUa4flAvCh_rWolExUecVrWrhvk
+
+# ---------------------------------------------------------------- app
+APP_URL=http://localhost:5173
+API_PORT=8000
+UI_PORT=5173
+# Running vite on the host, the backend is on localhost. In compose this is
+# overridden to http://api:8000. Either way the BROWSER only ever sees 5173.
+VITE_API_TARGET=http://localhost:8000
+ENV=development
+LOG_LEVEL=INFO
+# false gives readable console logs while developing; true is what you want in prod.
+LOG_JSON=false
+
+# Engine tuning. app/db/session.py reads these from the environment directly.
+DB_POOL_SIZE=10
+DB_MAX_OVERFLOW=20
+DB_POOL_TIMEOUT=10
+DB_POOL_RECYCLE=1800
+SQL_ECHO=false
+
+# ---------------------------------------------------------------- budgets
+RATE_LIMIT_PER_HOUR=100
+SOFT_DEADLINE_MS=2500
+HARD_DEADLINE_MS=12000
+MAX_LLM_CALLS_PER_RUN=5
+
+# ---------------------------------------------------------------- retrieval
+# FLOOR_READ  lowest score a candidate may have and still be shown to the planner
+# MARGIN      top hit must beat the runner-up by this much to be picked without asking
+# FLOOR_WRITE a write may only target a candidate scoring at least this
+FLOOR_READ=0.55
+MARGIN=0.15
+FLOOR_WRITE=0.80
+
+# ---------------------------------------------------------------- sync
+SYNC_INTERVAL_MIN=15
+CELERY_CONCURRENCY=4

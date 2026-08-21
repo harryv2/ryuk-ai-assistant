@@ -1124,7 +1124,16 @@ def fuse_arms(
     # not zero — it is "below the cutoff" — so it inherits the weakest cosine
     # the pool did produce, and only its evidence can lift it from there.
     floor_cos = min(pool) if pool else 0.0
-    lex_transform = cn_transform([lex[doc] for doc in fts_rank]) if not pool else None
+    # The text arm gets its own normalisation ALWAYS, not only when the vector
+    # arm came back empty. Computing it conditionally made `cn` — and with it
+    # the presented order, which is `cn * decay` — a pure function of cosine
+    # whenever the vector arm returned anything, which is nearly always. The
+    # fusion was computed and then discarded at the sort, so "hybrid" scored
+    # identically to "vector" and a search for "invoice" put three proposals
+    # above "Vendor invoice 4471.pdf" — the one document whose text rank was
+    # an exact hit.
+    lex_pool = [lex[doc] for doc in fts_rank]
+    lex_transform = cn_transform(lex_pool) if lex_pool else None
 
     fused = dict(
         rrf_fuse(
@@ -1138,12 +1147,17 @@ def fuse_arms(
     hits: list[Hit] = []
     for doc, row in rows.items():
         raw_cos = cos.get(doc, floor_cos)
-        if pool:
-            cn_raw = transform(raw_cos)
-        elif lex_transform is not None:
-            cn_raw = lex_transform(lex.get(doc, 0.0))
-        else:
-            cn_raw = 0.0
+        # Each arm states its own confidence and the stronger one carries the
+        # document: a row the text arm ranked first is a strong candidate even
+        # when its cosine is unremarkable, and vice versa. Taking the max is
+        # what makes the two arms actually fuse in the order the reader sees.
+        vector_cn = transform(raw_cos) if pool else 0.0
+        lexical_cn = (
+            lex_transform(lex[doc])
+            if lex_transform is not None and doc in fts_rank
+            else 0.0
+        )
+        cn_raw = max(vector_cn, lexical_cn)
 
         flags = evidence_for(key, row, terms, query)
         cn_value = 1.0 if flags else cn_raw

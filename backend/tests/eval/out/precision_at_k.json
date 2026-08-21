@@ -6,7 +6,7 @@
   "backend": "app.search.hybrid.search (with arm selection, user_id=WWd9-iZZuiyw68xybhuZT)",
   "match": "auto",
   "limit": 10,
-  "now": "2026-08-21T18:43:20Z",
+  "now": "2026-08-21T18:51:25Z",
   "primary_arm": "hybrid",
   "arms": {
     "vector": {
@@ -1647,40 +1647,40 @@
       },
       "latency_ms": {
         "n": 35,
-        "mean": 10.68,
-        "p50": 6.61,
-        "p95": 23.08,
-        "p99": 62.68,
-        "min": 1.84,
-        "max": 62.68
+        "mean": 6.8,
+        "p50": 5.02,
+        "p95": 13.08,
+        "p99": 36.74,
+        "min": 1.12,
+        "max": 36.74
       },
       "latency_by_service": {
         "gcal": {
           "n": 13,
-          "mean": 4.85,
-          "p50": 2.95,
-          "p95": 15.41,
-          "p99": 15.41,
-          "min": 1.7,
-          "max": 15.41
+          "mean": 3.2,
+          "p50": 2.24,
+          "p95": 9.04,
+          "p99": 9.04,
+          "min": 1.83,
+          "max": 9.04
         },
         "gdrive": {
           "n": 15,
-          "mean": 5.5,
-          "p50": 4.31,
-          "p95": 14.69,
-          "p99": 14.69,
-          "min": 2.23,
-          "max": 14.69
+          "mean": 3.36,
+          "p50": 2.84,
+          "p95": 9.79,
+          "p99": 9.79,
+          "min": 1.01,
+          "max": 9.79
         },
         "gmail": {
           "n": 22,
-          "mean": 7.04,
+          "mean": 4.94,
           "p50": 2.97,
-          "p95": 17.02,
-          "p99": 47.3,
-          "min": 2.04,
-          "max": 47.3
+          "p95": 10.83,
+          "p99": 32.89,
+          "min": 1.84,
+          "max": 32.89
         }
       },
       "filter_only": [
@@ -2918,40 +2918,40 @@
       },
       "latency_ms": {
         "n": 35,
-        "mean": 2.98,
-        "p50": 1.71,
-        "p95": 15.94,
-        "p99": 16.93,
-        "min": 0.7,
-        "max": 16.93
+        "mean": 2.12,
+        "p50": 1.5,
+        "p95": 9.09,
+        "p99": 10.03,
+        "min": 0.58,
+        "max": 10.03
       },
       "latency_by_service": {
         "gcal": {
           "n": 13,
-          "mean": 2.58,
-          "p50": 1.8,
-          "p95": 13.72,
-          "p99": 13.72,
-          "min": 0.68,
-          "max": 13.72
+          "mean": 1.86,
+          "p50": 1.33,
+          "p95": 8.81,
+          "p99": 8.81,
+          "min": 0.79,
+          "max": 8.81
         },
         "gdrive": {
           "n": 15,
-          "mean": 3.42,
-          "p50": 1.6,
-          "p95": 15.73,
-          "p99": 15.73,
-          "min": 0.59,
-          "max": 15.73
+          "mean": 1.74,
+          "p50": 1.24,
+          "p95": 8.31,
+          "p99": 8.31,
+          "min": 0.49,
+          "max": 8.31
         },
         "gmail": {
           "n": 22,
-          "mean": 2.59,
-          "p50": 1.14,
-          "p95": 12.93,
-          "p99": 16.5,
-          "min": 0.64,
-          "max": 16.5
+          "mean": 1.87,
+          "p50": 1.07,
+          "p95": 7.4,
+          "p99": 9.58,
+          "min": 0.69,
+          "max": 9.58
         }
       },
       "filter_only": [
@@ -3022,20 +3022,20 @@
               "returned": 10,
               "relevant_total": 2,
               "p@1": 1.0,
-              "p@3": 0.5,
+              "p@3": 1.0,
               "p@5": 1.0,
               "p@1_strict": 1.0,
-              "p@3_strict": 0.3333333333333333,
+              "p@3_strict": 0.6666666666666666,
               "p@5_strict": 0.4,
               "r@10": 1.0,
               "mrr": 1.0,
-              "ndcg@5": 0.9327783893101107,
+              "ndcg@5": 1.0,
               "grades": [
                 2,
-                0,
-                0,
-                0,
                 1,
+                0,
+                0,
+                0,
                 0,
                 0,
                 0,
@@ -3044,8 +3044,8 @@
               ],
               "top": [
                 "Acme Q3 Proposal v3.pdf",
-                "Onboarding handbook.pdf",
-                "Q3 performance report.pdf"
+                "Acme Q3 Proposal v2.pdf",
+                "Onboarding handbook.pdf"
               ]
             },
             {
@@ -3053,36 +3053,36 @@
               "returned": 10,
               "relevant_total": 3,
               "p@1": 1.0,
-              "p@3": 0.3333333333333333,
-              "p@5": 0.6666666666666666,
+              "p@3": 1.0,
+              "p@5": 1.0,
               "p@1_strict": 1.0,
-              "p@3_strict": 0.3333333333333333,
-              "p@5_strict": 0.4,
+              "p@3_strict": 1.0,
+              "p@5_strict": 0.6,
               "r@10": 1.0,
               "mrr": 1.0,
-              "ndcg@5": 0.346332821766451,
+              "ndcg@5": 0.7579237460681981,
               "grades": [
                 1,
-                0,
-                0,
                 1,
-                0,
-                0,
                 2,
+                0,
+                0,
+                0,
+                0,
                 0,
                 0,
                 0
               ],
               "top": [
                 "Re: Acme Q3 proposal \u2014 revised pricing",
-                "Out of office 26\u201328 August",
-                "Standup notes"
+                "Re: Acme Q3 proposal \u2014 revised pricing",
+                "Acme Q3 proposal \u2014 revised pricing"
               ]
             }
           ],
-          "top_cn": 0.9983,
-          "runner_up_cn": 0.936,
-          "margin": 0.06229999999999991
+          "top_cn": 1.0,
+          "runner_up_cn": 1.0,
+          "margin": 0.0
         },
         {
           "id": "r003",
@@ -3419,8 +3419,8 @@
               ]
             }
           ],
-          "top_cn": 0.0,
-          "runner_up_cn": 0.0,
+          "top_cn": 1.0,
+          "runner_up_cn": 1.0,
           "margin": 0.0
         },
         {
@@ -3447,15 +3447,15 @@
                 0
               ],
               "top": [
-                "Acme Q3 proposal \u2014 revised pricing",
                 "Re: Acme Q3 proposal \u2014 revised pricing",
+                "Acme Q3 proposal \u2014 revised pricing",
                 "Q3 budget review \u2014 numbers attached"
               ]
             }
           ],
-          "top_cn": 0.852,
-          "runner_up_cn": 0.3529,
-          "margin": 0.4991
+          "top_cn": 1.0,
+          "runner_up_cn": 1.0,
+          "margin": 0.0
         },
         {
           "id": "r011",
@@ -3513,7 +3513,7 @@
               ]
             }
           ],
-          "top_cn": 0.0,
+          "top_cn": 1.0,
           "runner_up_cn": null,
           "margin": null
         },
@@ -3543,7 +3543,7 @@
               ]
             }
           ],
-          "top_cn": 0.0464,
+          "top_cn": 1.0,
           "runner_up_cn": null,
           "margin": null
         },
@@ -3593,22 +3593,22 @@
               "returned": 10,
               "relevant_total": 3,
               "p@1": 1.0,
-              "p@3": 0.6666666666666666,
-              "p@5": 0.6666666666666666,
+              "p@3": 1.0,
+              "p@5": 1.0,
               "p@1_strict": 1.0,
-              "p@3_strict": 0.6666666666666666,
-              "p@5_strict": 0.4,
+              "p@3_strict": 1.0,
+              "p@5_strict": 0.6,
               "r@10": 1.0,
               "mrr": 1.0,
-              "ndcg@5": 0.6732934624429354,
+              "ndcg@5": 0.9514426589871553,
               "grades": [
                 2,
                 1,
-                0,
-                0,
-                0,
-                0,
                 2,
+                0,
+                0,
+                0,
+                0,
                 0,
                 0,
                 0
@@ -3616,13 +3616,13 @@
               "top": [
                 "Re: Acme Q3 proposal \u2014 revised pricing",
                 "Re: Acme Q3 proposal \u2014 revised pricing",
-                "Budget freeze until Q4"
+                "Acme Q3 proposal \u2014 revised pricing"
               ]
             }
           ],
-          "top_cn": 0.9031,
-          "runner_up_cn": 0.8108,
-          "margin": 0.09230000000000005
+          "top_cn": 1.0,
+          "runner_up_cn": 1.0,
+          "margin": 0.0
         },
         {
           "id": "r016",
@@ -3708,20 +3708,20 @@
               "returned": 8,
               "relevant_total": 3,
               "p@1": 1.0,
-              "p@3": 0.6666666666666666,
+              "p@3": 1.0,
               "p@5": 1.0,
               "p@1_strict": 1.0,
-              "p@3_strict": 0.6666666666666666,
+              "p@3_strict": 1.0,
               "p@5_strict": 0.6,
               "r@10": 1.0,
               "mrr": 1.0,
-              "ndcg@5": 0.8884990574692628,
+              "ndcg@5": 0.9514426589871553,
               "grades": [
                 2,
                 1,
-                0,
-                0,
                 2,
+                0,
+                0,
                 0,
                 0,
                 0
@@ -3729,13 +3729,13 @@
               "top": [
                 "Re: Acme Q3 proposal \u2014 revised pricing",
                 "Re: Acme Q3 proposal \u2014 revised pricing",
-                "Q4 budget \u2014 headcount and tooling"
+                "Acme Q3 proposal \u2014 revised pricing"
               ]
             }
           ],
-          "top_cn": 0.9368,
-          "runner_up_cn": 0.8305,
-          "margin": 0.10629999999999995
+          "top_cn": 1.0,
+          "runner_up_cn": 1.0,
+          "margin": 0.0
         },
         {
           "id": "r019",
@@ -3798,9 +3798,9 @@
               ]
             }
           ],
-          "top_cn": 0.0463,
+          "top_cn": 1.0,
           "runner_up_cn": 0.023,
-          "margin": 0.0233
+          "margin": 0.977
         },
         {
           "id": "r021",
@@ -3830,9 +3830,9 @@
               ]
             }
           ],
-          "top_cn": 0.0,
+          "top_cn": 1.0,
           "runner_up_cn": 0.0,
-          "margin": 0.0
+          "margin": 1.0
         },
         {
           "id": "r022",
@@ -3862,9 +3862,9 @@
               ]
             }
           ],
-          "top_cn": 0.0411,
+          "top_cn": 1.0,
           "runner_up_cn": 0.0,
-          "margin": 0.0411
+          "margin": 1.0
         },
         {
           "id": "r023",
@@ -3875,34 +3875,34 @@
               "service": "gdrive",
               "returned": 7,
               "relevant_total": 1,
-              "p@1": 0.0,
+              "p@1": 1.0,
               "p@3": 1.0,
               "p@5": 1.0,
-              "p@1_strict": 0.0,
+              "p@1_strict": 1.0,
               "p@3_strict": 0.3333333333333333,
               "p@5_strict": 0.2,
               "r@10": 1.0,
-              "mrr": 0.3333333333333333,
-              "ndcg@5": 0.5,
+              "mrr": 1.0,
+              "ndcg@5": 1.0,
               "grades": [
-                0,
-                0,
                 2,
+                0,
+                0,
                 0,
                 0,
                 0,
                 0
               ],
               "top": [
+                "Vendor invoice 4471.pdf",
                 "Acme Q3 Proposal v2.pdf",
-                "Acme Q3 Proposal v3.pdf",
-                "Vendor invoice 4471.pdf"
+                "Acme Q3 Proposal v3.pdf"
               ]
             }
           ],
-          "top_cn": 0.7613,
-          "runner_up_cn": 0.6269,
-          "margin": 0.13439999999999996
+          "top_cn": 1.0,
+          "runner_up_cn": 0.7613,
+          "margin": 0.23870000000000002
         },
         {
           "id": "r024",
@@ -3965,9 +3965,9 @@
               ]
             }
           ],
-          "top_cn": 0.8508,
+          "top_cn": 1.0,
           "runner_up_cn": 0.3628,
-          "margin": 0.488
+          "margin": 0.6372
         },
         {
           "id": "r026",
@@ -3978,34 +3978,34 @@
               "service": "gdrive",
               "returned": 7,
               "relevant_total": 1,
-              "p@1": 0.0,
-              "p@3": 0.0,
-              "p@5": 0.0,
-              "p@1_strict": 0.0,
-              "p@3_strict": 0.0,
-              "p@5_strict": 0.0,
+              "p@1": 1.0,
+              "p@3": 1.0,
+              "p@5": 1.0,
+              "p@1_strict": 1.0,
+              "p@3_strict": 0.3333333333333333,
+              "p@5_strict": 0.2,
               "r@10": 1.0,
-              "mrr": 0.14285714285714285,
-              "ndcg@5": 0.0,
+              "mrr": 1.0,
+              "ndcg@5": 1.0,
               "grades": [
+                2,
                 0,
                 0,
                 0,
                 0,
                 0,
-                0,
-                2
+                0
               ],
               "top": [
+                "Security review 2026.pdf",
                 "Acme Q3 Proposal v3.pdf",
-                "Onboarding handbook.pdf",
-                "Vendor invoice 4471.pdf"
+                "Onboarding handbook.pdf"
               ]
             }
           ],
-          "top_cn": 0.7647,
-          "runner_up_cn": 0.7081,
-          "margin": 0.056600000000000095
+          "top_cn": 1.0,
+          "runner_up_cn": 0.7647,
+          "margin": 0.23529999999999995
         },
         {
           "id": "r027",
@@ -4502,15 +4502,15 @@
       "overall": {
         "pairs": 40,
         "queries": 30,
-        "p@1": 0.7,
-        "p@3": 0.6916666666666667,
-        "p@5": 0.7866666666666666,
-        "p@1_strict": 0.7,
-        "p@3_strict": 0.39166666666666666,
-        "p@5_strict": 0.30500000000000005,
+        "p@1": 0.75,
+        "p@3": 0.7625,
+        "p@5": 0.8283333333333334,
+        "p@1_strict": 0.75,
+        "p@3_strict": 0.4416666666666666,
+        "p@5_strict": 0.32,
         "r@10": 0.9427083333333334,
-        "mrr": 0.7703769841269842,
-        "ndcg@5": 0.7091970691551119
+        "mrr": 0.8084722222222223,
+        "ndcg@5": 0.7671947024814556
       },
       "by_type": {
         "attendee": {
@@ -4543,27 +4543,27 @@
           "pairs": 5,
           "queries": 5,
           "p@1": 1.0,
-          "p@3": 0.8666666666666666,
-          "p@5": 0.9333333333333333,
+          "p@3": 1.0,
+          "p@5": 1.0,
           "p@1_strict": 1.0,
-          "p@3_strict": 0.8666666666666666,
-          "p@5_strict": 0.8,
+          "p@3_strict": 1.0,
+          "p@5_strict": 0.8400000000000001,
           "r@10": 0.975,
           "mrr": 1.0,
-          "ndcg@5": 0.9123585039824397
+          "ndcg@5": 0.9805770635948621
         },
         "mime": {
           "pairs": 3,
           "queries": 3,
-          "p@1": 0.3333333333333333,
-          "p@3": 0.6666666666666666,
-          "p@5": 0.6666666666666666,
-          "p@1_strict": 0.3333333333333333,
-          "p@3_strict": 0.2222222222222222,
-          "p@5_strict": 0.13333333333333333,
+          "p@1": 1.0,
+          "p@3": 1.0,
+          "p@5": 1.0,
+          "p@1_strict": 1.0,
+          "p@3_strict": 0.3333333333333333,
+          "p@5_strict": 0.20000000000000004,
           "r@10": 1.0,
-          "mrr": 0.4920634920634921,
-          "ndcg@5": 0.5
+          "mrr": 1.0,
+          "ndcg@5": 1.0
         },
         "multi_service": {
           "pairs": 7,
@@ -4582,14 +4582,14 @@
           "pairs": 11,
           "queries": 7,
           "p@1": 0.5454545454545454,
-          "p@3": 0.3939393939393939,
-          "p@5": 0.696969696969697,
+          "p@3": 0.5,
+          "p@5": 0.7272727272727273,
           "p@1_strict": 0.5454545454545454,
-          "p@3_strict": 0.2121212121212121,
-          "p@5_strict": 0.21818181818181823,
+          "p@3_strict": 0.303030303030303,
+          "p@5_strict": 0.23636363636363636,
           "r@10": 0.8181818181818182,
           "mrr": 0.6318181818181818,
-          "ndcg@5": 0.5249149541836624
+          "ndcg@5": 0.5684433664556293
         },
         "sender": {
           "pairs": 5,
@@ -4607,40 +4607,40 @@
       },
       "latency_ms": {
         "n": 35,
-        "mean": 16.91,
-        "p50": 4.59,
-        "p95": 82.2,
-        "p99": 181.68,
-        "min": 0.83,
-        "max": 181.68
+        "mean": 10.42,
+        "p50": 4.4,
+        "p95": 68.25,
+        "p99": 71.7,
+        "min": 0.69,
+        "max": 71.7
       },
       "latency_by_service": {
         "gcal": {
           "n": 13,
-          "mean": 8.13,
-          "p50": 5.13,
-          "p95": 18.36,
-          "p99": 18.36,
-          "min": 1.01,
-          "max": 18.36
+          "mean": 5.51,
+          "p50": 4.49,
+          "p95": 11.64,
+          "p99": 11.64,
+          "min": 1.45,
+          "max": 11.64
         },
         "gdrive": {
           "n": 15,
-          "mean": 18.18,
-          "p50": 4.4,
-          "p95": 181.37,
-          "p99": 181.37,
-          "min": 0.71,
-          "max": 181.37
+          "mean": 10.4,
+          "p50": 3.78,
+          "p95": 67.99,
+          "p99": 67.99,
+          "min": 0.58,
+          "max": 67.99
         },
         "gmail": {
           "n": 22,
-          "mean": 15.38,
-          "p50": 5.01,
-          "p95": 77.68,
-          "p99": 81.96,
-          "min": 2.55,
-          "max": 81.96
+          "mean": 10.34,
+          "p50": 4.09,
+          "p95": 55.59,
+          "p99": 71.52,
+          "min": 2.29,
+          "max": 71.52
         }
       },
       "filter_only": [
@@ -4710,18 +4710,6 @@
       ]
     },
     {
-      "id": "r026",
-      "type": "mime",
-      "query": "security review",
-      "service": "gdrive",
-      "p@5": 0.0,
-      "top": [
-        "Acme Q3 Proposal v3.pdf",
-        "Onboarding handbook.pdf",
-        "Vendor invoice 4471.pdf"
-      ]
-    },
-    {
       "id": "r029",
       "type": "cross_lingual",
       "query": "vuelo a Estambul",
@@ -4780,11 +4768,23 @@
         "Q3 performance report.pdf",
         "Onboarding handbook.pdf"
       ]
+    },
+    {
+      "id": "r031",
+      "type": "multi_service",
+      "query": "prepare for tomorrow's meeting with Acme Corp",
+      "service": "gdrive",
+      "p@5": 0.6666666666666666,
+      "top": [
+        "Acme Q3 Proposal v3.pdf",
+        "Acme Q3 Proposal v2.pdf",
+        "Q3 performance report.pdf"
+      ]
     }
   ],
   "env": {
-    "generated_at": "2026-08-21T18:43:21Z",
-    "git": "c17a61f",
+    "generated_at": "2026-08-21T18:51:26Z",
+    "git": "08f7c95",
     "python": "3.12.8",
     "thresholds": {
       "FLOOR_READ": 0.55,
@@ -4796,5 +4796,5 @@
       "embed": "text-embedding-3-small"
     }
   },
-  "markdown": "| metric | value | target |\n|---|---|---|\n| **Precision@5** | **0.787** | > 0.80 (brief, 10 pts) |\n| Precision@1 | 0.700 | \u2014 |\n| Precision@3 | 0.692 | \u2014 |\n| Recall@10 | 0.943 | \u2014 |\n| MRR | 0.770 | \u2014 |\n| nDCG@5 | 0.709 | \u2014 |\n| Precision@5, strict /k | 0.305 | see note |\n| Search p95 | 82 ms | < 500 ms (brief, 3 pts) |\n| Search p99 | 182 ms | \u2014 |\n\nScored over 40 (query, corpus) pairs from 30 queries. Precision divides by `min(k, relevant)`: most queries here have one or two relevant documents per corpus, and a strict `/k` denominator caps such a query at P@5 = 0.2 however good the ranking is. The strict figure is in the table above so the choice is visible rather than assumed.\n\nBy query type:\n\n| type | queries | P@1 | P@5 | R@10 | MRR | nDCG@5 |\n|---|---|---|---|---|---|---|\n| attendee | 3 | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |\n| cross_lingual | 4 | 0.833 | 0.833 | 1.000 | 0.861 | 0.833 |\n| date_window | 5 | 1.000 | 0.933 | 0.975 | 1.000 | 0.912 |\n| mime | 3 | 0.333 | 0.667 | 1.000 | 0.492 | 0.500 |\n| multi_service | 3 | 0.429 | 0.590 | 0.976 | 0.603 | 0.505 |\n| semantic | 7 | 0.545 | 0.697 | 0.818 | 0.632 | 0.525 |\n| sender | 5 | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |\n\nAblation \u2014 vector arm alone, text arm alone, and the two fused:\n\n| arm | P@1 | P@5 | R@10 | MRR | nDCG@5 | p95 ms |\n|---|---|---|---|---|---|---|\n| vector | 0.700 | 0.787 | 0.943 | 0.770 | 0.704 | 23 |\n| lexical | 0.375 | 0.338 | 0.338 | 0.375 | 0.353 | 16 |\n| hybrid | 0.700 | 0.787 | 0.943 | 0.770 | 0.709 | 82 |"
+  "markdown": "| metric | value | target |\n|---|---|---|\n| **Precision@5** | **0.828** | > 0.80 (brief, 10 pts) |\n| Precision@1 | 0.750 | \u2014 |\n| Precision@3 | 0.762 | \u2014 |\n| Recall@10 | 0.943 | \u2014 |\n| MRR | 0.808 | \u2014 |\n| nDCG@5 | 0.767 | \u2014 |\n| Precision@5, strict /k | 0.320 | see note |\n| Search p95 | 68 ms | < 500 ms (brief, 3 pts) |\n| Search p99 | 72 ms | \u2014 |\n\nScored over 40 (query, corpus) pairs from 30 queries. Precision divides by `min(k, relevant)`: most queries here have one or two relevant documents per corpus, and a strict `/k` denominator caps such a query at P@5 = 0.2 however good the ranking is. The strict figure is in the table above so the choice is visible rather than assumed.\n\nBy query type:\n\n| type | queries | P@1 | P@5 | R@10 | MRR | nDCG@5 |\n|---|---|---|---|---|---|---|\n| attendee | 3 | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |\n| cross_lingual | 4 | 0.833 | 0.833 | 1.000 | 0.861 | 0.833 |\n| date_window | 5 | 1.000 | 1.000 | 0.975 | 1.000 | 0.981 |\n| mime | 3 | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |\n| multi_service | 3 | 0.429 | 0.590 | 0.976 | 0.603 | 0.505 |\n| semantic | 7 | 0.545 | 0.727 | 0.818 | 0.632 | 0.568 |\n| sender | 5 | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |\n\nAblation \u2014 vector arm alone, text arm alone, and the two fused:\n\n| arm | P@1 | P@5 | R@10 | MRR | nDCG@5 | p95 ms |\n|---|---|---|---|---|---|---|\n| vector | 0.700 | 0.787 | 0.943 | 0.770 | 0.704 | 13 |\n| lexical | 0.375 | 0.338 | 0.338 | 0.375 | 0.353 | 9 |\n| hybrid | 0.750 | 0.828 | 0.943 | 0.808 | 0.767 | 68 |"
 }

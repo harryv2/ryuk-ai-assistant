@@ -316,6 +316,7 @@ Or directly, from `backend/`:
 
 ```bash
 pytest tests/unit -q          # 619 tests, no services needed
+pytest tests -q               # 668 with the integration suite (needs Postgres)
 ```
 
 The **unit** suite is pure: no database, no network, no Redis.
@@ -359,6 +360,29 @@ The frontend typechecks and builds with:
 ```bash
 cd frontend && npm install && npm run build     # tsc --noEmit && vite build
 ```
+
+## Evaluation
+
+The four numbers the brief grades are measured, not asserted.
+[`backend/tests/eval/RESULTS.md`](backend/tests/eval/RESULTS.md) is the
+committed output of the harness in `backend/tests/eval/`, regenerated with:
+
+```bash
+make eval
+```
+
+| Measure | Result | Brief's bar |
+|---|---|---|
+| Intent classification accuracy | **0.968** (61/63) | — (10 pts) |
+| Retrieval **Precision@5** | **0.828** | > 0.80 (10 pts) |
+| Search latency p95 | **~80 ms** | < 500 ms (3 pts) |
+| Recall@10 · MRR · nDCG@5 | 0.943 · 0.808 · 0.767 | relevance metrics (2 pts) |
+
+Two labelled datasets back these: `datasets/intents.jsonl` (63 queries, 18
+intents, 7 languages) and `datasets/relevance.jsonl` (35 queries, 81 graded
+judgements over the `make seed` corpus). The retrieval report includes an
+**ablation** — each arm alone against the fusion — which is how the hybrid
+earns its place: vector alone scores P@5 0.787, text alone 0.338, fused 0.828.
 
 ## What the UI does
 

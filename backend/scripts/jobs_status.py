@@ -59,8 +59,16 @@ async def mirror_and_dlq() -> None:
     c = await asyncpg.connect(url)
     now = await c.fetchval("select now()")
     rows = await c.fetch(
-        "select service, last_success_at, items_indexed, consecutive_failures,"
-        " circuit_open_until from sync_state order by service"
+        "select s.service, s.last_success_at, s.items_indexed, s.consecutive_failures,"
+        "       s.circuit_open_until, u.email,"
+        # The same test app/google/client.py makes: a grant without a
+        # googleapis.com scope is a placeholder, not a connection.
+        "       (t.user_id is null or not (t.scopes)::text like '%googleapis.com%') as no_grant"
+        "  from sync_state s"
+        "  join users u on u.id = s.user_id"
+        "  left join oauth_tokens t"
+        "    on t.user_id = s.user_id and t.provider = 'google' and t.revoked_at is null"
+        " order by u.email, s.service"
     )
     if not rows:
         print(f"{WARN} no sync_state rows — no account has connected yet")
@@ -68,10 +76,15 @@ async def mirror_and_dlq() -> None:
         lag = (now - r["last_success_at"]).total_seconds() if r["last_success_at"] else None
         stale = lag is None or lag > 1800
         breaker = r["circuit_open_until"] and r["circuit_open_until"] > now
+        # An account with no Google grant (the `make seed` demo user) cannot
+        # sync by construction. Saying so beats reporting it as an outage.
+        if r["no_grant"]:
+            print(f"{OK} sync {r['service']:<7} {r['email']:<26} no Google grant — seeded corpus only, sync not expected")
+            continue
         mark = BAD if breaker else (WARN if stale else OK)
         lag_s = f"{int(lag)}s ago" if lag is not None else "never"
         note = " BREAKER OPEN" if breaker else (" stale (>30 min)" if stale else "")
-        print(f"{mark} sync {r['service']:<7} last success {lag_s:<12} {r['items_indexed']} items, {r['consecutive_failures']} consecutive failures{note}")
+        print(f"{mark} sync {r['service']:<7} {r['email']:<26} last success {lag_s:<12} {r['items_indexed']} items, {r['consecutive_failures']} failures{note}")
 
     dlq = await c.fetch(
         "select task_name, count(*) n, max(last_failed_at) latest from job_failed_tasks"
