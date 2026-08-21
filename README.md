@@ -1,9 +1,5 @@
 
 
-https://github.com/user-attachments/assets/87ecb935-f269-472b-ab24-2a8f017ff1b3
-
-
-
 # Ryuk — a chat orchestrator over Gmail, Calendar and Drive
 
 You type "cancel my Turkish Airlines flight". It finds the booking email, reads
@@ -15,17 +11,6 @@ yes.
 The point of the design is that it does all of that on **one model call**.
 
 ## Demo
-
-
-
-<!-- To embed an inline player: edit this README on github.com and drag
-     docs/demo/demo-compressed.mp4 (7MB, fits GitHub's 10MB attachment
-     limit) into the editor right below this comment. GitHub uploads it and
-     inserts a URL that renders as a playable video. Until then, the poster
-     below links to the full-quality file, which GitHub's file viewer plays
-     natively. -->
-
-     
 
 
 https://github.com/user-attachments/assets/b729b51e-c45b-4ed1-a6e6-54c2657e37a1
