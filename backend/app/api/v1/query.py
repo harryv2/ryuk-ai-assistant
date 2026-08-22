@@ -34,6 +34,7 @@ from app.core import cache, ratelimit
 from app.core.errors import AppError
 from app.core.logging import get_logger
 from app.db.models import User
+from app.db.session import session_scope
 from app.orchestrator import events, runner
 
 log = get_logger(__name__)
@@ -135,6 +136,56 @@ async def _remember(user_id: str, client_request_id: str | None, run_id: str) ->
 # Running one turn
 # --------------------------------------------------------------------------- #
 
+#: Detached runs in flight. asyncio holds only weak references to its tasks;
+#: when the client disconnects, the generator frame that held the last strong
+#: reference dies with the request, and a garbage-collected task is a run that
+#: silently stops mid-write. Strong references live here until each task
+#: reports done.
+_DETACHED: set[asyncio.Task[Any]] = set()
+
+
+def _reap(task: asyncio.Task[Any]) -> None:
+    _DETACHED.discard(task)
+    if task.cancelled():
+        return
+    exc = task.exception()  # marks it retrieved even when nobody awaited
+    if exc is not None:
+        log.warning(
+            "query.detached_run_failed", error=f"{type(exc).__name__}: {exc}"
+        )
+
+
+def _spawn_run(
+    actor: "runner.Actor",
+    body: QueryRequest,
+    request_id: str | None,
+    ctx: contextvars.Context,
+) -> asyncio.Task["runner.QueryResult"]:
+    """Start the turn as a task that owns everything it needs.
+
+    The request hands over nothing request-scoped. The task opens its own
+    database session and writes its own idempotency memo, because the request
+    that started it may be gone long before the run finishes — a closed tab is
+    the normal case, not a failure. The relay that streams events back (or the
+    plain await on the non-streaming path) is a spectator: cancelling it
+    cancels the *watching*, never the run, and ``GET /runs/{id}/events``
+    picks the same event stream back up from any sequence number.
+    """
+
+    async def _detached() -> "runner.QueryResult":
+        async with session_scope() as own_session:
+            outcome = await runner.run_query(
+                own_session, actor, body.query, **_kwargs(body, request_id)
+            )
+        await _remember(actor.id, body.client_request_id, outcome.run_id)
+        return outcome
+
+    task = asyncio.create_task(_detached(), context=ctx)
+    _DETACHED.add(task)
+    task.add_done_callback(_reap)
+    return task
+
+
 
 def _actor_for(user: User, body: QueryRequest) -> runner.Actor:
     """The person, with this request's overrides applied.
@@ -160,14 +211,6 @@ def _kwargs(body: QueryRequest, request_id: str | None) -> dict[str, Any]:
     if "freshness" in _RUNNER_ARGS:
         extra["freshness"] = body.freshness
     return extra
-
-
-async def _run(
-    session: AsyncSession, user: User, body: QueryRequest, request_id: str | None
-) -> runner.QueryResult:
-    return await runner.run_query(
-        session, _actor_for(user, body), body.query, **_kwargs(body, request_id)
-    )
 
 
 # --------------------------------------------------------------------------- #
@@ -199,9 +242,13 @@ async def post_query(
     headers = _limit_headers(remaining, reset_at)
     request_id = getattr(request.state, "request_id", None)
 
+    # The actor is read out of the ORM row NOW, while the request session is
+    # alive — the run task must never touch anything request-scoped.
+    actor = _actor_for(user, body)
+
     if stream == "ndjson":
         return StreamingResponse(
-            _ndjson(session, user, body, request_id),
+            _ndjson(actor, body, request_id),
             media_type="application/x-ndjson",
             headers={
                 **headers,
@@ -210,8 +257,9 @@ async def post_query(
             },
         )
 
-    outcome = await _run(session, user, body, request_id)
-    await _remember(user.id, body.client_request_id, outcome.run_id)
+    # Same detached task on the plain path: a dropped connection cancels this
+    # await, not the run.
+    outcome = await _spawn_run(actor, body, request_id, contextvars.copy_context())
     return JSONResponse(
         content=await hydrate(session, user.id, outcome), headers=headers
     )
@@ -235,18 +283,22 @@ def _run_id_from(ctx: contextvars.Context) -> str | None:
 
 
 async def _ndjson(
-    session: AsyncSession, user: User, body: QueryRequest, request_id: str | None
+    actor: "runner.Actor", body: QueryRequest, request_id: str | None
 ) -> AsyncIterator[str]:
-    """Run the turn, relaying its events line by line.
+    """Relay the detached run's events line by line.
 
     Every line is the same envelope the SSE channel carries — same ``v``, same
     ``seq``, same ``type``, same ``data`` — so a client that can parse one
     transport can parse the other. The last line is always ``run.complete`` or
-    ``error``; if the connection drops before then the run keeps going and
-    ``GET /runs/{id}/events`` picks it back up.
+    ``error``.
+
+    The run itself is a detached task with its own database session; nothing
+    in this generator is load-bearing for it. When the tab closes, Starlette
+    closes this generator and the run carries on to completion — reopening the
+    conversation replays the events from the durable record and follows live.
     """
     ctx = contextvars.copy_context()
-    task = asyncio.create_task(_run(session, user, body, request_id), context=ctx)
+    task = _spawn_run(actor, body, request_id, ctx)
 
     run_id: str | None = None
     waited = 0.0
@@ -285,7 +337,6 @@ async def _ndjson(
         ) + "\n"
         return
 
-    await _remember(user.id, body.client_request_id, outcome.run_id)
     if not run_id:
         # The relay never attached — no id in time, or a run that finished
         # first. The client still gets a terminal event rather than a stream

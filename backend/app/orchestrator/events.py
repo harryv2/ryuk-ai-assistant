@@ -234,6 +234,26 @@ async def subscribe(
     """
     seen = int(from_seq or 0) - 1
 
+    # Subscribe BEFORE replaying. The other order has a hole in it: an event
+    # published after the replay read but before the subscription took effect
+    # belonged to nobody, and a fast run could fit its whole tail in that gap.
+    # Subscribing first means the worst case is receiving an event twice, and
+    # the `seq <= seen` check below exists to make duplicates free.
+    #
+    # Pub/sub being unavailable degrades instead of aborting: the durable
+    # buffer is polled until the run settles. Slower, but a Redis hiccup then
+    # costs latency rather than the rest of somebody's stream.
+    pubsub = None
+    try:
+        from app.core import cache
+
+        client = await cache.get_redis()
+        pubsub = client.pubsub(ignore_subscribe_messages=True)
+        await pubsub.subscribe(channel(run_id))
+    except Exception as exc:  # noqa: BLE001
+        log.warning("events.pubsub_unavailable", run_id=run_id, error=str(exc))
+        pubsub = None
+
     for message in await replay(run_id, from_seq):
         seq = int(message.get("seq", 0))
         if seq <= seen:
@@ -244,19 +264,35 @@ async def subscribe(
         if message.get("type") in TERMINAL_EVENTS:
             return
 
-    try:
-        from app.core import cache
-
-        client = await cache.get_redis()
-        pubsub = client.pubsub(ignore_subscribe_messages=True)
-        await pubsub.subscribe(channel(run_id))
-    except Exception as exc:  # noqa: BLE001
-        log.warning("events.subscribe_failed", run_id=run_id, error=str(exc))
+    if pubsub is None:
+        poll_s = 0.2
+        idle = 0.0
+        while idle < idle_timeout_s:
+            await asyncio.sleep(poll_s)
+            fresh = await replay(run_id, seen + 1)
+            if not fresh:
+                idle += poll_s
+                if idle and int(idle / PING_INTERVAL_S) != int((idle - poll_s) / PING_INTERVAL_S):
+                    yield {"type": "ping", "run_id": run_id, "seq": seen, "data": {}}
+                continue
+            idle = 0.0
+            for message in fresh:
+                seq = int(message.get("seq", 0))
+                if seq <= seen:
+                    continue
+                seen = seq
+                if types is None or message.get("type") in types:
+                    yield message
+                if message.get("type") in TERMINAL_EVENTS:
+                    return
         return
 
+    loop = asyncio.get_running_loop()
     idle = 0.0
+    last_ping = 0.0
     try:
         while True:
+            waited_from = loop.time()
             try:
                 raw = await pubsub.get_message(
                     ignore_subscribe_messages=True, timeout=PING_INTERVAL_S
@@ -268,19 +304,47 @@ async def subscribe(
                 return
 
             if raw is None:
-                idle += PING_INTERVAL_S
+                # Idle is measured with a clock, never assumed from the
+                # timeout parameter — a client that returns None immediately
+                # (a fake in tests, a misbehaving driver in production) would
+                # otherwise burn the whole idle budget in milliseconds.
+                waited = loop.time() - waited_from
+                if waited < 0.1:
+                    await asyncio.sleep(0.1)
+                    waited += 0.1
+                idle += waited
                 if idle >= idle_timeout_s:
                     return
-                yield {"type": "ping", "run_id": run_id, "seq": seen, "data": {}}
+
+                # A quiet tick also checks the durable buffer. Pub/sub is the
+                # low-latency path, not the only path: a message lost to a
+                # dropped subscription or a silent fake still reaches the
+                # stream from the buffer, one tick late, and the `seq` check
+                # keeps the overlap free.
+                fresh = await replay(run_id, seen + 1)
+                for message in fresh:
+                    seq = int(message.get("seq", 0))
+                    if seq <= seen:
+                        continue
+                    seen = seq
+                    idle = 0.0
+                    if types is None or message.get("type") in types:
+                        yield message
+                    if message.get("type") in TERMINAL_EVENTS:
+                        return
+                if not fresh and idle - last_ping >= PING_INTERVAL_S:
+                    last_ping = idle
+                    yield {"type": "ping", "run_id": run_id, "seq": seen, "data": {}}
                 continue
 
             idle = 0.0
+            last_ping = 0.0
             message = _loads(raw.get("data"))
             if not message:
                 continue
             seq = int(message.get("seq", 0))
             if seq <= seen:
-                continue  # a duplicate from a reconnect
+                continue  # a duplicate from a reconnect or the buffer
             seen = seq
             if types is None or message.get("type") in types:
                 yield message

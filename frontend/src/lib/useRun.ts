@@ -827,6 +827,11 @@ export function useRun(options: UseRunOptions = {}): UseRunResult {
 
   useEffect(() => () => stopRef.current?.(), [])
 
+  // Which run the open stream is following, and a late-bound handle on
+  // `reattach` — `refetch` needs to call it but is declared first.
+  const attachedRunRef = useRef<Id | null>(null)
+  const reattachRef = useRef<((runId: Id, fromSeq?: number) => void) | null>(null)
+
   const refetch = useCallback(
     async (conversationId?: Id | null): Promise<ConversationDetail | null> => {
       const id = conversationId ?? stateRef.current.conversationId
@@ -835,6 +840,17 @@ export function useRun(options: UseRunOptions = {}): UseRunResult {
         const convo = await getConversation(id, { include_trace: true })
         dispatch({ kind: 'hydrate', conversation: convo })
         optionsRef.current.onHydrated?.(convo)
+        // A tab that closed mid-run reopens onto a run that is still going —
+        // the durable record just said so. Subscribing from the last seen
+        // sequence (1, on a fresh mount) is what turns the frozen "Working…"
+        // back into live tool calls. Already attached to this run means a
+        // gap-repair refetch, and the stream it has is the stream it keeps.
+        const running = [...(convo.runs ?? [])]
+          .reverse()
+          .find((r) => r.status === 'running')
+        if (running && attachedRunRef.current !== running.id) {
+          reattachRef.current?.(running.id)
+        }
         return convo
       } catch (err) {
         if (err instanceof ApiError && err.needsReauth) optionsRef.current.onReauthRequired?.(err)
@@ -849,6 +865,7 @@ export function useRun(options: UseRunOptions = {}): UseRunResult {
     () => ({
       onEvent: (event: RunEvent) => {
         dispatch({ kind: 'event', event })
+        if (event.type === 'run.started') attachedRunRef.current = event.run_id
         if (event.type === 'run.started' && event.data.conversation_id) {
           optionsRef.current.onConversation?.(event.data.conversation_id)
         }
@@ -884,6 +901,7 @@ export function useRun(options: UseRunOptions = {}): UseRunResult {
   const stop = useCallback(() => {
     stopRef.current?.()
     stopRef.current = null
+    attachedRunRef.current = null
   }, [])
 
   const ask = useCallback(
@@ -912,12 +930,14 @@ export function useRun(options: UseRunOptions = {}): UseRunResult {
     (runId: Id, fromSeq?: number) => {
       stop()
       dispatch({ kind: 'connection', status: 'connecting' })
+      attachedRunRef.current = runId
       stopRef.current = openRunStream(runId, handlers, {
         fromSeq: fromSeq ?? stateRef.current.lastSeq + 1,
       })
     },
     [handlers, stop],
   )
+  reattachRef.current = reattach
 
   const respond = useCallback(
     async (inputId: Id, value: unknown) => {
